@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="parsnip.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="14" filename="$data/foliage/parsnip/parsnipDead_alpha.png"/>
+    <File fileId="11" filename="$data/foliage/parsnip/parsnipDead_diffuse.png"/>
+    <File fileId="12" filename="$data/foliage/parsnip/parsnipDead_normal.png"/>
+    <File fileId="13" filename="$data/foliage/parsnip/parsnipDead_specular.png"/>
+    <File fileId="6" filename="$data/foliage/parsnip/parsnipGreenBig_alpha.png"/>
+    <File fileId="1" filename="$data/foliage/parsnip/parsnipGreenBig_diffuse.png"/>
+    <File fileId="2" filename="$data/foliage/parsnip/parsnipGreenBig_normal.png"/>
+    <File fileId="3" filename="$data/foliage/parsnip/parsnipGreenBig_specular.png"/>
+    <File fileId="10" filename="$data/foliage/parsnip/parsnipHarvestReady_alpha.png"/>
+    <File fileId="7" filename="$data/foliage/parsnip/parsnipHarvestReady_diffuse.png"/>
+    <File fileId="8" filename="$data/foliage/parsnip/parsnipHarvestReady_normal.png"/>
+    <File fileId="9" filename="$data/foliage/parsnip/parsnipHarvestReady_specular.png"/>
+    <File fileId="4" filename="$data/shaders/fruitGrowthFoliageShader.xml"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="parsnipDead_mat" materialId="5" customShaderId="4" customShaderVariation="PLANT_ROWS">
+      <Texture fileId="11"/>
+      <Normalmap fileId="12"/>
+      <Glossmap fileId="13"/>
+      <Custommap name="alphaMap" fileId="14"/>
+    </Material>
+    <Material name="parsnipGreenBig_mat" materialId="6" customShaderId="4" customShaderVariation="PLANT_ROWS">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <Custommap name="alphaMap" fileId="6"/>
+    </Material>
+    <Material name="parsnipHarvestReady_mat" materialId="7" customShaderId="4" customShaderVariation="PLANT_ROWS">
+      <Texture fileId="7"/>
+      <Normalmap fileId="8"/>
+      <Glossmap fileId="9"/>
+      <Custommap name="alphaMap" fileId="10"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="parsnip.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="parsnip" clipDistance="500" nodeId="19">
+      <TransformGroup name="greenBig" translation="0 0 0.303878" nodeId="20">
+        <Shape name="gb1" translation="0.149615 0 0" shapeId="1" clipDistance="500" nodeId="21" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb2" translation="-0.107297 0 0" shapeId="2" clipDistance="500" nodeId="22" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb1_x_inv" translation="0.103355 0 0.506182" shapeId="3" clipDistance="500" nodeId="23" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb2_x_inv" translation="-0.114254 0 0.506182" shapeId="4" clipDistance="500" nodeId="24" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb1" translation="0.149615 0 -1.17155" shapeId="1" clipDistance="500" nodeId="25" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb2" translation="-0.107297 0 -1.17155" shapeId="2" clipDistance="500" nodeId="26" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb1_x_inv" translation="0.103355 0 -0.665371" shapeId="3" clipDistance="500" nodeId="27" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb2_x_inv" translation="-0.114254 0 -0.665371" shapeId="4" clipDistance="500" nodeId="28" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+      </TransformGroup>
+      <TransformGroup name="harvestReady" translation="0 0 0.303878" nodeId="29">
+        <Shape name="hr1" translation="0.120884 0 0" shapeId="5" clipDistance="500" nodeId="30" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr2" translation="-0.0639401 0 0" shapeId="6" clipDistance="500" nodeId="31" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr1_x_inv" translation="0.102932 0 0.563817" shapeId="7" clipDistance="500" nodeId="32" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr2_x_inv" translation="-0.0637038 0 0.563817" shapeId="8" clipDistance="500" nodeId="33" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr1" translation="0.120884 0 -1.14801" shapeId="5" clipDistance="500" nodeId="34" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr2" translation="-0.0639401 0 -1.14801" shapeId="6" clipDistance="500" nodeId="35" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr1_x_inv" translation="0.102932 0 -0.584189" shapeId="7" clipDistance="500" nodeId="36" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr2_x_inv" translation="-0.0637038 0 -0.584189" shapeId="8" clipDistance="500" nodeId="37" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+      </TransformGroup>
+      <TransformGroup name="dead" translation="0 0 0.303878" nodeId="38">
+        <Shape name="dead1" shapeId="9" clipDistance="500" nodeId="39" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="dead2" translation="0 0 0.511188" shapeId="10" clipDistance="500" nodeId="40" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="dead1" translation="0 0 -1.21162" shapeId="9" clipDistance="500" nodeId="41" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="dead2" translation="0 0 -0.700428" shapeId="10" clipDistance="500" nodeId="42" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

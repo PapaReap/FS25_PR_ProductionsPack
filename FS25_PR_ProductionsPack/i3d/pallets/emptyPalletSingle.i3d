@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="emptyPalletSingle.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="2" filename="$data/objects/pallets/shared/euroPallet/euroPalletNew_diffuse.png"/>
+    <File fileId="6" filename="$data/objects/pallets/shared/euroPallet/euroPalletOld_diffuse.png"/>
+    <File fileId="3" filename="$data/objects/pallets/shared/euroPallet/euroPallet_normal.png"/>
+    <File fileId="4" filename="$data/objects/pallets/shared/euroPallet/euroPallet_specular.png"/>
+    <File fileId="5" filename="$data/shaders/placeableShader.xml"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="euroPalletNew_mat" materialId="54" customShaderId="5" customShaderVariation="customDiffuseBlend">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+      <Custommap name="mCustomDiffuse" fileId="6"/>
+    </Material>
+    <Material name="lambert1" materialId="6" diffuseColor="0.498039 0.498039 0.498039 1">
+    </Material>
+    <Material name="lambert1" materialId="53" diffuseColor="0.501961 0.501961 0.501961 1">
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="emptyPalletSingle.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="butterBoxPallet_component1" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" staticFriction="1" dynamicFriction="1" density="0.0001" clipDistance="150" nodeId="16" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6">
+      <Shape name="euroPallet_vis" shapeId="2" clipDistance="200" nodeId="58" castsShadows="true" receiveShadows="true" materialIds="54">
+        <Shape name="dynamicMountTrigger" translation="0 0.0904753 0" shapeId="3" kinematic="true" trigger="true" collisionFilterGroup="0x8000000" collisionFilterMask="0x8000000" nodeId="18" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        <TransformGroup name="dischargeNode" translation="0 0.75 0" nodeId="19"/>
+        <Shape name="tensionBeltMesh" shapeId="4" nodeId="59" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="53"/>
+        <TransformGroup name="collisions" clipDistance="10" nodeId="45">
+          <Shape name="floorCollision01" translation="-0.3 0 0" shapeId="5" compoundChild="true" collisionFilterGroup="0x100110a" collisionFilterMask="0x100110a" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="46" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          <Shape name="floorCollision02" translation="0.3 0 0" shapeId="6" compoundChild="true" collisionFilterGroup="0x100110a" collisionFilterMask="0x100110a" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="47" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+      </Shape>
+    </Shape>
+  </Scene>
+
+</i3D>

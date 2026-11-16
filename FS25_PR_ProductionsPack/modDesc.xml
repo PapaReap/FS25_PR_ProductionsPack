@@ -1,0 +1,726 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="97">
+    <author>PapaReap</author>
+    <version>1.0.1.0</version>
+    <title>
+        <en>PR Productions Pack</en>
+    </title>
+
+    <description>
+        <en>
+    <![CDATA[
+CEMENT FACTORY US
+A production facility where Cement Bags, Roof Plate, Cement Brick & Lime (bulk) are produced.
+
+Production Recipes (liters):
+- Cement Bags -> 1000 lime + 250 Water = 500 Cement Bags
+- Roof Plate -> 1000 Stone + 300 Cement Bags + 100 Straw + 100 Water = 250 Roof Plate
+- Cement Brick -> 1000 Stone + 200 Cement Bags + 50 Straw + 100 Water = 250 Cement Brick
+- Lime -> 1500 Stone + 200 Water = 1000 Lime
+
+
+CHEMICAL FACTORY
+A production facility where Fertilizer, Herbicide, Liquid Fertilizer, Mineral Feed, Seeds, Silage Additive, Herbicide Pure & Soluble Fertilizer are produced.
+
+You can produce:
+- Fertilizer
+- Herbicide
+- Liquid Fertilizer
+- Mineral Feed
+- Seeds
+- Silage Additive
+
+- Herbicide Pure (mod)
+- Soluble Fertilizer (mod)
+
+Category: Factory
+Price: $125,000
+Daily upkeep: $100/day
+
+Production Recipes (liters):
+- Herbicide (1500): 325 Solid Fertilizer + 150 Lime + 325 Slurry + 325 Manure + 325 Digestate + 500 Water
+- Liquid Fertilizer (1000): 200 Manure + 450 Slurry + 150 Digestate + 200 Lime + 1000 Water
+- Mineral Feed (300): 100 Hay + 50 Potatoes + 100 Silage + 100 Canola
+- Seeds (150): 50 Solid Fertilizer + 100 Barley + 50 Water
+- Silage Additive (150): 50 Solid Fertilizer + 100 Lime + 50 Water
+- Solid Fertilizer (250): 100 Manure + 50 Slurry + 100 Digestate + 80 Lime + 50 Straw
+
+- Phiber Dash Mod
+- Herbicide Pure (38 Unmixed Herbicide): 325 Solid Fertilizer + 150 Lime + 325 Slurry + 325 Manure + 325 Digestate + 50 Water
+- Soluble Fertilizer (7 Water Soluble Fertilizer): 100 Manure + 50 Slurry + 100 Digestate + 80 Lime + 50 Straw
+
+DESSERT FACTORY
+A production facility where Creme Caramel, Strawberry Sorbet, Chocolate Mousse, Chocolate Fondant, Chocolate Brownie & Strawberry Jam are produced.
+
+Dessert Factory:
+Production -> Factories
+Price: $50,000
+Daily Upkeep: $60
+
+Desserts Sellpoint:
+Production -> Selling Points
+Price: $1,000
+Daily Upkeep: $10
+
+- Creme Caramel -> 15 Eggs + 25 Milk + 15 Sugar = 50 Crème caramel
+- Strawberry Sorbet -> 35 Strawberry + 15 Water + 7 Sugar = 55 Strawberry Sorbet
+- Chocolate Mousse -> 20 Chocolate + 30 Eggs = 50 Chocolate Mousse
+- Chocolate Fondant -> 12 Butter + 10 Chocolate + 16 Sugar + 10 Flour + 20 Eggs = 50 Chocolate Fondant
+- Chocolate Brownie -> 9 Butter + 10 Chocolate + 16 Sugar + 7 Flour + 8 Eggs = 50 Chocolate Brownie
+- Strawberry Jam -> 25 Strawberry + 20 Sugar = 45 Strawberry Jam
+- More info in screenshots
+
+
+WOODCHIP PRODUCTION
+A production for using wood chips to make six new products: Fire Logs, MDF Boards, OSB Boards, Smoker Pellets, and 3 types of wood mulch - Natural, Dark Brown, and Red. All products can be sold at any selling point. There is an area to unload logs and trees to be made into wood chips marked by a warning strip in front of the building with the trigger just inside the doors. At the back of the building, there is a loading pipe to take the wood chips out in bulk with a trailer.
+
+Category: Productions
+Price: $55,000
+
+Production Recipes (liters):
+- Fire Logs recipe
+- 100 Wood chips
+- 10 Diesel
+- 5 Water to 60 Fire logs with 25 cycles an hour
+
+- MDF Board recipe
+- 100 Wood chips
+- 10 Water to 50 Mdf boards with 35 cycles an hour
+
+- OSB Board recipe
+- 100 Wood chips
+- 10 Water to 65 Osb boards with 45 cycles an hour
+
+- Wood Mulch recipes
+- 100 Wood chips to 100 Natural wood mulch with 50 cycles an hour
+- 100 Wood chips to 100 Dark Brown wood mulch with 50 cycles an hour
+- 100 Wood chips to 100 Red wood mulch with 50 cycles an hour
+
+- Smoker Pellets recipe
+- 100 Wood chips
+- 10 Water to 45 Smoker Pellets with 40 cycls an hour
+
+- Wood Chips recipe
+- 1000 Wood to 1000 Wood Chips with 400 cycles an hour
+
+
+GRAIN DRYER PACK
+Had a wet harvest? Need to dry your grain so you can sell it for a better price?
+Well look no further, this grain dryer pack is the answer.
+Simply input your grain (wheat,barley,oat,corn) and the fuel (wood, woodchip or methane and you are good to go!
+Methane can be purchased from the buypoint included in the pack, transported in the two tankers included in the pack or distributed from a BGA that supports methane to the grain drying shed! It can also be sold at the sell point provided in the pack.
+With a dedicated sell point you are guaranteed to get a significantly better profit on your grains!
+
+Grain Drying Shed Small:
+Construction cost: 5000$
+Daily cost: 50$
+
+Production recipes:
+
+Wheat Dry: 1000 Wheat 100 Wood (2400 Cycles / Month $120 /Month)
+Barley Dry: 1000 Barley 100 Wood (2400 Cycles / Month $120 / Month)
+Oat Dry: 1000 Oats 100 Wood (2400 Cycles / Month $120 / Month)
+Corn Dry: 1000 Corn 100 Wood (2400 Cycles / Month $120 / Month)
+
+Capacity:
+Inputs:
+50000l Wood
+50000l Wheat
+50000l Barley
+50000l Oats
+50000l Corn
+
+Outputs:
+50000l Wheat Dry
+50000l Barley Dry
+50000l Oat Dry
+50000l Corn Dry
+
+Grain drying shed:
+Construction cost: 40000$
+Daily cost: 50$
+
+Production recipes:
+
+Wheat Dry: 1000 Wheat 50 Woodchips (2400 Cycles / Month $120 /Month)
+Barley Dry : 1000 Barley 50 Woodchips (2400 Cycles / Month $120 / Month)
+Oat Dry: 1000 Oats 50 Woodchips (2400 Cycles / Month $120 / Month)
+Corn Dry  1000 Corn 50 Woodchips (2400 Cycles / Month $120 / Month)
+
+Wheat Dry: 1000 Wheat 50 Methane (2400 Cycles / Month $120 /Month)
+Barley Dry: 1000 Barley 50 Methane (2400 Cycles / Month $120 / Month)
+Oat Dry: 1000 Oats 50 Methane (2400 Cycles / Month $120 / Month)
+Corn Dry: 1000 Corn 50 Methane (2400 Cycles / Month $120 / Month)
+
+Capacity:
+Inputs:
+500000l Woodchips
+500000l Methane
+500000l Wheat
+500000l Barley
+500000l Oats
+500000l Corn
+
+Outputs:
+500000l Wheat Dry
+500000l Barley Dry
+500000l Oat Dry
+500000l Corn Dry
+
+Grain drying silo:
+Construction cost: 92000$
+Daily cost: 0$
+
+Production recipes:
+
+Wheat Dry: 1000 Wheat 50 Woodchips (2400 Cycles / Month $120 /Month)
+Barley Dry: 1000 Barley 50 Woodchips (2400 Cycles / Month $120 / Month)
+Oat Dry: 1000 Oats 50 Woodchips (2400 Cycles / Month $120 / Month)
+Corn Dry: 1000 Corn 50 Woodchips (2400 Cycles / Month $120 / Month)
+
+Wheat Dry: 1000 Wheat 50 Methane (2400 Cycles / Month $120 /Month)
+Barley Dry: 1000 Barley 50 Methane (2400 Cycles / Month $120 / Month)
+Oat Dry: 1000 Oats 50 Methane (2400 Cycles / Month $120 / Month)
+Corn Dry: 1000 Corn 50 Methane (2400 Cycles / Month $120 / Month)
+
+Capacity:
+Inputs:
+800000l Woodchips
+500000l Methane
+800000l Wheat
+800000l Barley
+800000l Oats
+800000l Corn
+
+Outputs:
+800000l Wheat Dry
+800000l Barley Dry
+800000l Oat Dry
+800000l Corn Dry
+
+Methane buying point:
+Construction cost: 1000$
+
+Selling point:
+Construction cost: 50$
+
+Lizard MKS 8 Methane
+Category: Barrels
+Price: $25,000
+Capacity: 8,000 L
+
+Lizard MKS 32 Methane
+Category: Barrels
+Price: $90,000
+Capacity: 32,000 L
+
+Credit: To missyB for the use of the grain silo
+
+
+EXTENDED DAIRY AND GRAINMILL PRODUCTION
+Contains a series of new production chains, including three production buildings and products.
+New goods:
+
+Pea flour
+Corn flour
+Canola flour
+Soy flour
+Sunflower flour
+Garlic butter
+Yogurt
+Strawberry milk
+Pea milk
+Oat milk
+Rice milk
+Soy milk
+
+Grain Mill (Extended):
+
+Category: Placeable - Production
+Price: 325,000
+Maintenance: 120
+Productions: All from the grain mill +
+Input: Peas
+Output: Pea flour
+Input: Peas
+Output: Flour
+Input: Corn
+Output: Corn flour
+Input: Corn
+Output: Flour
+Input: Rapeseed
+Output: Rapeseed flour
+Input: Rapeseed
+Output: Flour
+Input: Soybeans
+Output: Soy flour
+Input: Soybeans
+Output: Flour
+Input: Sunflowers
+Output: Sunflower flour
+Input: Sunflowers
+Output: Flour
+
+The plant-specific flour productions are more efficient; however, standard flour should still be usable for the bakery.
+
+Dairy (Extended):
+
+Category: Placeable - Production
+Price: 245,000
+Maintenance: 110
+Productions: All from the dairy +
+Input: Milk + Sugar
+Output: Yogurt
+Input: Milk + Sugar + Strawberries
+Output: Strawberry milk
+Input: Milk + Garlic
+Output: Garlic butter
+
+Plant-Based Milk Production:
+
+Category: Placeable - Production
+Price: 225,000
+Maintenance: 85
+Productions:
+Input: Peas
+Output: Pea milk
+Input: Oats
+Output: Oat milk
+Input: Long-grain rice
+Output: Rice milk
+Input: Rice
+Output: Rice milk
+Input: Soybeans
+Output: Soy milk
+
+
+ENHANCED BAKERY
+A multi use production for making bread, cakes and other baking needs. All base game recipes for flour and bread with four
+new products, whole wheat flour, whole wheat bread, corn flower, and corn tortilla. I aslo included a selling station for the
+new items.
+Category: Productions
+Price: $55,000
+Production Recipes:
+
+Flour recipes
+20 Wheat to 15 Flour 100 with cycles an hour
+15 Oats to 15 Flour 100 with cycles an hour
+15 Rice to 15 Flour 100 with cycles an hour
+
+Bread recipes
+25 Flour to 20 Bread 50 with cycles an hour
+25 Rice Flour to 20 Bread 50 with cycles an hour
+
+New item recipes
+
+Whole Wheat Flour recipe
+20 Wheat to 20 Whole Wheat Flour with 100 cycles per hour
+
+Corn Flour recipe
+20 Corn to 20 Corn Flour with 100 cycles per hour
+
+Whole Wheat Bread recipe
+25 Corn Flour to 20 Whole Wheat Bread with 50 cycles per hour
+
+Corn Tortilla recipe
+25 Corn Flour to 20 Corn Tortilla with 50 cycles per hour
+
+Change Log V1.0.0.3
+Updated modDesc
+Updated new product pallets for autoload
+Made fill planes in selling point permanent for more realism
+Removed the grain gate on the selling point
+
+Change Log V1.0.0.2
+Added Rice Cakes recipe
+Added a blocking system for the pallet spawning location keeping pallets from spawning until you are ready for them (switch on front side of building)
+Increased opening/closing speed of doors
+Made pallets liftable
+Changed the whole wheat bread pallet
+You can now sell everything with a sell price in base game
+Changed the name of the sell point from Multi Sell Station to The Little Market
+Changed the price of the whole wheat and corn flour as it was a little too high
+Can no longer deliver contracts as it was causing issues with some players
+Will not conflict with silos and other storages
+
+
+THE BUTCHER BARN
+Creates Meats from Animals
+
+
+OPEN AIR GARDEN
+These are 5 garden for growing vegetables and fruit outdoors.
+There is a small, a medium sized and a large garden.
+There are also two allotment gardens with a hut, tree, seating area and lots of decorations.
+One of them is kept more minimalist, with less decorations, to save slots.
+
+All gardens come in four variants, each with and without a fence and with and without wooden garden beds.
+You can use a switch to raise a tarp greenhouse from the ground and then lower it again.
+You can also lower and raise the collisions for the fence using a switch.
+
+In addition to the greenhouse plants from the base game, you can grow lots of other vegetables in these gardens.
+In addition to the standard recipes that only require water as an ingredient, there are also recipes with seeds and fertilizer.
+If you dump manure, it is automatically converted into fertilizer, so you can also fertilize the gardens with manure.
+These additional recipes result in more and faster plant growth. This means you get more profit than with the pure water recipes.
+
+To water several gardens at once, there is a distributor that distributes the necessary ingredients to the gardens.
+There is also a small garden pump that provides free water.
+
+Open Air Garden
+Category: Greenhouses
+Price: $8,000
+Daily upkeep: $10
+
+Open Air Garden Medium
+Category: Greenhouses
+Price: $20,000
+Daily upkeep: $10
+
+Open Air Garden Large
+Category: Greenhouses
+Price: $50,000
+Daily upkeep: $10
+
+Allotment Garden
+Category: Greenhouses
+Price: $9,000
+Daily upkeep: $10
+
+Allotment Garden, minimalistic
+Category: Greenhouses
+Price: $8,000
+Daily upkeep: $10
+
+Production Recipes:
+Input: water, seeds, fertilizer, manure (automatic transformation to fertilizer)
+Output: lettuce, tomato, strawberry, spring onion, napacabbage, chilli, garlic, potato, sunflower, carrot, parsnip, beetroot, peas, greenbean, spinach, grape, olive
+
+Distributer
+Category: Production Sites
+Price: $1,000
+Daily upkeep: $5
+
+Garden Pump
+Category: Water Tanks
+Price: $500
+Daily upkeep: $5
+
+
+BEET CHOPPER
+This beet pulping plant first washes the beets with fresh water and sorts out any sludge and stones. They are then cut into beet pulp, which can be reused in other plants.
+Category: Production Sites
+Price: $75,000
+Daily upkeep: $21
+
+
+CHIPS FACTORY
+Get started making artisanal chips with this small workshop that will allow you to make 9 different recipes.
+
+Category: Production sites
+Price: $55,000
+Daily maintenance: $50
+
+The 9 recipes can be produced with either sunflower oil (5), rapeseed oil (5) or olive oil (4).
+
+Classic chips:
+- 100 potatoes > 30 chips
+
+Vegetable chips :
+- 100 carrots > 25 Carrot chips
+- 100 parsnips > 25 Parsnip chips
+- 100 Red beets > 30 Red beet chips
+
+Flavored chips :
+- 100 potatoes + 5 honey + 5 goat cheese > 30 Honey and goat cheese chips
+- 100 potatoes + 10 tomatoes > 30 Dried tomato chips
+- 100 potatoes + 5 tomatoes + 5 mozzarella > 30 Tomato mozzarella chips
+- 100 potatoes + 10 onions + 15 garlic > 30 Garlic onion chips
+- 100 potatoes + 15 chili > 30 Chili chips
+
+READY MEALS PROCESSINGS
+- Crawfish Etouffee
+
+WOOD STORAGE
+Tree trunk 6m
+Capacity: 960 liters
+
+Wood storage 1
+Shop category: Production facilities
+Price: $10,000
+Daily maintenance: $20
+Capacity: 75,000 liters
+
+Wood storage 2
+Shop category: Production facilities
+Price: $6,000
+Daily maintenance: $10
+Capacity: 30,000 liters
+
+Info: Logs from storage are only accepted at production sites or sales outlets that also accept standard transport containers outside the game.
+
+Changelog
+v1.0.0.1
+Sound  Removed
+Capacity increased
+
+
+
+CREDITS FOR MODELS AND INSPIRATION:
+Chemical Production: Torakin
+Dessert Factory: twproductions
+Woodchip Production and Bakery Enhanced: Biggins
+Grain Dryer Pack: Cartech
+Grain Mill Enhanced, Dairy Enhanced and Plant Based Milk Production: Fasde
+The Butcher Barn: JDFAN
+Dairy US: FS22 Model parts
+OPEN AIR GARDEN: OmaTana
+Beet Chopper: Lamai
+Chips Factory: VX mapping
+Wood Storage: Kastor [D-S-Agrarservice]
+    ]]>
+        </en>
+    </description>
+
+    <iconFilename>store/mapIcon_PR_productionsPack.dds</iconFilename>
+    <multiplayer supported="true"/>
+
+    <brands>
+        <brand name="PRI" title="PapaReap Industries" image="brands/brandPRI.dds" />
+    </brands>
+
+    <fillTypes filename="xml/fillTypes.xml" />
+
+    <placeableTypes>
+        <!-- Required: Register the placeable type -->
+        <type name="extendedProductionPoint" parent="simplePlaceable" className="Placeable" filename="$dataS/scripts/placeables/Placeable.lua" >
+            <specialization name="extendedProductionPoint"/>
+            <specialization name="infoTrigger" />
+        </type>
+
+        <type name="PR_productionPoint_storage" parent="productionPoint" className="Placeable" filename="$dataS/scripts/placeables/Placeable.lua">
+            <!-- Add the storage system -->
+            <specialization name="objectStorage"/>
+        </type>
+
+    </placeableTypes>
+
+    <placeableSpecializations>
+        <!-- Required: Add specialization -->
+        <specialization name="extendedProductionPoint" className="PlaceableExtendedProductionPoint" filename="scripts/PlaceableExtendedProductionPoint.lua"/>
+
+        <!-- <specialization name="planeAnimator" className="PlaneAnimator" filename="scripts/PlaneAnimator.lua"/> -->
+    </placeableSpecializations>
+
+    <storeItems>
+        <!-- CEMENT FACTORY US -->
+        <storeItem xmlFilename="xml/placeables/cementFactoryUS.xml"/>
+        <!-- CHEMICAL PRODUCTION -->
+        <storeItem xmlFilename="xml/placeables/chemicalProduction.xml"/>
+        <storeItem xmlFilename="xml/pallets/yeastPallet.xml"/>
+        <!-- <storeItem xmlFilename="xml/yeastProduction.xml"/> -->
+        <!-- <storeItem xmlFilename="xml/sellingStationGeneric.xml"/> -->
+        <!-- DESSERT FACTORY -->
+        <storeItem xmlFilename="xml/placeables/dessertFactory.xml"/>
+        <storeItem xmlFilename="xml/placeables/dessertFactorySellpoint.xml"/>
+        <storeItem xmlFilename="xml/pallets/cremeCaramelBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chocolateBrownieBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chocolateFondantBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chocolateMousseBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/grapeJamBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/strawberryJamBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/strawberrySorbetBoxPallet.xml"/>
+
+        <!-- WOODCHIP PRODUCTION -->
+        <storeItem xmlFilename="xml/placeables/newWoodchipProduction.xml"/>
+        <storeItem xmlFilename="xml/pallets/fireStarterLogsPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/mdfBoardsStackPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/osbBoardsStackPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/woodMulchNaturalPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/woodMulchDarkBrownPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/woodMulchRedPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/smokerPelletsPallet.xml"/>
+
+        <!-- GRAIN DRYER PACK -->
+        <storeItem xmlFilename="xml/placeables/grainDryerSellpoint.xml" /> <!-- Make a custom tab for this? make chile powder, onion power garlic powder-->
+        <storeItem xmlFilename="xml/placeables/grainDryerShed.xml" />
+        <storeItem xmlFilename="xml/placeables/grainDryerSilo.xml" />
+        <storeItem xmlFilename="xml/placeables/grainDryerSmall.xml" />
+        <storeItem xmlFilename="xml/placeables/dieselTanksLevel03.xml" />
+        <storeItem xmlFilename="xml/placeables/vehicles/mks8/mks8.xml" />
+        <storeItem xmlFilename="xml/placeables/vehicles/mks32/mks32.xml" />
+
+        <!-- GRAIN MILL ENHANCED -->
+        <storeItem xmlFilename="xml/placeables/grainMillEnhanced.xml"/>
+        <storeItem xmlFilename="xml/pallets/cornFlourBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/peasFlourBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/soyFlourBoxPallet.xml"/>
+        <!-- <storeItem xmlFilename="xml/pallets/canolaFlourBoxPallet.xml"/> -->
+        <!-- <storeItem xmlFilename="xml/pallets/sunflowerFlourBoxPallet.xml"/> -->
+
+        <!-- DAIRY ENHANCED -->
+        <storeItem xmlFilename="xml/placeables/dairyEnhanced.xml"/>
+        <storeItem xmlFilename="xml/pallets/garlicButterBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/strawberryMilkBottlesBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/yoghurtBoxPallet.xml"/>
+
+        <!-- DAIRY US -->
+        <storeItem xmlFilename="xml/placeables/dairyUS.xml"/> <!-- faster production -->
+
+        <!-- PLANT BASED MILK PRODUCTION -->
+        <storeItem xmlFilename="xml/placeables/grainMilkProduction.xml"/>
+        <storeItem xmlFilename="xml/pallets/oatMilkBottlesBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/peaMilkBottlesBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/riceMilkBottlesBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/soyMilkBottlesBoxPallet.xml"/>
+
+        <!-- BAKERY ENHANCED -->
+        <storeItem xmlFilename="xml/placeables/bakeryEnhanced.xml"/> <!-- allow pea flour -->
+        <storeItem xmlFilename="xml/placeables/theLittleMarket.xml"/>
+        <!-- PALLETS -->
+        <storeItem xmlFilename="xml/pallets/wholeWheatFlourBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/cornFlourBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/wholeWheatBakeryBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/cornTortillaBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/riceCakesBoxPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/spaghettiPastaPallet.xml"/>
+        <!-- From FarmBakery -->
+        <storeItem xmlFilename="xml/pallets/baguetteBox.xml"/>
+        <storeItem xmlFilename="xml/pallets/breadBox.xml"/>
+        <storeItem xmlFilename="xml/pallets/emptyBakeryBox.xml"/>
+        <storeItem xmlFilename="xml/pallets/bakeryBoxPallet.xml"/>
+        <!-- <storeItem xmlFilename="xml/pallets/butterBox01.xml"/> -->
+        <storeItem xmlFilename="xml/pallets/croissantBox.xml"/>
+        <storeItem xmlFilename="xml/pallets/donutBox.xml"/>
+        <storeItem xmlFilename="xml/pallets/donutJellyBox.xml"/>
+        <storeItem xmlFilename="xml/pallets/eggPartyBox.xml"/>
+        <storeItem xmlFilename="xml/pallets/flourSacks.xml"/>
+        <!-- <storeItem xmlFilename="xml/pallets/flourSacks2_DS.xml"/> -->
+        <storeItem xmlFilename="xml/pallets/muffinBox.xml"/>
+        <storeItem xmlFilename="xml/pallets/packagingMaterialsBox.xml"/>
+        <storeItem xmlFilename="xml/pallets/spiceBlendsBox.xml"/>
+        <!-- <storeItem xmlFilename="xml/pallets/bakeryCases14_DS.xml"/> -->
+
+        <!-- SUGAR MILL ENHANCED -->
+        <storeItem xmlFilename="xml/placeables/sugarMillEnhanced.xml"/>
+        <storeItem xmlFilename="xml/pallets/molassesPallet.xml"/>
+
+        <!-- THE BUTCHER BARN -->
+        <storeItem xmlFilename="xml/placeables/theButcherBarn.xml"/>
+
+        <storeItem xmlFilename="xml/pallets/chevonPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chickenfilletPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/baconPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/groundbeefPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/hamPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/muttonPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/pepperoniPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/porkPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/sausagePallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/steakPallet.xml"/>
+       <!-- <storeItem xmlFilename="pallets/vealPallet.xml"/>
+        <storeItem xmlFilename="pallets/lambchopsPallet.xml"/>
+        <storeItem xmlFilename="pallets/venisonPallet.xml"/>
+        <storeItem xmlFilename="pallets/wholeduckPallet.xml"/> -->
+
+        <!-- OPEN AIR GARDEN -->
+        <storeItem xmlFilename="xml/placeables/openAirGarden.xml"/>
+        <storeItem xmlFilename="xml/placeables/openAirGardenStrawberry.xml"/>
+        <storeItem xmlFilename="xml/placeables/openAirGarden4.xml"/>
+        <storeItem xmlFilename="xml/placeables/openAirGarden16.xml"/>
+        <storeItem xmlFilename="xml/placeables/openAirGardenDecorated.xml"/>
+        <storeItem xmlFilename="xml/placeables/openAirGardenDecoMinimal.xml"/>
+        <storeItem xmlFilename="xml/placeables/distributer.xml"/>
+        <storeItem xmlFilename="xml/placeables/waterPumpSmall.xml"/>
+        <storeItem xmlFilename="xml/pallets/fillablePallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/vegetablesPallet.xml"/>
+
+        <!-- SUGAR BEET CUTTING FACTORY -->
+        <storeItem xmlFilename="xml/placeables/sugarBeetCuttingFactory.xml" />
+
+        <!-- BEET CHOPPER -->
+        <storeItem xmlFilename="xml/placeables/sugarBeetChopper.xml"/>
+
+        <!-- CHIPS FACTORY -->
+        <storeItem xmlFilename="xml/placeables/chipsFactory.xml"/>
+        <storeItem xmlFilename="xml/pallets/chipsBeetrootPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chipsCarrotsPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chipsChiliPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chipsHoneyPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chipsMozaPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chipsOnionsPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chipsParnshipPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/chipsTomatoPallet.xml"/>
+
+        <!-- READY MEALS PROCESSINGS -->
+        <storeItem xmlFilename="xml/placeables/readyMealsProcessing.xml"/>
+        <storeItem xmlFilename="xml/pallets/crawfishEtouffeePallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/spaghettiMeatballsPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/spaghettiSausagePallet.xml"/>
+
+        <!-- CRAWFISH PRODUCTION -->
+        <storeItem xmlFilename="xml/placeables/crawfishProduction.xml" />
+        <storeItem xmlFilename="xml/pallets/crawfishPallet.xml" />
+        <storeItem xmlFilename="xml/pallets/crawfishBroodstockPallet.xml" />
+
+        <!-- CRAWFISH HATCHERY -->
+        <storeItem xmlFilename="xml/placeables/crawfishHatchery.xml"/>
+
+        <!-- CARPENTER SHOP (Carpenter Old Pallets And Bale Storage) -->
+        <storeItem xmlFilename="xml/placeables/carpenterShop.xml"/>
+        <!-- <storeItem xmlFilename="xml/placeables/objectStorageOld_DS.xml"/> -->
+        <!-- <storeItem xmlFilename="xml/placeables/objectStorageOld2_DS.xml"/> -->
+        <!-- pallets -->
+        <!-- <storeItem xmlFilename="xml/pallets/box1_DS.xml"/> -->
+        <!-- <storeItem xmlFilename="xml/pallets/cheese_KisteW12_DS.xml"/> -->
+        <storeItem xmlFilename="xml/pallets/doghouse_DS.xml"/>
+        <storeItem xmlFilename="xml/pallets/emptyPallet_2_DS.xml"/>
+        <storeItem xmlFilename="xml/pallets/emptyPallet_DS.xml"/>
+        <storeItem xmlFilename="xml/pallets/emptyPalletsFillable.xml"/>
+        <!-- <storeItem xmlFilename="xml/pallets/wooden_box_a16_DS.xml"/> -->
+        <!-- <storeItem xmlFilename="xml/pallets/woodenBox16_DS.xml"/> -->
+        <storeItem xmlFilename="xml/pallets/wooden_Shelf_DS.xml"/>
+        <!-- <storeItem xmlFilename="xml/pallets/woodenBoxForCheese12_DS.xml"/> -->
+
+        <storeItem xmlFilename="xml/pallets/carvingsPallet.xml"/>
+        <storeItem xmlFilename="xml/pallets/toysPallet.xml"/>
+
+        <storeItem xmlFilename="xml/placeables/paperFactory.xml"/>
+
+        <storeItem xmlFilename="xml/placeables/PR_sawmill.xml"/>
+
+		<storeItem xmlFilename="placeables/preservedFoodFactory/preservedFoodFactoryPlaceable.xml"/>
+		<storeItem xmlFilename="placeables/oilMill/oilMill.xml"/>
+		
+		<!-- WOOD STORAGE -->
+        <storeItem xmlFilename="xml/pallets/wood6m.xml"/>
+        <storeItem xmlFilename="xml/placeables/woodStorage01.xml"/>
+        <storeItem xmlFilename="xml/placeables/woodStorage02.xml"/>
+    </storeItems>
+
+    <extraSourceFiles>
+        <sourceFile filename="scripts/PlaceableExtendedProductionPoint.lua" />
+        <sourceFile filename="scripts/PR_ButcherFix.lua"/>
+        <sourceFile filename="scripts/events/PR_DeliverAnimalsEvent.lua" />
+    </extraSourceFiles>
+
+    <guiProfiles filename="gui/guiProfiles.xml"/>
+    <gui>
+        <file name="gui/ButcherDialog.xml" class="PRBDialog"/>
+    </gui>
+
+    <actions>
+        <action name="RLB_UNLOAD_TO_BUTCHER"/>
+    </actions>
+
+    <inputBindings>
+        <action name="RLB_UNLOAD_TO_BUTCHER" category="VEHICLE">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_r"/>
+        </action>
+    </inputBindings>
+
+    <l10n filenamePrefix="l10n/l10n"/>
+
+    <dependencies>
+        <dependency>FS25_PR_GameplayPack</dependency>
+    </dependencies>
+</modDesc>

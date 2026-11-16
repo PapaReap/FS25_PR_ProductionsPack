@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<vehicle type="pallet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/vehicle.xsd">
+    <annotation>Copyright (C) GIANTS Software GmbH, All Rights Reserved.</annotation>
+
+    <storeData>
+        <name>$l10n_storeItem_crawfishBroodstockPallet</name>
+        <image>store/pallets/store_crawfishBroodstockPallet.png</image>
+        <price>500</price>
+        <category>pallets</category>
+        <brand>PRI</brand>
+        <showInStore>true</showInStore>
+        <canBeSold>false</canBeSold>
+        <financeCategory>OTHER</financeCategory>
+
+        <storeIconRendering>
+            <settings cameraXRot="-15" cameraYRot="35"/>
+        </storeIconRendering>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <vertexBufferMemoryUsage>47872</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>11776</indexBufferMemoryUsage>
+        <textureMemoryUsage>1507328</textureMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <typeDesc>$l10n_typeDesc_pallet</typeDesc>
+        <filename>i3d/pallets/crawfishBroodstockPallet.i3d</filename>
+        <size width="1.3" length="0.9" height="0.8" />
+        <canBeReset>false</canBeReset>
+        <components maxMass="400">
+            <component centerOfMass="0 0.1 0" solverIterationCount="10" mass="60" />
+        </components>
+        <showInVehicleMenu>false</showInVehicleMenu>
+        <mapHotspot available="false" />
+        <input allowed="false"/>
+    </base>
+
+    <fillUnit>
+        <fillUnitConfigurations>
+            <fillUnitConfiguration>
+                <fillUnits>
+                    <fillUnit unitTextOverride="$l10n_unit_literShort" fillTypes="CRAWFISH_BROODSTOCK" capacity="1000" startFillType="CRAWFISH_BROODSTOCK" startFillLevel="1000" ignoreFillLimit="true"/>
+                </fillUnits>
+            </fillUnitConfiguration>
+        </fillUnitConfigurations>
+    </fillUnit>
+	
+    <pallet fillUnitIndex="1" linkNode="crawfishbroodPallet_main_component1">
+        <texture diffuse="$data/objects/pallets/shared/euroPallet/euroPalletNew_diffuse.dds"/>
+        <texture diffuse="$data/objects/pallets/shared/euroPallet/euroPalletMiddle_diffuse.dds"/>
+        <texture diffuse="$data/objects/pallets/shared/euroPallet/euroPalletOld_diffuse.dds"/>
+
+        <content>
+            <object node="crawfishbrood01" tensionBeltNode="crawfishbrood_Tension01"/>
+            <object node="crawfishbrood02" tensionBeltNode="crawfishbrood_Tension02"/>
+            <object node="crawfishbrood03" tensionBeltNode="crawfishbrood_Tension03"/>
+            <object node="crawfishbrood04" tensionBeltNode="crawfishbrood_Tension04"/>
+            <object node="crawfishbrood05" tensionBeltNode="crawfishbrood_Tension05"/>
+            <object node="crawfishbrood06" tensionBeltNode="crawfishbrood_Tension06"/>
+            <object node="crawfishbrood07" tensionBeltNode="crawfishbrood_Tension07"/>
+            <object node="crawfishbrood08" tensionBeltNode="crawfishbrood_Tension08"/>
+            <object node="crawfishbrood09" tensionBeltNode="crawfishbrood_Tension09"/>
+            <object node="crawfishbrood10" tensionBeltNode="crawfishbrood_Tension10"/>
+            <object node="crawfishbrood11" tensionBeltNode="crawfishbrood_Tension11"/>
+            <object node="crawfishbrood12" tensionBeltNode="crawfishbrood_Tension12"/>
+            <object node="crawfishbrood13" tensionBeltNode="crawfishbrood_Tension13"/>
+            <object node="crawfishbrood14" tensionBeltNode="crawfishbrood_Tension14"/>
+            <object node="crawfishbrood15" tensionBeltNode="crawfishbrood_Tension15"/>
+            <object node="crawfishbrood16" tensionBeltNode="crawfishbrood_Tension16"/>
+            <object node="crawfishbrood17" tensionBeltNode="crawfishbrood_Tension17"/>
+            <object node="crawfishbrood18" tensionBeltNode="crawfishbrood_Tension18"/>
+            <object node="crawfishbrood19" tensionBeltNode="crawfishbrood_Tension19"/>
+            <object node="crawfishbrood20" tensionBeltNode="crawfishbrood_Tension20"/>
+            <object node="crawfishbrood21" tensionBeltNode="crawfishbrood_Tension21"/>
+            <object node="crawfishbrood22" tensionBeltNode="crawfishbrood_Tension22"/>
+            <object node="crawfishbrood23" tensionBeltNode="crawfishbrood_Tension23"/>
+            <object node="crawfishbrood24" tensionBeltNode="crawfishbrood_Tension24"/>
+        </content>
+
+        <sounds>
+            <unload template="palletsFillPlastic" pitchScale="0.9" />
+        </sounds>
+    </pallet>
+
+    <dynamicMount triggerNode="dynamicMountTrigger" triggerForceAcceleration="4" additionalMountDistance="0.747" jointTransY="0.106" jointLimitToRotY="true"/>
+
+    <i3dMappings>
+        <i3dMapping id="crawfishbroodPallet_main_component1" node="0>" />
+        <i3dMapping id="dynamicMountTrigger" node="0>0" />
+        <i3dMapping id="dischargeNode" node="0>1" />
+        <i3dMapping id="crawfishbrood01" node="0>2|0" />
+        <i3dMapping id="crawfishbrood_Tension01" node="0>2|0|1" />
+        <i3dMapping id="crawfishbrood02" node="0>2|1" />
+        <i3dMapping id="crawfishbrood_Tension02" node="0>2|1|1" />
+        <i3dMapping id="crawfishbrood03" node="0>2|2" />
+        <i3dMapping id="crawfishbrood_Tension03" node="0>2|2|1" />
+        <i3dMapping id="crawfishbrood04" node="0>2|3" />
+        <i3dMapping id="crawfishbrood_Tension04" node="0>2|3|1" />
+        <i3dMapping id="crawfishbrood05" node="0>2|4" />
+        <i3dMapping id="crawfishbrood_Tension05" node="0>2|4|1" />
+        <i3dMapping id="crawfishbrood06" node="0>2|5" />
+        <i3dMapping id="crawfishbrood_Tension06" node="0>2|5|1" />
+        <i3dMapping id="crawfishbrood07" node="0>2|6" />
+        <i3dMapping id="crawfishbrood_Tension07" node="0>2|6|1" />
+        <i3dMapping id="crawfishbrood08" node="0>2|7" />
+        <i3dMapping id="crawfishbrood_Tension08" node="0>2|7|1" />
+        <i3dMapping id="crawfishbrood09" node="0>2|8" />
+        <i3dMapping id="crawfishbrood_Tension09" node="0>2|8|1" />
+        <i3dMapping id="crawfishbrood10" node="0>2|9" />
+        <i3dMapping id="crawfishbrood_Tension10" node="0>2|9|1" />
+        <i3dMapping id="crawfishbrood11" node="0>2|10" />
+        <i3dMapping id="crawfishbrood_Tension11" node="0>2|10|1" />
+        <i3dMapping id="crawfishbrood12" node="0>2|11" />
+        <i3dMapping id="crawfishbrood_Tension12" node="0>2|11|1" />
+        <i3dMapping id="crawfishbrood13" node="0>2|12" />
+        <i3dMapping id="crawfishbrood_Tension13" node="0>2|12|1" />
+        <i3dMapping id="crawfishbrood14" node="0>2|13" />
+        <i3dMapping id="crawfishbrood_Tension14" node="0>2|13|1" />
+        <i3dMapping id="crawfishbrood15" node="0>2|14" />
+        <i3dMapping id="crawfishbrood_Tension15" node="0>2|14|1" />
+        <i3dMapping id="crawfishbrood16" node="0>2|15" />
+        <i3dMapping id="crawfishbrood_Tension16" node="0>2|15|1" />
+        <i3dMapping id="crawfishbrood17" node="0>2|16" />
+        <i3dMapping id="crawfishbrood_Tension17" node="0>2|16|1" />
+        <i3dMapping id="crawfishbrood18" node="0>2|17" />
+        <i3dMapping id="crawfishbrood_Tension18" node="0>2|17|1" />
+        <i3dMapping id="crawfishbrood19" node="0>2|18" />
+        <i3dMapping id="crawfishbrood_Tension19" node="0>2|18|1" />
+        <i3dMapping id="crawfishbrood20" node="0>2|19" />
+        <i3dMapping id="crawfishbrood_Tension20" node="0>2|19|1" />
+        <i3dMapping id="crawfishbrood21" node="0>2|20" />
+        <i3dMapping id="crawfishbrood_Tension21" node="0>2|20|1" />
+        <i3dMapping id="crawfishbrood22" node="0>2|21" />
+        <i3dMapping id="crawfishbrood_Tension22" node="0>2|21|1" />
+        <i3dMapping id="crawfishbrood23" node="0>2|22" />
+        <i3dMapping id="crawfishbrood_Tension23" node="0>2|22|1" />
+        <i3dMapping id="crawfishbrood24" node="0>2|23" />
+        <i3dMapping id="crawfishbrood_Tension24" node="0>2|23|1" />
+    </i3dMappings>
+</vehicle>

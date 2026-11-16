@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="toysPallet.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.3"/>
+  </Asset>
+
+  <Files>
+    <File fileId="2" filename="$data/maps/mapUS/textures/props/vintageTools/woodenCrate02_diffuse.png"/>
+    <File fileId="3" filename="$data/maps/mapUS/textures/props/vintageTools/woodenCrate02_normal.png"/>
+    <File fileId="4" filename="$data/maps/mapUS/textures/props/vintageTools/woodenCrate02_specular.png"/>
+    <File fileId="8" filename="$data/shaders/colorShader.xml"/>
+    <File fileId="5" filename="$data/shared/detailLibrary/nonMetallic/wood/wood1Cedar_diffuse.dds"/>
+    <File fileId="6" filename="$data/shared/detailLibrary/nonMetallic/wood/wood1_normal.dds"/>
+    <File fileId="7" filename="$data/shared/detailLibrary/nonMetallic/wood/wood1_specular.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="lambert1" materialId="5" diffuseColor="0.501961 0.501961 0.501961 1">
+    </Material>
+    <Material name="woodenCrate02_mat" materialId="6">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+    <Material name="woodenToyBlue_mat" materialId="7" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <CustomParameter name="color" value="0.310047 0.322417 0.463905"/>
+    </Material>
+    <Material name="woodenToyCyan_mat" materialId="8" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <CustomParameter name="color" value="0.25 1 0.875"/>
+    </Material>
+    <Material name="woodenToyGreen_mat" materialId="9" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <CustomParameter name="color" value="0.5 0.0561223 0.0276382"/>
+    </Material>
+    <Material name="woodenToyLime_mat" materialId="10" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <CustomParameter name="color" value="0.217543 0.33991 0"/>
+    </Material>
+    <Material name="woodenToyMagenta_mat" materialId="11" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <CustomParameter name="color" value="1 0.5259 0.942589"/>
+    </Material>
+    <Material name="woodenToyOrange_mat" materialId="12" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <CustomParameter name="color" value="0.75 0.25 0"/>
+    </Material>
+    <Material name="woodenToyRed_mat" materialId="13" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <CustomParameter name="color" value="1 0.556678 0.336683"/>
+    </Material>
+    <Material name="woodenToyViolet_mat" materialId="14" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <CustomParameter name="color" value="0.538175 0.907639 0.433295"/>
+    </Material>
+    <Material name="woodenToyWhiteYellow_mat" materialId="15" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <CustomParameter name="color" value="0.0477387 0.275006 0.5"/>
+    </Material>
+    <Material name="woodenToyWhiteYellow_mat" materialId="16" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <CustomParameter name="color" value="0.474445 0.5 0.0376884"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="toysPallet.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="ToysPallet_main_component1" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" staticFriction="1" dynamicFriction="1" density="0.0001" clipDistance="150" nodeId="44" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5">
+      <Shape name="dynamicMountTrigger" translation="0 0.090475 0" shapeId="2" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="45" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+      <TransformGroup name="dischargeNode" translation="0 0.5 0" nodeId="46"/>
+      <TransformGroup name="content" nodeId="47">
+        <TransformGroup name="woodenCrate01" translation="-0.298145 0.443265 -0.00294495" nodeId="48">
+          <Shape name="LOD0" translation="0.000144988 0 0" shapeId="3" nodeId="49" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          <Shape name="LOD1" translation="0.000144988 0 0" shapeId="4" nodeId="50" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          <Shape name="col01" translation="0.000144988 0 0" shapeId="5" nodeId="51" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+          <TransformGroup name="props" nodeId="52">
+            <Shape name="woodenToyHarvesterRedVis" translation="-0.06376 0.0130301 -0.131655" rotation="-6.04547e-07 -0 -1.32742e-06" shapeId="6" clipDistance="200" nodeId="53" castsShadows="true" receiveShadows="true" materialIds="13"/>
+            <Shape name="woodenToySeederTrailerYellowVis" translation="0.0470705 0.0130298 0.247813" rotation="-180 -87.6681 180" shapeId="7" clipDistance="200" nodeId="54" castsShadows="true" receiveShadows="true" materialIds="15"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="woodenCrate02" translation="-0.298145 0.12344 -0.00294495" nodeId="55">
+          <Shape name="LOD0" translation="0.000144988 0 0" shapeId="8" nodeId="56" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          <Shape name="LOD1" translation="0.000144988 0 0" shapeId="9" nodeId="57" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          <Shape name="col02" translation="0.000144988 0 0" shapeId="10" nodeId="58" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+          <TransformGroup name="props" nodeId="59">
+            <Shape name="woodenToyPigMagentaVis" translation="-0.233626 0.0130302 -0.185152" shapeId="11" clipDistance="200" nodeId="60" castsShadows="true" receiveShadows="true" materialIds="11"/>
+            <Shape name="woodenToySheepCyanVis" translation="0.0572209 0.0130305 -0.18895" rotation="0 -0 -1.24195e-05" shapeId="12" clipDistance="200" nodeId="61" castsShadows="true" receiveShadows="true" materialIds="8"/>
+            <Shape name="woodenToyCowVioletVis" translation="-0.217977 0.0130303 0.208037" rotation="-2.43522e-08 -0 0" shapeId="13" clipDistance="200" nodeId="62" castsShadows="true" receiveShadows="true" materialIds="14"/>
+            <Shape name="woodenToyHorseOrangeVis" translation="0.23421 0.0130303 0.214275" rotation="0 -0 7.19026e-06" shapeId="14" clipDistance="200" nodeId="63" castsShadows="true" receiveShadows="true" materialIds="12"/>
+            <Shape name="woodenToyPigMagentaVis" translation="-0.154663 0.0130302 -0.185152" shapeId="11" clipDistance="200" nodeId="64" castsShadows="true" receiveShadows="true" materialIds="11"/>
+            <Shape name="woodenToyPigMagentaVis" translation="-0.0812215 0.0130302 -0.185152" shapeId="11" clipDistance="200" nodeId="65" castsShadows="true" receiveShadows="true" materialIds="11"/>
+            <Shape name="woodenToyPigMagentaVis" translation="-0.0158267 0.0130302 -0.185152" shapeId="11" clipDistance="200" nodeId="66" castsShadows="true" receiveShadows="true" materialIds="11"/>
+            <Shape name="woodenToySheepCyanVis" translation="0.117928 0.0130305 -0.18895" rotation="0 -0 -1.24195e-05" shapeId="15" clipDistance="200" nodeId="67" castsShadows="true" receiveShadows="true" materialIds="8"/>
+            <Shape name="woodenToySheepCyanVis" translation="0.18316 0.0130305 -0.18895" rotation="0 -0 -1.24195e-05" shapeId="16" clipDistance="200" nodeId="68" castsShadows="true" receiveShadows="true" materialIds="8"/>
+            <Shape name="woodenToySheepCyanVis" translation="0.2462 0.0130305 -0.18895" rotation="0 -0 -1.24195e-05" shapeId="17" clipDistance="200" nodeId="69" castsShadows="true" receiveShadows="true" materialIds="8"/>
+            <Shape name="woodenToyHorseOrangeVis" translation="0.17097 0.0130303 0.214275" rotation="0 -0 7.19026e-06" shapeId="18" clipDistance="200" nodeId="70" castsShadows="true" receiveShadows="true" materialIds="12"/>
+            <Shape name="woodenToyHorseOrangeVis" translation="0.109307 0.0130303 0.214275" rotation="0 -0 7.19026e-06" shapeId="19" clipDistance="200" nodeId="71" castsShadows="true" receiveShadows="true" materialIds="12"/>
+            <Shape name="woodenToyCowVioletVis" translation="-0.122448 0.0130303 0.169638" rotation="-2.43522e-08 180 0" shapeId="20" clipDistance="200" nodeId="72" castsShadows="true" receiveShadows="true" materialIds="14"/>
+            <Shape name="woodenToyCowVioletVis" translation="-0.0301011 0.0130303 0.208037" rotation="-2.43522e-08 0 0" shapeId="21" clipDistance="200" nodeId="73" castsShadows="true" receiveShadows="true" materialIds="14"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="woodenCrate03" translation="0.298159 0.443265 -0.00294495" nodeId="74">
+          <Shape name="LOD0" translation="-0.000158995 0 0" shapeId="3" nodeId="75" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          <Shape name="LOD1" translation="-0.000158995 0 0" shapeId="4" nodeId="76" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          <Shape name="col03" translation="-0.000158995 0 0" shapeId="5" nodeId="77" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+          <TransformGroup name="props" nodeId="78">
+            <Shape name="woodenToyTractorLimeVis" translation="0.0011735 0.0130308 0.184731" rotation="180 -89.6461 -180" shapeId="22" clipDistance="200" nodeId="79" castsShadows="true" receiveShadows="true" materialIds="10"/>
+            <Shape name="woodenToyPlowTrailerAzureVis" translation="-0.0584861 0.0130304 -0.164608" shapeId="23" clipDistance="200" nodeId="80" castsShadows="true" receiveShadows="true" materialIds="16"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="woodenCrate04" translation="0.298159 0.12344 -0.00294495" nodeId="81">
+          <Shape name="LOD0" translation="-0.000158995 0 0" shapeId="8" nodeId="82" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          <Shape name="LOD1" translation="-0.000158995 0 0" shapeId="9" nodeId="83" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          <Shape name="col04" translation="-0.000158995 0 0" shapeId="10" nodeId="84" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+          <TransformGroup name="props" nodeId="85">
+            <Shape name="woodenToyWaterTrailerGreenVis" translation="0.159152 0.0130305 -0.0121296" shapeId="24" clipDistance="200" nodeId="86" castsShadows="true" receiveShadows="true" materialIds="9"/>
+            <Shape name="woodenToyTrailerBlueVis" translation="-0.0859628 0.0130304 -0.0882055" shapeId="25" clipDistance="200" nodeId="87" castsShadows="true" receiveShadows="true" materialIds="7"/>
+          </TransformGroup>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="collisions" clipDistance="10" nodeId="88">
+        <Shape name="floorCollision01" translation="0.3 0 0" shapeId="26" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="89" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+        <Shape name="floorCollision02" translation="-0.3 0 0" shapeId="26" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="90" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+      </TransformGroup>
+    </Shape>
+  </Scene>
+
+</i3D>

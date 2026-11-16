@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="productionPoint" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>
+            $l10n_shopItem_dessertFactory
+        </name>
+        <functions>
+            <function>$l10n_function_dessertFactory</function>
+        </functions>
+        <image>store/store_dessertFactory.dds</image>
+        <price>50000</price>
+        <dailyUpkeep>60</dailyUpkeep>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>PRI</brand>
+        <species>placeable</species>
+        <category>productionPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Production</tab>
+        </brush>
+        <vertexBufferMemoryUsage>1568256</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>346368</indexBufferMemoryUsage>
+        <textureMemoryUsage>6422528</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>i3d/dessertFactory.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+        <!-- <boughtWithFarmland>true</boughtWithFarmland> -->
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testArea1Start" endNode="testArea1End" />
+        </testAreas>
+
+        <sounds>
+            <place template="smallImp" />
+        </sounds>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="clearArea1Start" widthNode="clearArea1Width" heightNode="clearArea1Height"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="1" maxSlope="75" maxEdgeAngle="30">
+        <levelAreas>
+            <levelArea startNode="levelArea1Start" widthNode="levelArea1Width" heightNode="levelArea1Height" groundType="asphalt"/>
+        </levelAreas>
+    </leveling>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorArea1Start" widthNode="indoorArea1Width" heightNode="indoorArea1Height" />
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateArea1Start" endNode="tipOcclusionUpdateArea1End" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateArea1Start" endNode="tipOcclusionUpdateArea1End" />
+        </updateAreas>
+    </ai>
+
+    <infoTrigger triggerNode="infoTrigger"/>
+
+    <dynamicallyLoadedParts>
+        <dynamicallyLoadedPart filename="$data/placeables/mapEU/spinnery/props.i3d"      node="0" linkNode="DessertFactory" />
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d" node="0" linkNode="smokeBigTower01" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5"/>
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d" node="1" linkNode="smokeSmall01" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5"/>
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d" node="1" linkNode="smokeSmall02" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5"/>
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d" node="1" linkNode="smokeSmall03" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5"/>
+    </dynamicallyLoadedParts>
+
+    <!-- <lights>
+        <group weatherRequiredFlags="NIGHT" />
+
+        <sharedLight filename="$data/shared/assets/lights/lizard/buildings/industrialWallLight.xml" linkNode="linkedLight3" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/lizard/buildings/industrialWallLight.xml" linkNode="linkedLight4" groupIndex="1"/>
+
+        <lightShape node="interiorSelfIllum"    groupIndex="1"/>
+        <lightShape node="interiorSelfIllumLOD" groupIndex="1"/>
+
+        <realLights>
+            <low>
+                <light node="realLightsLow" groupIndex="1"/>
+            </low>
+            <high>
+                <light node="realLightsHigh" groupIndex="1"/>
+            </high>
+        </realLights>
+    </lights> -->
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker" teleportNode="unloadTriggerMarker" />
+    </hotspots>
+
+    <productionPoint>
+        <productions sharedThroughputCapacity="false">
+            <production id="creme_caramel" name="$l10n_fillType_creme_caramel" cyclesPerHour="25" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="EGG" amount="15" />
+                    <input fillType="MILK" amount="25" />
+                    <input fillType="SUGAR" amount="15" />
+                    <input fillType="EMPTYPALLET" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="CREME_CARAMEL" amount="50" />
+                </outputs>
+            </production>
+
+            <production id="strawberry_sorbet" name="$l10n_fillType_strawberry_sorbet" cyclesPerHour="25" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="STRAWBERRY" amount="35" />
+                    <input fillType="WATER" amount="15" />
+                    <input fillType="SUGAR" amount="7" />
+                    <input fillType="EMPTYPALLET" amount="55" />
+                </inputs>
+                <outputs>
+                    <output fillType="STRAWBERRY_SORBET" amount="55" />
+                </outputs>
+            </production>
+
+            <production id="chocolate_mousse" name="$l10n_fillType_chocolate_mousse" cyclesPerHour="25" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="CHOCOLATE" amount="20" />
+                    <input fillType="EGG" amount="30" />
+                    <input fillType="EMPTYPALLET" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="CHOCOLATE_MOUSSE" amount="50" />
+                </outputs>
+            </production>
+
+            <production id="chocolate_brownie" name="$l10n_fillType_chocolate_brownie" cyclesPerHour="25" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="BUTTER" amount="9" />
+                    <input fillType="CHOCOLATE" amount="10" />
+                    <input fillType="SUGAR" amount="16" />
+                    <input fillType="FLOUR" amount="7" />
+                    <input fillType="EGG" amount="8" />
+                    <input fillType="EMPTYPALLET" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="CHOCOLATE_BROWNIE" amount="50" />
+                </outputs>
+            </production>
+
+            <production id="chocolate_fondant" name="$l10n_fillType_chocolate_fondant" cyclesPerHour="25" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="BUTTER" amount="12" />
+                    <input fillType="CHOCOLATE" amount="10" />
+                    <input fillType="SUGAR" amount="16" />
+                    <input fillType="FLOUR" amount="10" />
+                    <input fillType="EGG" amount="20" />
+                    <input fillType="EMPTYPALLET" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="CHOCOLATE_FONDANT" amount="50" />
+                </outputs>
+            </production>
+
+            <production id="strawberry_jam" name="$l10n_fillType_strawberry_jam" cyclesPerHour="25" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="STRAWBERRY" amount="25" />
+                    <input fillType="SUGAR" amount="20" />
+                    <input fillType="EMPTYPALLET" amount="45" />
+                </inputs>
+                <outputs>
+                    <output fillType="STRAWBERRY_JAM" amount="45" />
+                </outputs>
+            </production>
+
+            <production id="grape_jam" name="$l10n_fillType_grape_jam" cyclesPerHour="25" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="GRAPE" amount="25" />
+                    <input fillType="SUGAR" amount="20" />
+                    <input fillType="EMPTYPALLET" amount="45" />
+                </inputs>
+                <outputs>
+                    <output fillType="GRAPE_JAM" amount="45" />
+                </outputs>
+            </production>
+        </productions>
+
+        <sellingStation node="sellingStation" appearsOnStats="false" supportsExtension="false" allowMissions="false" hideFromPricesMenu="true">
+            <unloadTrigger exactFillRootNode="unloadTrigger" aiNode="unloadTriggerAINode" fillTypes="MILK WATER GRAPE"/>
+            <palletTrigger triggerNode="palletTrigger" aiNode="unloadTriggerAINode" fillTypes="EGG SUGAR CHOCOLATE MILK WATER STRAWBERRY BUTTER FLOUR GRAPE EMPTYPALLET"/>
+        </sellingStation>
+
+        <palletSpawner node="palletSpawner">
+            <spawnPlaces>
+                <spawnPlace startNode="palletSpawnerArea3Start" fillTypes="CREME_CARAMEL STRAWBERRY_SORBET CHOCOLATE_MOUSSE CHOCOLATE_FONDANT CHOCOLATE_BROWNIE STRAWBERRY_JAM GRAPE_JAM"/>
+                <spawnPlace startNode="palletSpawnerArea4Start" fillTypes="CREME_CARAMEL STRAWBERRY_SORBET CHOCOLATE_MOUSSE CHOCOLATE_FONDANT CHOCOLATE_BROWNIE STRAWBERRY_JAM GRAPE_JAM"/>
+            </spawnPlaces>
+        </palletSpawner>
+
+        <storage isExtension="false" fillLevelSyncThreshold="50">
+            <capacity fillType="EGG" capacity="150000" /> <!-- 1400L/380kg -->
+            <capacity fillType="MILK" capacity="60000" /> <!-- 1000L/1100kg -->
+            <capacity fillType="SUGAR" capacity="150000" /> <!-- 1000L/950kg -->
+            <capacity fillType="WATER" capacity="80000" /> <!-- 1000L/950kg -->
+            <capacity fillType="STRAWBERRY" capacity="150000" /> <!-- 1000L/950kg -->
+            <capacity fillType="GRAPE" capacity="150000" /> <!-- 1000L/950kg -->
+            <capacity fillType="CHOCOLATE" capacity="100000" /> <!-- 1000L/950kg -->
+            <capacity fillType="BUTTER" capacity="50000" /> <!-- 1000L/950kg -->
+            <capacity fillType="FLOUR" capacity="40000" /> <!-- 1000L/950kg -->
+            <capacity fillType="EMPTYPALLET"    capacity="200000" />
+
+            <capacity fillType="CREME_CARAMEL" capacity="50000" /> <!-- 1000L/1100kg -->
+            <capacity fillType="STRAWBERRY_SORBET" capacity="50000" /> <!-- 1000L/1100kg -->
+            <capacity fillType="CHOCOLATE_MOUSSE" capacity="50000" /> <!-- 1000L/1100kg -->
+            <capacity fillType="CHOCOLATE_FONDANT" capacity="50000" /> <!-- 1000L/1100kg -->
+            <capacity fillType="CHOCOLATE_BROWNIE" capacity="50000" /> <!-- 1000L/1100kg -->
+            <capacity fillType="STRAWBERRY_JAM" capacity="50000" /> <!-- 1000L/1100kg -->
+            <capacity fillType="GRAPE_JAM" capacity="50000" /> <!-- 1000L/1100kg -->
+        </storage>
+
+        <playerTrigger node="playerTrigger" />
+    </productionPoint>
+
+    <triggerMarkers>
+        <triggerMarker node="warningStripes_palletSpawnArea" />
+        <triggerMarker node="warningStripes_palletUnloadArea" />
+        <triggerMarker node="playerTriggerMarker" filename="$data/shared/assets/marker/markerIconWrench.i3d" adjustToGround="true" />
+        <triggerMarker node="unloadTriggerMarker" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true" />
+        <triggerMarker node="spawnTriggerMarker" filename="$data/shared/assets/marker/markerIconLoad.i3d" adjustToGround="true" />
+    </triggerMarkers>
+
+    <i3dMappings>
+        <i3dMapping id="DessertFactory" node="0>" />
+        <!-- <i3dMapping id="interiorSelfIllum" node="0>0|0|0|1" />
+        <i3dMapping id="interiorSelfIllumLOD" node="0>0|1|0|1" />
+        <i3dMapping id="realLightsLow" node="0>0|1|0|1" />
+        <i3dMapping id="realLightsHigh" node="0>0|1|0|1" />
+        <i3dMapping id="linkedLight3" node="0>1|4|0|0" />
+        <i3dMapping id="linkedLight4" node="0>1|4|0|1" /> -->
+        <i3dMapping id="testArea1Start" node="0>10|0" />
+        <i3dMapping id="testArea1End" node="0>10|0|0" />
+        <i3dMapping id="clearArea1Start" node="0>2|0" />
+        <i3dMapping id="clearArea1Width" node="0>2|0|0" />
+        <i3dMapping id="clearArea1Height" node="0>2|0|1" />
+        <i3dMapping id="levelArea1Start" node="0>3|0" />
+        <i3dMapping id="levelArea1Width" node="0>3|0|0" />
+        <i3dMapping id="levelArea1Height" node="0>3|0|1" />
+        <i3dMapping id="indoorArea1Start" node="0>4|0" />
+        <i3dMapping id="indoorArea1Width" node="0>4|0|0" />
+        <i3dMapping id="indoorArea1Height" node="0>4|0|1" />
+        <i3dMapping id="tipOcclusionUpdateArea1Start" node="0>1|0" />
+        <i3dMapping id="tipOcclusionUpdateArea1End" node="0>1|0|0" />
+        <i3dMapping id="infoTrigger" node="0>5" />
+        <i3dMapping id="warningStripes_palletUnloadArea" node="0>6|0" />
+        <i3dMapping id="warningStripes_palletSpawnArea" node="0>6|1" />
+        <i3dMapping id="playerTrigger" node="0>7|0" />
+        <i3dMapping id="playerTriggerMarker" node="0>7|1" />
+        <i3dMapping id="sellingStation" node="0>8" />
+        <i3dMapping id="palletTrigger" node="0>8|0" />
+        <i3dMapping id="unloadTrigger" node="0>8|1" />
+        <i3dMapping id="unloadTriggerMarker" node="0>8|2" />
+        <i3dMapping id="unloadTriggerAINode" node="0>8|3" />
+        <i3dMapping id="palletSpawner" node="0>9" />
+        <i3dMapping id="palletSpawnerArea4Start" node="0>9|0" />
+        <i3dMapping id="palletSpawnerArea5End" node="0>9|0|0" />
+        <i3dMapping id="palletSpawnerArea3Start" node="0>9|1" />
+        <i3dMapping id="palletSpawnerArea3End" node="0>9|1|0" />
+        <!-- <i3dMapping id="palletSpawnerArea2Start" node="0>9|0" />
+        <i3dMapping id="palletSpawnerArea2End" node="0>9|0|0" />
+        <i3dMapping id="palletSpawnerArea1Start" node="0>9|1" />
+        <i3dMapping id="palletSpawnerArea1End" node="0>9|1|0" /> -->
+        <i3dMapping id="spawnTriggerMarker" node="0>9|2" />
+        <i3dMapping id="smokeBigTower01" node="0>13|0" />
+        <i3dMapping id="smokeSmall01" node="0>13|1" />
+        <i3dMapping id="smokeSmall02" node="0>13|2" />
+        <i3dMapping id="smokeSmall03" node="0>13|3" />
+
+        <!-- <i3dMapping id="aiLoadingNode" node="0>13|2|0|0|3" /> -->
+    </i3dMappings>
+</placeable>

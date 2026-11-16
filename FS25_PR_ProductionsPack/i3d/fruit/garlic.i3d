@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="garlic.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="6" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage01_alpha.png"/>
+    <File fileId="1" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage01_diffuse.png"/>
+    <File fileId="3" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage01_fmask.png"/>
+    <File fileId="2" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage01_normal.png"/>
+    <File fileId="10" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage02_alpha.png"/>
+    <File fileId="7" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage02_diffuse.png"/>
+    <File fileId="9" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage02_fmask.png"/>
+    <File fileId="8" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage02_normal.png"/>
+    <File fileId="14" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage03_alpha.png"/>
+    <File fileId="11" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage03_diffuse.png"/>
+    <File fileId="13" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage03_fmask.png"/>
+    <File fileId="12" filename="$data/placeables/brandless/greenhouses/vegetables/garlic/garlicStage03_normal.png"/>
+    <File fileId="4" filename="$data/shaders/fruitGrowthFoliageShader.xml"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="garlicStage01_mat" materialId="5" customShaderId="4">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <Custommap name="alphaMap" fileId="6"/>
+      <CustomParameter name="windScale" value="0"/>
+      <CustomParameter name="snowScale" value="0"/>
+    </Material>
+    <Material name="garlicStage02_mat" materialId="6" customShaderId="4">
+      <Texture fileId="7"/>
+      <Normalmap fileId="8"/>
+      <Glossmap fileId="9"/>
+      <Custommap name="alphaMap" fileId="10"/>
+      <CustomParameter name="windScale" value="0"/>
+      <CustomParameter name="snowScale" value="0"/>
+    </Material>
+    <Material name="garlicStage03_mat" materialId="7" customShaderId="4">
+      <Texture fileId="11"/>
+      <Normalmap fileId="12"/>
+      <Glossmap fileId="13"/>
+      <Custommap name="alphaMap" fileId="14"/>
+      <CustomParameter name="windScale" value="0"/>
+      <CustomParameter name="snowScale" value="0"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="garlic.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="garlic" nodeId="22">
+      <TransformGroup name="greenSmall" translation="-0.321145 0 -0.867" nodeId="23">
+        <Shape name="greenSmall01" translation="0.005413 -0.019628 0.273964" shapeId="1" clipDistance="100" nodeId="24" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall02" translation="0.010499 -0.029059 0.050055" shapeId="2" clipDistance="100" nodeId="25" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall03" translation="0 -0.023367 -0.232971" shapeId="3" clipDistance="100" nodeId="26" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall05" translation="0.242815 -0.027266 0.282817" shapeId="4" clipDistance="100" nodeId="27" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall07" translation="0.262447 -0.019628 0.018593" shapeId="5" clipDistance="100" nodeId="28" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall08" translation="0.242815 -0.027266 -0.226184" shapeId="6" clipDistance="100" nodeId="29" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall01" translation="0.618011 -0.019628 1.96389" shapeId="1" clipDistance="100" nodeId="30" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall02" translation="0.623097 -0.029059 1.73998" shapeId="2" clipDistance="100" nodeId="31" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall03" translation="0.612598 -0.023367 1.45695" shapeId="3" clipDistance="100" nodeId="32" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall04" translation="0.381333 -0.019628 1.96389" shapeId="7" clipDistance="100" nodeId="33" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall06" translation="0.388062 -0.020227 1.70852" shapeId="8" clipDistance="100" nodeId="34" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall09" translation="0.386167 -0.019628 1.47113" shapeId="9" clipDistance="100" nodeId="35" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall01" translation="0.618011 -0.019628 1.18333" shapeId="1" clipDistance="100" nodeId="36" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall02" translation="0.623097 -0.029059 0.959424" shapeId="2" clipDistance="100" nodeId="37" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall03" translation="0.612598 -0.023367 0.676398" shapeId="3" clipDistance="100" nodeId="38" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall04" translation="0.381333 -0.019628 1.18333" shapeId="7" clipDistance="100" nodeId="39" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall06" translation="0.388062 -0.020227 0.927962" shapeId="8" clipDistance="100" nodeId="40" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall09" translation="0.386167 -0.019628 0.690578" shapeId="9" clipDistance="100" nodeId="41" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall01" translation="0.618011 -0.019628 0.378976" shapeId="1" clipDistance="100" nodeId="42" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall02" translation="0.623097 -0.029059 0.155067" shapeId="2" clipDistance="100" nodeId="43" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall03" translation="0.612598 -0.023367 -0.127959" shapeId="3" clipDistance="100" nodeId="44" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall04" translation="0.381333 -0.019628 0.378976" shapeId="7" clipDistance="100" nodeId="45" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall06" translation="0.388062 -0.020227 0.123605" shapeId="8" clipDistance="100" nodeId="46" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall09" translation="0.386167 -0.019628 -0.113779" shapeId="9" clipDistance="100" nodeId="47" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall01" translation="0.005413 -0.019628 1.85887" shapeId="1" clipDistance="100" nodeId="48" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall02" translation="0.010499 -0.029059 1.63497" shapeId="2" clipDistance="100" nodeId="49" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall03" translation="0 -0.023367 1.35194" shapeId="3" clipDistance="100" nodeId="50" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall05" translation="0.242815 -0.027266 1.86773" shapeId="4" clipDistance="100" nodeId="51" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall07" translation="0.262447 -0.019628 1.6035" shapeId="5" clipDistance="100" nodeId="52" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall08" translation="0.242815 -0.027266 1.35873" shapeId="6" clipDistance="100" nodeId="53" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall01" translation="0.005413 -0.019628 1.07832" shapeId="1" clipDistance="100" nodeId="54" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall02" translation="0.010499 -0.029059 0.854412" shapeId="2" clipDistance="100" nodeId="55" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall03" translation="0 -0.023367 0.571386" shapeId="3" clipDistance="100" nodeId="56" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall05" translation="0.242815 -0.027266 1.08717" shapeId="4" clipDistance="100" nodeId="57" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall07" translation="0.262447 -0.019628 0.82295" shapeId="5" clipDistance="100" nodeId="58" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="greenSmall08" translation="0.242815 -0.027266 0.578173" shapeId="6" clipDistance="100" nodeId="59" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+      </TransformGroup>
+      <TransformGroup name="greenBig" translation="-0.321145 0 -0.867317" nodeId="60">
+        <Shape name="greenBig01" translation="-0.009493 0 -0.245369" rotation="0 -28.5622 0" shapeId="10" clipDistance="100" nodeId="61" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig02" translation="0.010499 0 0.042277" rotation="0 -23.8159 0" shapeId="11" clipDistance="100" nodeId="62" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig03" translation="-0.009493 0 0.278237" rotation="0 60 0" shapeId="10" clipDistance="100" nodeId="63" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig07" translation="0.249917 0 -0.235716" rotation="0 -14.6553 0" shapeId="11" clipDistance="100" nodeId="64" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig08" translation="0.246933 0 0.006654" rotation="0 -192.945 0" shapeId="10" clipDistance="100" nodeId="65" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig09" translation="0.249917 0 0.272488" rotation="0 62.3595 0" shapeId="11" clipDistance="100" nodeId="66" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig01" translation="0.603105 0 1.44455" rotation="0 -28.5622 0" shapeId="10" clipDistance="100" nodeId="67" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig02" translation="0.623097 0 1.7322" rotation="0 -23.8159 0" shapeId="11" clipDistance="100" nodeId="68" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig03" translation="0.603105 0 1.96816" rotation="0 60 0" shapeId="10" clipDistance="100" nodeId="69" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig04" translation="0.382804 0 1.95857" rotation="180 5.00896e-06 -180" shapeId="11" clipDistance="100" nodeId="70" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig05" translation="0.388085 0 1.71068" rotation="0 -45 0" shapeId="10" clipDistance="100" nodeId="71" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig06" translation="0.391802 0 1.46252" rotation="180 -53.4441 180" shapeId="10" clipDistance="100" nodeId="72" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig01" translation="0.603105 0 0.664" rotation="0 -28.5622 0" shapeId="10" clipDistance="100" nodeId="73" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig02" translation="0.623097 0 0.951646" rotation="0 -23.8159 0" shapeId="11" clipDistance="100" nodeId="74" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig03" translation="0.603105 0 1.18761" rotation="0 60 0" shapeId="10" clipDistance="100" nodeId="75" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig04" translation="0.382804 0 1.17802" rotation="180 5.00896e-06 -180" shapeId="11" clipDistance="100" nodeId="76" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig05" translation="0.388085 0 0.930126" rotation="0 -45 0" shapeId="10" clipDistance="100" nodeId="77" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig06" translation="0.391802 0 0.681963" rotation="180 -53.4441 180" shapeId="10" clipDistance="100" nodeId="78" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig01" translation="0.603105 0 -0.140357" rotation="0 -28.5622 0" shapeId="10" clipDistance="100" nodeId="79" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig02" translation="0.623097 0 0.147289" rotation="0 -23.8159 0" shapeId="11" clipDistance="100" nodeId="80" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig03" translation="0.603105 0 0.383249" rotation="0 60 0" shapeId="10" clipDistance="100" nodeId="81" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig04" translation="0.382804 0 0.373663" rotation="180 5.00896e-06 -180" shapeId="11" clipDistance="100" nodeId="82" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig05" translation="0.388085 0 0.125769" rotation="0 -45 0" shapeId="10" clipDistance="100" nodeId="83" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig06" translation="0.391802 0 -0.122394" rotation="180 -53.4441 180" shapeId="10" clipDistance="100" nodeId="84" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig01" translation="-0.00949299 0 1.33954" rotation="0 -28.5622 0" shapeId="10" clipDistance="100" nodeId="85" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig02" translation="0.010499 0 1.62719" rotation="0 -23.8159 0" shapeId="11" clipDistance="100" nodeId="86" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig03" translation="-0.00949299 0 1.86315" rotation="0 60 0" shapeId="10" clipDistance="100" nodeId="87" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig07" translation="0.249917 0 1.34919" rotation="0 -14.6553 0" shapeId="11" clipDistance="100" nodeId="88" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig08" translation="0.246933 0 1.59156" rotation="180 12.9453 -180" shapeId="10" clipDistance="100" nodeId="89" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig09" translation="0.249917 0 1.8574" rotation="0 62.3595 0" shapeId="11" clipDistance="100" nodeId="90" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig01" translation="-0.00949299 0 0.558988" rotation="0 -28.5622 0" shapeId="10" clipDistance="100" nodeId="91" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig02" translation="0.010499 0 0.846634" rotation="0 -23.8159 0" shapeId="11" clipDistance="100" nodeId="92" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig03" translation="-0.00949299 0 1.08259" rotation="0 60 0" shapeId="10" clipDistance="100" nodeId="93" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig07" translation="0.249917 0 0.568641" rotation="0 -14.6553 0" shapeId="11" clipDistance="100" nodeId="94" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig08" translation="0.246933 0 0.811011" rotation="180 12.9453 -180" shapeId="10" clipDistance="100" nodeId="95" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="greenBig09" translation="0.249917 0 1.07684" rotation="0 62.3595 0" shapeId="11" clipDistance="100" nodeId="96" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+      </TransformGroup>
+      <TransformGroup name="dead" translation="-0.321145 0 -0.867317" nodeId="97">
+        <Shape name="dead01" translation="0.194229 -0.031094 0.008597" rotation="0 -72.4619 0" shapeId="12" clipDistance="100" nodeId="98" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead02" translation="0.010499 0.006493 -0.033646" rotation="0 10.1168 0" shapeId="13" clipDistance="100" nodeId="99" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead04" translation="0.194229 -0.031094 -0.188248" rotation="0 -30.0148 0" shapeId="12" clipDistance="100" nodeId="100" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead05" translation="0.054619 0.006493 -0.205913" rotation="0 -90 0" shapeId="13" clipDistance="100" nodeId="101" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead06" translation="-0.063322 -0.031094 0.313055" rotation="0 -29.0995 0" shapeId="12" clipDistance="100" nodeId="102" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead07" translation="0.173025 0.006493 0.235557" rotation="0 76.3894 0" shapeId="13" clipDistance="100" nodeId="103" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead02" translation="0.623097 0.006493 1.65628" rotation="0 10.1168 0" shapeId="13" clipDistance="100" nodeId="104" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead03" translation="0.451377 0 1.47188" rotation="0 -60 0" shapeId="13" clipDistance="100" nodeId="105" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead05" translation="0.667217 0.006493 1.48401" rotation="0 -90 0" shapeId="13" clipDistance="100" nodeId="106" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead06" translation="0.549276 -0.031094 2.00298" rotation="0 -29.0995 0" shapeId="12" clipDistance="100" nodeId="107" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead08" translation="0.407607 0.006493 1.89293" rotation="0 2.48186 0" shapeId="13" clipDistance="100" nodeId="108" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead09" translation="0.464637 -0.031094 1.69163" rotation="180 30 -180" shapeId="12" clipDistance="100" nodeId="109" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead02" translation="0.623097 0.006493 0.875723" rotation="0 10.1168 0" shapeId="13" clipDistance="100" nodeId="110" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead03" translation="0.451377 0 0.691322" rotation="0 -60 0" shapeId="13" clipDistance="100" nodeId="111" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead05" translation="0.667217 0.006493 0.703456" rotation="0 -90 0" shapeId="13" clipDistance="100" nodeId="112" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead06" translation="0.549276 -0.031094 1.22242" rotation="0 -29.0995 0" shapeId="12" clipDistance="100" nodeId="113" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead08" translation="0.407607 0.006493 1.11238" rotation="0 2.48186 0" shapeId="13" clipDistance="100" nodeId="114" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead09" translation="0.464637 -0.031094 0.911074" rotation="180 30 -180" shapeId="12" clipDistance="100" nodeId="115" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead02" translation="0.623097 0.006493 0.0713658" rotation="0 10.1168 0" shapeId="13" clipDistance="100" nodeId="116" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead03" translation="0.451377 0 -0.113035" rotation="0 -60 0" shapeId="13" clipDistance="100" nodeId="117" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead05" translation="0.667217 0.006493 -0.100901" rotation="0 -90 0" shapeId="13" clipDistance="100" nodeId="118" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead06" translation="0.549276 -0.031094 0.418067" rotation="0 -29.0995 0" shapeId="12" clipDistance="100" nodeId="119" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead08" translation="0.407607 0.006493 0.308023" rotation="0 2.48186 0" shapeId="13" clipDistance="100" nodeId="120" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead09" translation="0.464637 -0.031094 0.106717" rotation="180 30 -180" shapeId="12" clipDistance="100" nodeId="121" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead01" translation="0.194229 -0.031094 1.59351" rotation="0 -72.4619 0" shapeId="12" clipDistance="100" nodeId="122" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead02" translation="0.010499 0.006493 1.55126" rotation="0 10.1168 0" shapeId="13" clipDistance="100" nodeId="123" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead04" translation="0.194229 -0.031094 1.39666" rotation="0 -30.0148 0" shapeId="12" clipDistance="100" nodeId="124" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead05" translation="0.054619 0.006493 1.379" rotation="0 -90 0" shapeId="13" clipDistance="100" nodeId="125" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead06" translation="-0.063322 -0.031094 1.89797" rotation="0 -29.0995 0" shapeId="12" clipDistance="100" nodeId="126" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead07" translation="0.173025 0.006493 1.82047" rotation="0 76.3894 0" shapeId="13" clipDistance="100" nodeId="127" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead01" translation="0.194229 -0.031094 0.812954" rotation="0 -72.4619 0" shapeId="12" clipDistance="100" nodeId="128" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead02" translation="0.010499 0.006493 0.770711" rotation="0 10.1168 0" shapeId="13" clipDistance="100" nodeId="129" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead04" translation="0.194229 -0.031094 0.616109" rotation="0 -30.0148 0" shapeId="12" clipDistance="100" nodeId="130" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead05" translation="0.054619 0.006493 0.598444" rotation="0 -90 0" shapeId="13" clipDistance="100" nodeId="131" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead06" translation="-0.063322 -0.031094 1.11741" rotation="0 -29.0995 0" shapeId="12" clipDistance="100" nodeId="132" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="dead07" translation="0.173025 0.006493 1.03991" rotation="0 76.3894 0" shapeId="13" clipDistance="100" nodeId="133" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="sellingStation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_storeItem_grainDryerSellpoint</name>
+        <functions>
+            <function>$l10n_function_grainDryerSellpoint</function>
+        </functions>
+        <image>store/store_grainDryerSellpoint.dds</image>
+        <price>50</price>
+        <dailyUpkeep>10</dailyUpkeep>
+        <canBeSold>true</canBeSold>
+        <showInStore>true</showInStore>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>PRI</brand>
+        <species>placeable</species>
+        <category>sellingPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Production</tab>
+        </brush>
+        <vertexBufferMemoryUsage>5888</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>1536</indexBufferMemoryUsage>
+        <textureMemoryUsage>131072</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+    <base>
+        <filename>i3d/grainDryerSellpoint.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+        <boughtWithFarmland>true</boughtWithFarmland>
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testAreaStart" endNode="testAreaEnd" />
+        </testAreas>
+
+        <sounds>
+            <place template="largeImp" />
+        </sounds>
+    </placement>
+
+    <clearAreas>
+            <clearArea startNode="clearAreaStart" widthNode="clearAreaWidth" heightNode="clearAreaHeight"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="5" maxSlope="75" maxEdgeAngle="30">
+        <levelAreas>
+            <levelArea startNode="levelAreaStart" widthNode="levelAreaWidth" heightNode="levelAreaHeight" groundType="concrete"/>
+        </levelAreas>
+    </leveling>
+
+    <indoorAreas></indoorAreas>
+
+    <ai>
+        <updateAreas></updateAreas>
+        <splines>
+            <spline node="aiSpline" />
+
+        </splines>
+    </ai>
+    <hotspots>
+        <hotspot type="UNLOADING" linkNode="hotspotNode" teleportNode="teleportNode" />
+    </hotspots>
+
+    <sellingStation node="sellingStationBales" supportsExtension="false" litersForFullPriceDrop="100000" fullPriceRecoverHours="24">
+        <unloadTrigger exactFillRootNode="unloadTrigger" aiNode="aiNode" fillTypes="WHEAT_DRY BARLEY_DRY OAT_DRY CORN_DRY METHANE RICELONGGRAIN_DRY RICE_DRY SORGHUM_DRY" >
+            <baleTrigger triggerNode="baleTrigger" deleteLitersPerSecond="10000"/>
+        </unloadTrigger>
+        <fillType name="WHEAT_DRY"          priceScale="1.1" supportsGreatDemand="true" disablePriceDrop="false" />
+        <fillType name="BARLEY_DRY"         priceScale="1.1" supportsGreatDemand="true" disablePriceDrop="false" />
+        <fillType name="OAT_DRY"            priceScale="1.1" supportsGreatDemand="true" disablePriceDrop="false" />
+        <fillType name="CORN_DRY"           priceScale="1.1" supportsGreatDemand="true" disablePriceDrop="false" />
+
+        <fillType name="RICELONGGRAIN_DRY"  priceScale="1.1" supportsGreatDemand="true" disablePriceDrop="false" />
+        <fillType name="RICE_DRY"           priceScale="1.1" supportsGreatDemand="true" disablePriceDrop="false" />
+        <fillType name="SORGHUM_DRY"        priceScale="1.1" supportsGreatDemand="true" disablePriceDrop="false" />
+
+        <fillType name="METHANE"            priceScale="1.1" supportsGreatDemand="true" disablePriceDrop="false" />
+    </sellingStation>
+
+    <triggerMarkers>
+        <triggerMarker node="unloadMarker" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true" />
+    </triggerMarkers>
+
+    <i3dMappings>
+        <i3dMapping id="sellingStationBales" node="0>" />
+        <i3dMapping id="tipOcclusionUpdateArea1Start" node="0>1|0" />
+        <i3dMapping id="tipOcclusionUpdateArea1End" node="0>1|0|0" />
+        <i3dMapping id="unloadTrigger" node="0>4" />
+        <i3dMapping id="baleTrigger" node="0>5" />
+        <i3dMapping id="unloadMarker" node="0>6" />
+        <i3dMapping id="hotspotNode" node="0>7" />
+        <i3dMapping id="teleportNode" node="0>8" />
+        <i3dMapping id="aiNode" node="0>9" />
+        <i3dMapping id="clearAreaStart" node="1>0" />
+        <i3dMapping id="clearAreaWidth" node="1>0|0" />
+        <i3dMapping id="clearAreaHeight" node="1>0|1" />
+        <i3dMapping id="levelAreaStart" node="2>0" />
+        <i3dMapping id="levelAreaWidth" node="2>0|0" />
+        <i3dMapping id="levelAreaHeight" node="2>0|1" />
+        <i3dMapping id="aiSpline" node="3>" />
+        <i3dMapping id="testAreaStart" node="4>0" />
+        <i3dMapping id="testAreaEnd" node="4>0|0" />
+    </i3dMappings>
+</placeable>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<vehicle type="pallet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/vehicle.xsd">
+    <annotation>Copyright (C) GIANTS Software GmbH, All Rights Reserved.</annotation>
+
+    <storeData>
+        <name>$l10n_fillType_molasses</name>
+        <functions>
+            <function>$l10n_function_molasses</function>
+        </functions>
+        <specs>
+            <capacity>1000</capacity>
+            <fillTypes>MOLASSES</fillTypes>
+            <weight ignore="true"/>
+        </specs>
+        <image>store/pallets/store_molassesPallet.png</image>
+        <price>1500</price>
+        <category>PapaReap_Pallet</category>
+        <brand>PRI</brand>
+        <showInStore>true</showInStore>
+        <canBeSold>true</canBeSold>
+        <financeCategory>OTHER</financeCategory>
+        <allowLeasing>false</allowLeasing>
+        <vertexBufferMemoryUsage>80640</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>17664</indexBufferMemoryUsage>
+        <textureMemoryUsage>2490368</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <typeDesc>$l10n_typeDesc_pallet</typeDesc>
+        <filename>i3d/pallets/molassesPallet.i3d</filename>
+        <size width="1.3" length="0.9" height="0.8" />
+        <canBeReset>false</canBeReset>
+        <components maxMass="400">
+            <component centerOfMass="0 0.1 0" solverIterationCount="10" mass="60"/>
+        </components>
+        <showInVehicleMenu>false</showInVehicleMenu>
+        <mapHotspot available="false" />
+        <input allowed="false"/>
+    </base>
+
+    <fillUnit>
+        <fillUnitConfigurations>
+            <fillUnitConfiguration>
+                <fillUnits removeVehicleIfEmpty="true">
+                    <fillUnit unitTextOverride="$l10n_unit_literShort" fillTypes="MOLASSES" startFillType="MOLASSES" capacity="1000" startFillLevel="1000" ignoreFillLimit="true"/>
+                </fillUnits>
+            </fillUnitConfiguration>
+        </fillUnitConfigurations>
+    </fillUnit>
+
+    <!-- <dischargeable requiresTipOcclusionArea="false">
+        <dischargeNode node="0>" emptySpeed="1000" fillUnitIndex="1" maxDistance="8" canStartDischargeAutomatically="true" playSound="true">
+            <trigger node="dischargeNode" />
+        </dischargeNode>
+    </dischargeable> -->
+    <!-- <dischargeable requiresTipOcclusionArea="false">
+        <dischargeNode node="dischargeNode"
+                       emptySpeed="1000"
+                       fillUnitIndex="1"
+                       unloadInfoIndex="1"
+                       maxDistance="8"
+                       canStartDischargeAutomatically="true"
+                       playSound="true">
+            <trigger node="dischargeNode" />
+        </dischargeNode>
+    </dischargeable> -->
+
+    <fillTriggerVehicle triggerNode="fillTrigger" fillUnitIndex="1" litersPerSecond="100"/>
+
+    <pallet fillUnitIndex="1" linkNode="fillablePallet_main_component1">
+        <content>
+            <!-- LEVEL 1 -->
+            <object node="jug_L1_01_a" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_01_b" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_01_c" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_02_a" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_02_b" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_02_c" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_03_a" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_03_b" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_03_c" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_04_a" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_04_b" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_04_c" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_05_a" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_05_b" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L1_05_c" tensionBeltNode="tensionBeltNode"/>
+            <object node="separator"   tensionBeltNode="tensionBeltNode"/>
+            <!-- LEVEL 2 -->
+            <object node="jug_L2_01_a" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_01_b" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_01_c" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_02_a" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_02_b" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_02_c" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_03_a" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_03_b" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_03_c" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_04_a" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_04_b" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_04_c" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_05_a" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_05_b" tensionBeltNode="tensionBeltNode"/>
+            <object node="jug_L2_05_c" tensionBeltNode="tensionBeltNode"/>
+        </content>
+
+        <sounds>
+            <unload template="palletsFillBag" pitchScale="0.9" />
+        </sounds>
+    </pallet>
+
+    <dynamicMount triggerNode="dynamicMountTrigger" />
+
+<!--    <tensionBeltObject>
+        <meshNodes>
+            <meshNode node="tensionBeltShape"/>
+        </meshNodes>
+    </tensionBeltObject> -->
+
+   <i3dMappings>
+        <i3dMapping id="fillablePallet_main_component1" node="0>" />
+        <i3dMapping id="dynamicMountTrigger" node="0>0" />
+        <i3dMapping id="tensionBeltNode" node="0>1" />
+
+        <!-- LEVEL 1 -->
+        <i3dMapping id="jug_L1_01_a" node="0>2|0|0|0" />
+        <i3dMapping id="jug_L1_01_b" node="0>2|0|0|1" />
+        <i3dMapping id="jug_L1_01_c" node="0>2|0|0|2" />
+        <i3dMapping id="jug_L1_02_a" node="0>2|0|1|0" />
+        <i3dMapping id="jug_L1_02_b" node="0>2|0|1|1" />
+        <i3dMapping id="jug_L1_02_c" node="0>2|0|1|2" />
+        <i3dMapping id="jug_L1_03_a" node="0>2|0|2|0" />
+        <i3dMapping id="jug_L1_03_b" node="0>2|0|2|1" />
+        <i3dMapping id="jug_L1_03_c" node="0>2|0|2|2" />
+        <i3dMapping id="jug_L1_04_a" node="0>2|0|3|0" />
+        <i3dMapping id="jug_L1_04_b" node="0>2|0|3|1" />
+        <i3dMapping id="jug_L1_04_c" node="0>2|0|3|2" />
+        <i3dMapping id="jug_L1_05_a" node="0>2|0|4|0" />
+        <i3dMapping id="jug_L1_05_b" node="0>2|0|4|1" />
+        <i3dMapping id="jug_L1_05_c" node="0>2|0|4|2" />
+        <i3dMapping id="separator"   node="0>2|0|5" />
+        <!-- LEVEL 2 -->
+        <i3dMapping id="jug_L2_01_a" node="0>2|1|0|0" />
+        <i3dMapping id="jug_L2_01_b" node="0>2|1|0|1" />
+        <i3dMapping id="jug_L2_01_c" node="0>2|1|0|2" />
+        <i3dMapping id="jug_L2_02_a" node="0>2|1|1|0" />
+        <i3dMapping id="jug_L2_02_b" node="0>2|1|1|1" />
+        <i3dMapping id="jug_L2_02_c" node="0>2|1|1|2" />
+        <i3dMapping id="jug_L2_03_a" node="0>2|1|2|0" />
+        <i3dMapping id="jug_L2_03_b" node="0>2|1|2|1" />
+        <i3dMapping id="jug_L2_03_c" node="0>2|1|2|2" />
+        <i3dMapping id="jug_L2_04_a" node="0>2|1|3|0" />
+        <i3dMapping id="jug_L2_04_b" node="0>2|1|3|1" />
+        <i3dMapping id="jug_L2_04_c" node="0>2|1|3|2" />
+        <i3dMapping id="jug_L2_05_a" node="0>2|1|4|0" />
+        <i3dMapping id="jug_L2_05_b" node="0>2|1|4|1" />
+        <i3dMapping id="jug_L2_05_c" node="0>2|1|4|2" />
+
+        <i3dMapping id="dischargeTrigger" node="0>3" />
+        <i3dMapping id="fillTrigger" node="0>4" />
+        <i3dMapping id="palletCage_vis" node="0>5" />
+
+    </i3dMappings>
+</vehicle>

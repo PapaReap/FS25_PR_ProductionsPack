@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="greenhouse" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_storeItem_openAirGardenStrawberry</name>
+        <functions>
+            <function>$l10n_function_openAirGardenStrawberry</function>
+        </functions>
+        <image>store/store_openAirGarden.dds</image>
+        <price>8000</price>
+        <dailyUpkeep>10</dailyUpkeep>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>NONE</brand>
+        <species>placeable</species>
+        <category>placeableMisc</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Greenhouse</tab>
+        </brush>
+        <canBeSold>true</canBeSold>
+        <storeIconRendering>
+            <settings cameraXRot="-20" cameraYRot="30" advancedBoundingBox="true"/>
+        </storeIconRendering>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <vertexBufferMemoryUsage>302080</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>75264</indexBufferMemoryUsage>
+        <textureMemoryUsage>3997696</textureMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>i3d/placeables/openAirGarden/openAirGarden.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+        <boughtWithFarmland>true</boughtWithFarmland>
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testArea1Start" endNode="testArea1End" />
+        </testAreas>
+        <sounds>
+            <place template="medImp" />
+        </sounds>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="clearArea1Start" widthNode="clearArea1Width" heightNode="clearArea1Height"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="1" maxSlope="75" maxEdgeAngle="30">
+        <levelAreas>
+            <levelArea startNode="levelArea1Start" widthNode="levelArea1Width" heightNode="levelArea1Height" groundType="gravel"/>
+        </levelAreas>
+    </leveling>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorArea1Start" widthNode="indoorArea1Width" heightNode="indoorArea1Height"/>
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateArea1Start" endNode="tipOcclusionUpdateArea1End" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateArea1Start" endNode="tipOcclusionUpdateArea1End" />
+        </updateAreas>
+        <splines>
+            <spline node="aiLoadingSpline" />
+        </splines>
+    </ai>
+
+    <infoTrigger triggerNode="infoTrigger" />
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker" teleportNode="teleportNode" />
+    </hotspots>
+
+    <triggerMarkers>
+        <triggerMarker node="warningStripes" />
+        <triggerMarker node="markerLoading"   filename="$data/shared/assets/marker/markerIconLoad.i3d" adjustToGround="true" />
+        <triggerMarker node="playerTriggerMarker" filename="$data/shared/assets/marker/markerIconWrench.i3d" adjustToGround="true" />
+        <triggerMarker node="unloadTriggerMarker" filename="$data/shared/assets/marker/markerIconUnload.i3d"  adjustToGround="true" />
+    </triggerMarkers>
+
+    <greenhouse>
+        <plants>
+            <plant fillType="strawberry"    xmlFilename="xml/fruit/strawberry.xml" />
+        </plants>
+
+        <plantSpaces>
+            <spacesParent node="plantNodes" useRandomYRot="false" />
+        </plantSpaces>
+
+        <sounds>
+            <watering template="defaultSprayer" linkNode="0>" loops="0" />
+        </sounds>
+
+    </greenhouse>
+
+    <productionPoint>
+        <productions>
+            <production id="strawberrySF" name="%s %s %s + %s" params="$l10n_fillType_strawberry|$l10n_l10nWith|$l10n_fillType_seeds|$l10n_fillType_fertilizer" cyclesPerHour="2" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="44" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLET" amount="176" />
+                </inputs>
+                <outputs>
+                    <output fillType="STRAWBERRY" amount="176" />
+                </outputs>
+            </production>
+        </productions>
+
+        <sellingStation node="sellingStation" appearsOnStats="false" supportsExtension="true" hideFromPricesMenu="true">
+            <unloadTrigger exactFillRootNode="unloadTrigger" fillTypes="WATER SEEDS FERTILIZER MANURE" aiNode="unloadTriggerAINode" >
+                <fillTypeConversion ratio="0.2" outgoingFillType="fertilizer" incomingFillType="manure" />
+            </unloadTrigger>
+            <palletTrigger triggerNode="palletTrigger" aiNode="unloadTriggerAINode" fillTypes="EMPTYPALLET"/>
+        </sellingStation>
+
+        <palletSpawner node="palletSpawner">
+            <spawnPlaces>
+                <spawnPlace startNode="spawnPlace1Start" />
+            </spawnPlaces>
+        </palletSpawner>
+
+        <storage node="storage" isExtension="false" fillTypes="WATER SEEDS FERTILIZER" >
+            <capacity fillType="WATER"          capacity="60000" />
+            <capacity fillType="SEEDS"          capacity="20000" />
+            <capacity fillType="FERTILIZER"     capacity="20000" />
+            <capacity fillType="EMPTYPALLET"    capacity="40000" />
+
+            <capacity fillType="STRAWBERRY"     capacity="60000" />
+        </storage>
+
+        <playerTrigger node="playerTrigger" />
+    </productionPoint>
+
+    <animatedObjects>
+        <animatedObject saveId="door1" >
+            <animation duration="3">
+                <part node="door1Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door1Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+                <part node="door1LeftSpring">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door1RightSpring">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+
+                <part node="doorFenceColi1Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="doorFenceColi1Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+
+            </animation>
+            <controls triggerNode="door1Trigger" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="door1" template="glassDoorLoop"/>
+                <negEnd linkNode="door1" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+        <animatedObject saveId="door2" >
+            <animation duration="3">
+                <part node="door2Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door2Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+                <part node="door2LeftSpring">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door2RightSpring">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+                <part node="doorFenceColi2Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="doorFenceColi2Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+
+            </animation>
+            <controls triggerNode="door2Trigger" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="door2" template="glassDoorLoop"/>
+                <negEnd linkNode="door2" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+        <animatedObject saveId="door3" >
+            <animation duration="3">
+                <part node="door3Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door3Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+                <part node="door3LeftSpring">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door3RightSpring">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+                <part node="doorFenceColi3Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="doorFenceColi3Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+
+            </animation>
+            <controls triggerNode="door3Trigger" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="door3" template="glassDoorLoop" />
+                <negEnd linkNode="door3" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+        <animatedObject saveId="door4" >
+            <animation duration="3">
+                <part node="door4Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door4Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+                <part node="door4LeftSpring">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door4RightSpring">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+                <part node="doorFenceColi4Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="doorFenceColi4Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="door4Trigger" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="door4" template="glassDoorLoop" />
+                <negEnd linkNode="door4" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="GreenhouseUp" >
+            <animation duration="3">
+                <part node="leverGreenhouse">
+                    <keyFrame time="0.0" rotation="60 0 0"/>
+                    <keyFrame time="0.1" rotation="-60 0 0"/>
+                </part>
+                <part node="greenhouse">
+                    <keyFrame time="0.0" translation="0 -5 0"/>
+                    <keyFrame time="1.0" translation="0 0 0"/>
+                </part>
+                <part node="greenhouseDoors">
+                    <keyFrame time="0.0" translation="0 -5 0"/>
+                    <keyFrame time="1.0" translation="0 0 0"/>
+                </part>
+
+            </animation>
+            <controls triggerNode="greenhouseTrigger" posAction="ACTIVATE_HANDTOOL" posText="l10nGreenhouseUp" negText="l10nGreenhouseDown" />
+            <sounds>
+                <moving file="$data/sounds/tools/milkrobot/milkrobot_door_01.wav" loops="0" linkNode="leverGreenhouse" volume="0.8" radius="5" innerRadius="3" fadeOut="0.25"/>
+                <posEnd file="$data/sounds/doors/doorWoodOpen_01.wav" linkNode="leverGreenhouse" volume="0.8" radius="5" innerRadius="3" />
+                <negEnd file="$data/sounds/doors/doorWoodClose_01.wav" linkNode="leverGreenhouse" volume="0.8" radius="5" innerRadius="3" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="CollisionUp" >
+            <animation duration="3">
+                <part node="leverCollision">
+                    <keyFrame time="0.0" rotation="60 0 0"/>
+                    <keyFrame time="0.1" rotation="-60 0 0"/>
+                </part>
+                <part node="fenceColis">
+                    <keyFrame time="0.0" translation="0 -2 0"/>
+                    <keyFrame time="1.0" translation="0 0 0"/>
+                </part>
+                <part node="fenceGateColis">
+                    <keyFrame time="0.0" translation="0 -2 0"/>
+                    <keyFrame time="1.0" translation="0 0 0"/>
+                </part>
+
+            </animation>
+            <controls triggerNode="collisionTrigger" posAction="ACTIVATE_HANDTOOL" posText="l10nColiUp" negText="l10nColiDown" />
+            <sounds>
+                <moving file="$data/sounds/tools/milkrobot/milkrobot_door_01.wav" loops="0" linkNode="leverCollision" volume="0.8" radius="5" innerRadius="3" fadeOut="0.25"/>
+                <posEnd file="$data/sounds/doors/doorWoodOpen_01.wav" linkNode="leverCollision" volume="0.8" radius="5" innerRadius="3" />
+                <negEnd file="$data/sounds/doors/doorWoodClose_01.wav" linkNode="leverCollision" volume="0.8" radius="5" innerRadius="3" />
+            </sounds>
+        </animatedObject>
+
+    </animatedObjects>
+
+    <solarPanels>
+        <solarPanelsConfigurations title="$l10n_gardenConfiguration">
+            <solarPanelsConfiguration name="$l10n_FenceGardenBeds" isActive="true" >
+                <objectChange node="fences" visibilityActive="true"/>
+                <objectChange node="doorFences" visibilityActive="true"/>
+                <objectChange node="noFence" visibilityActive="false"/>
+                <objectChange node="gardenBeds" visibilityActive="true"/>
+            </solarPanelsConfiguration>
+            <solarPanelsConfiguration name="$l10n_NoFenceGardenBeds" isActive="false" price="-1000">
+                <objectChange node="fences" visibilityActive="false"/>
+                <objectChange node="doorFences" visibilityActive="false"/>
+                <objectChange node="noFence" visibilityActive="true"/>
+                <objectChange node="gardenBeds" visibilityActive="true"/>
+            </solarPanelsConfiguration>
+            <solarPanelsConfiguration name="$l10n_FenceNoGardenBeds" isActive="false" price="-1000">
+                <objectChange node="fences" visibilityActive="true"/>
+                <objectChange node="doorFences" visibilityActive="true"/>
+                <objectChange node="noFence" visibilityActive="false"/>
+                <objectChange node="gardenBeds" visibilityActive="false"/>
+            </solarPanelsConfiguration>
+            <solarPanelsConfiguration name="$l10n_NoFenceNoGardenBeds" isActive="false" price="-2000">
+                <objectChange node="fences" visibilityActive="false"/>
+                <objectChange node="doorFences" visibilityActive="false"/>
+                <objectChange node="noFence" visibilityActive="true"/>
+                <objectChange node="gardenBeds" visibilityActive="false"/>
+            </solarPanelsConfiguration>
+        </solarPanelsConfigurations>
+    </solarPanels>
+
+    <i3dMappings>
+        <i3dMapping id="plantNodes"          node="0>0|1" />
+        <i3dMapping id="sellingStation"      node="0>0|3" />
+        <i3dMapping id="unloadTrigger"       node="0>0|3|0" />
+        <i3dMapping id="unloadTriggerMarker" node="0>0|3|1" />
+        <i3dMapping id="unloadTriggerAINode" node="0>0|3|2" />
+        <i3dMapping id="palletTrigger"       node="0>0|3|3" />
+
+        <i3dMapping id="storage" node="0>0|4" />
+        <i3dMapping id="playerTrigger" node="0>0|5" />
+        <i3dMapping id="playerTriggerMarker" node="0>0|6" />
+        <i3dMapping id="palletSpawner" node="0>0|7" />
+        <i3dMapping id="spawnPlace1Start" node="0>0|7|0" />
+        <i3dMapping id="spawnPlace1End" node="0>0|7|0|0" />
+
+        <i3dMapping id="door1" node="0>11|0" />
+        <i3dMapping id="door2" node="0>11|1" />
+        <i3dMapping id="door3" node="0>11|2" />
+        <i3dMapping id="door4" node="0>11|3" />
+
+        <i3dMapping id="door1Trigger" node="0>11|0|0" />
+        <i3dMapping id="door2Trigger" node="0>11|1|0" />
+        <i3dMapping id="door3Trigger" node="0>11|2|0" />
+        <i3dMapping id="door4Trigger" node="0>11|3|0" />
+
+        <i3dMapping id="fences" node="0>12|0" />
+        <i3dMapping id="noFence" node="0>12|1" />
+        <i3dMapping id="doorFences" node="0>12|2" />
+        <i3dMapping id="gardenBeds" node="0>12|3" />
+
+        <i3dMapping id="door1LeftSpring" node="0>12|2|0|0" />
+        <i3dMapping id="door1RightSpring" node="0>12|2|0|1" />
+        <i3dMapping id="door2LeftSpring" node="0>12|2|1|0" />
+        <i3dMapping id="door2RightSpring" node="0>12|2|1|1" />
+        <i3dMapping id="door3LeftSpring" node="0>12|2|2|0" />
+        <i3dMapping id="door3RightSpring" node="0>12|2|2|1" />
+        <i3dMapping id="door4LeftSpring" node="0>12|2|3|0" />
+        <i3dMapping id="door4RightSpring" node="0>12|2|3|1" />
+
+
+        <i3dMapping id="door1Left" node="0>13|1|0|0" />
+        <i3dMapping id="door1Right" node="0>13|1|0|1" />
+        <i3dMapping id="door2Left" node="0>13|1|1|0" />
+        <i3dMapping id="door2Right" node="0>13|1|1|1" />
+        <i3dMapping id="door3Left" node="0>13|1|2|0" />
+        <i3dMapping id="door3Right" node="0>13|1|2|1" />
+        <i3dMapping id="door4Left" node="0>13|1|3|0" />
+        <i3dMapping id="door4Right" node="0>13|1|3|1" />
+
+        <i3dMapping id="doorFenceColi1Left" node="0>13|4|0" />
+        <i3dMapping id="doorFenceColi1Right" node="0>13|4|1" />
+        <i3dMapping id="doorFenceColi2Left" node="0>13|4|2" />
+        <i3dMapping id="doorFenceColi2Right" node="0>13|4|3" />
+        <i3dMapping id="doorFenceColi3Left" node="0>13|4|4" />
+        <i3dMapping id="doorFenceColi3Right" node="0>13|4|5" />
+        <i3dMapping id="doorFenceColi4Left" node="0>13|4|6" />
+        <i3dMapping id="doorFenceColi4Right" node="0>13|4|7" />
+
+        <i3dMapping id="clearArea1Start" node="0>2|0" />
+        <i3dMapping id="clearArea1Width" node="0>2|0|0" />
+        <i3dMapping id="clearArea1Height" node="0>2|0|1" />
+        <i3dMapping id="levelArea1Start" node="0>3|0" />
+        <i3dMapping id="levelArea1Width" node="0>3|0|0" />
+        <i3dMapping id="levelArea1Height" node="0>3|0|1" />
+        <i3dMapping id="indoorArea1Start" node="0>4|0" />
+        <i3dMapping id="indoorArea1Width" node="0>4|0|0" />
+        <i3dMapping id="indoorArea1Height" node="0>4|0|1" />
+        <i3dMapping id="testArea1Start" node="0>5|0" />
+        <i3dMapping id="testArea1End" node="0>5|0|0" />
+        <i3dMapping id="tipOcclusionUpdateArea1Start" node="0>6|0" />
+        <i3dMapping id="tipOcclusionUpdateArea1End" node="0>6|0|0" />
+        <i3dMapping id="infoTrigger" node="0>7" />
+        <i3dMapping id="warningStripes" node="0>8" />
+        <i3dMapping id="teleportNode" node="0>1" />
+
+        <i3dMapping id="loadingTrigger" node="0>0|8|0|0" />
+        <i3dMapping id="markerLoading" node="0>0|8|0|0|0" />
+        <i3dMapping id="aiNodeLoading" node="0>0|8|0|0|1" />
+        <i3dMapping id="aiLoadingSpline" node="0>0|8|1" />
+
+        <i3dMapping id="leverGreenhouse" node="0>13|0|1|0" />
+        <i3dMapping id="greenhouseDoors" node="0>13|1" />
+        <i3dMapping id="greenhouse" node="0>13|2" />
+        <i3dMapping id="greenhouseTrigger" node="0>13|0|0" />
+
+        <i3dMapping id="leverCollision" node="0>13|0|3|0" />
+        <i3dMapping id="fenceGateColis" node="0>13|4" />
+        <i3dMapping id="fenceColis" node="0>13|3" />
+        <i3dMapping id="collisionTrigger" node="0>13|0|2" />
+
+
+    </i3dMappings>
+</placeable>

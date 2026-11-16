@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="productionPoint" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_storeItem_bakeryEnhanced</name>
+        <functions>
+            <function>$l10n_function_bakeryEnhanced</function>
+        </functions>
+        <image>store/store_bakeryEnhanced.dds</image>
+        <price>55000</price>
+        <dailyUpkeep>10</dailyUpkeep>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>PRI</brand>
+        <species>PLACEABLE</species>
+        <category>productionPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Production</tab>
+        </brush>
+        <canBeSold>true</canBeSold>
+        <showInStore>true</showInStore>
+        <vertexBufferMemoryUsage>1698560</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>451328</indexBufferMemoryUsage>
+        <textureMemoryUsage>35127296</textureMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>i3d/bakeryEnhanced.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testAreaStart01" endNode="testAreaEnd01" />
+        </testAreas>
+        <sounds>
+            <place template="medImp" pitchScale="1.6"/>
+        </sounds>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="clearAreaStart01" widthNode="clearAreaWidth01" heightNode="clearAreaHeight01"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="1" maxSlope="75" maxEdgeAngle="30">
+        <levelAreas>
+            <levelArea startNode="levelAreaStart01" widthNode="levelAreaWidth01" heightNode="levelAreaHeight01"/>
+        </levelAreas>
+
+        <paintAreas>
+            <paintArea startNode="paintAreaStart01" widthNode="paintAreaWidth01" heightNode="paintAreaHeight01" groundType="asphalt"/>
+        </paintAreas>
+    </leveling>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01"/>
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+        </updateAreas>
+    </ai>
+
+    <dynamicallyLoadedParts>
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d" node="1" linkNode="smoke01" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5" position="0 -0.3 0"/>
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d" node="1" linkNode="smoke02" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5" position="0 -0.3 0"/>
+    </dynamicallyLoadedParts>
+
+    <infoTrigger triggerNode="infoTrigger" />
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker" teleportNode="playerTriggerMarker" />
+    </hotspots>
+
+    <triggerMarkers>
+        <triggerMarker node="warningStripes01"/>
+        <triggerMarker node="warningStripes02"/>
+        <triggerMarker node="playerTriggerMarker" filename="$data/shared/assets/marker/markerIconWrench.i3d" adjustToGround="true"/>
+        <triggerMarker node="unloadTriggerMarker" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true"/>
+    </triggerMarkers>
+    <!-- TODO:
+    HONEY OAT RAISINS CEREAL
+    CORN BREAD
+    -->
+    <productionPoint>
+        <productions sharedThroughputCapacity="false">
+
+            <production id="bread" name="$l10n_fillType_breadGrainRiceFlour" cyclesPerHour="50" costsPerActiveHour="1">
+            <!-- <production id="bread" name="%s (%s)" params="$l10n_fillType_bread|$l10n_fillType_flour" cyclesPerHour="50" costsPerActiveHour="1"> -->
+                <inputs>
+                    <input fillType="FLOUR" amount="25" />
+                    <input fillType="BUTTER" amount="180" />
+                    <input fillType="EGG" amount="60" />
+                    <input fillType="YEAST" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="20" />
+                </inputs>
+                <outputs>
+                    <output fillType="BREAD" amount="20" /> <!-- 24,000 per day -->
+                </outputs>
+            </production>
+
+            <production id="cake" name="$l10n_fillType_cakeGrainRiceFlour" cyclesPerHour="15" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR"        amount="10" />
+                    <input fillType="SUGAR"        amount="10" />
+                    <input fillType="MILK_BOTTLED" amount="10" />
+                    <input fillType="EGG"          amount="10" />
+                    <input fillType="BUTTER"       amount="10" />
+                    <input fillType="STRAWBERRY"   amount="10" />
+                    <input fillType="EMPTYPALLET" amount="45" />
+                </inputs>
+                <outputs>
+                    <output fillType="CAKE" amount="45" /> <!-- 16,200 per day -->
+                </outputs>
+            </production>
+
+            <production id="cereal_raisins" name="%s (%s)" params="$l10n_fillType_cereal|$l10n_fillType_raisins" cyclesPerHour="15" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="HONEY"   amount="10" />
+                    <input fillType="RAISINS" amount="10" />
+                    <input fillType="OAT_DRY"     amount="40" />
+                    <input fillType="CORN_DRY"   amount="40" />
+                    <input fillType="EMPTYPALLET" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="CEREAL" amount="50" /> <!-- MAKE NEW TYPE --> <!-- 18,000 per day -->
+                </outputs>
+            </production>
+
+            <production id="cereal_chocolate" name="%s (%s)" params="$l10n_fillType_cereal|$l10n_fillType_chocolate" cyclesPerHour="15" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="HONEY"     amount="10" />
+                    <input fillType="CHOCOLATE" amount="10" />
+                    <input fillType="OAT_DRY"       amount="40" />
+                    <input fillType="CORN_DRY"     amount="40" />
+                    <input fillType="EMPTYPALLET" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="CEREAL" amount="50" /> <!-- MAKE NEW TYPE --> <!-- 18,000 per day -->
+                </outputs>
+            </production>
+
+            <production id="cereal_rice" name="%s (%s)" params="$l10n_fillType_cereal|$l10n_fillType_rice_dry" cyclesPerHour="25" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="HONEY"    amount="15" />
+                    <input fillType="RICE_DRY" amount="40" />
+                    <input fillType="EMPTYPALLET" amount="35" />
+                </inputs>
+                <outputs>
+                    <output fillType="CEREAL" amount="35" /> <!-- MAKE NEW TYPE --> <!-- 21,000 per day -->
+                </outputs>
+            </production>
+
+            <production id="breadWholeWheat" name="$l10n_fillType_wholeWheatBread" cyclesPerHour="50" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="WHOLEWHEATFLOUR" amount="25" />
+                    <input fillType="BUTTER"        amount="200" />
+                    <input fillType="EGG"           amount="90" />
+                    <input fillType="WHEAT_DRY" amount="5" />
+                    <input fillType="YEAST" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="20" />
+                </inputs>
+                <outputs>
+                    <output fillType="WHOLEWHEATBREAD" amount="20" /> <!-- 24,000 per day -->
+                </outputs>
+            </production>
+
+            <production id="breadCornTortilla" name="$l10n_fillType_cornTortilla" cyclesPerHour="50" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="CORN_FLOUR" amount="25" />
+                    <input fillType="EMPTYPALLET" amount="20" />
+                </inputs>
+                <outputs>
+                    <output fillType="CORNTORTILLA" amount="20" /> <!-- 24,000 per day -->
+                </outputs>
+            </production>
+
+            <production id="normalRiceCakes" name="$l10n_fillType_riceCakes" cyclesPerHour="30" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="RICE_DRY" amount="75" />
+                    <input fillType="EMPTYPALLET" amount="65" />
+                </inputs>
+                <outputs>
+                    <output fillType="RICECAKES" amount="65" /> <!-- 46,800 per day -->
+                </outputs>
+            </production>
+
+<!--             <production id="BREAD_HOF2" name="$l10n_fillType_bread_crates_bio" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR_HOF"     amount="240" />
+                    <input fillType="BUTTER"        amount="240" />
+                    <input fillType="EGG"           amount="120" />
+                    <input fillType="BAKERYBOXPALLET"  amount="1000" />
+                    <input fillType="SPICEBLENDSBOX"  amount="10" />
+                </inputs>
+                <outputs>
+                    <output fillType="BREAD_CRATES_HOF" amount="3000" />
+                    <output fillType="RUBBISH"          amount="100" sellDirectly="true"/>
+                </outputs>
+            </production> -->
+
+            <production id="BREAD_LOAF" name="$l10n_fillType_breadBox" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR"         amount="240" />
+                    <input fillType="BUTTER"        amount="240" />
+                    <input fillType="EGG"           amount="120" />
+                    <!-- <input fillType="BAKERYBOXPALLET"  amount="1000" /> -->
+                    <!-- <input fillType="SPICEBLENDSBOX"  amount="10" /> -->
+                    <input fillType="YEAST" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="3000" />
+                </inputs>
+                <outputs>
+                    <output fillType="BREADBOX" amount="3000" /> <!-- 9,360 per day -->
+                    <!-- <output fillType="RUBBISH"          amount="100" sellDirectly="true"/> -->
+                </outputs>
+            </production>
+
+            <production id="BAGUETTE_LOAF" name="$l10n_fillType_baguetteBox" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR"         amount="300" />
+                    <input fillType="BUTTER"        amount="150" />
+                    <input fillType="EGG"           amount="20" />
+                    <!-- <input fillType="BAKERYBOXPALLET"  amount="1000" /> -->
+                    <!-- <input fillType="SPICEBLENDSBOX"  amount="10" /> -->
+                    <input fillType="YEAST" amount="3" />
+                    <input fillType="EMPTYPALLET" amount="3000" />
+                </inputs>
+                <outputs>
+                    <output fillType="BAGUETTEBOX"     amount="3000" /> <!-- 9,360 per day -->
+                    <!-- <output fillType="RUBBISH"      amount="100" sellDirectly="true"/> -->
+                </outputs>
+            </production>
+
+            <production id="DONUT_REG" name="$l10n_fillType_donutBox" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR"         amount="300" />
+                    <input fillType="BUTTER"        amount="150" />
+                    <input fillType="EGG"           amount="120" />
+                    <!-- <input fillType="BAKERYBOXPALLET"  amount="1000" /> -->
+                    <!-- <input fillType="SPICEBLENDSBOX"  amount="10" /> -->
+                    <input fillType="YEAST" amount="2" />
+                    <input fillType="EMPTYPALLET" amount="3000" />
+                </inputs>
+                <outputs>
+                    <output fillType="DONUTBOX"        amount="3000" /> <!-- 9,360 per day -->
+                    <!-- <output fillType="RUBBISH"   amount="100" sellDirectly="true"/> -->
+                </outputs>
+            </production>
+
+            <production id="DONUT_JELLY" name="$l10n_fillType_donutJellyBox" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR"             amount="300" />
+                    <input fillType="BUTTER"            amount="150" />
+                    <input fillType="EGG"               amount="20" />
+                    <!-- <input fillType="BAKERYBOXPALLET"      amount="1000" /> -->
+                    <input fillType="STRAWBERRY"        amount="60" />
+                    <!-- <input fillType="SPICEBLENDSBOX"      amount="10" /> -->
+                    <input fillType="YEAST" amount="2" />
+                    <input fillType="EMPTYPALLET" amount="3000" />
+                </inputs>
+                <outputs>
+                    <output fillType="DONUTJELLYBOX"         amount="3000" /> <!-- 9,360 per day -->
+                    <!-- <output fillType="RUBBISH"          amount="100" sellDirectly="true"/> -->
+                </outputs>
+            </production>
+
+<!--             <production id="BREAD_HOF7" name="$l10n_fillType_baguette" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR_HOF"         amount="300" />
+                    <input fillType="BUTTER"            amount="150" />
+                    <input fillType="EGG"               amount="20" />
+                    <input fillType="BAKERYBOXPALLET"      amount="1000" />
+                    <input fillType="SPICEBLENDSBOX"      amount="10" />
+                </inputs>
+                <outputs>
+                    <output fillType="BAGUETTE"         amount="3000" />
+                    <output fillType="RUBBISH"          amount="100" sellDirectly="true"/>
+                </outputs>
+            </production> -->
+
+<!--             <production id="BREAD_HOF8" name="$l10n_fillType_donut" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR_HOF"         amount="300" />
+                    <input fillType="BUTTER"            amount="150" />
+                    <input fillType="EGG"               amount="20" />
+                    <input fillType="BAKERYBOXPALLET"      amount="1000" />
+                    <input fillType="SPICEBLENDSBOX"      amount="10" />
+                </inputs>
+                <outputs>
+                    <output fillType="DONUT"            amount="3000" />
+                    <output fillType="RUBBISH"          amount="100" sellDirectly="true"/>
+                </outputs>
+            </production> -->
+
+<!--             <production id="BREAD_HOF9" name="$l10n_fillType_pancakes" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR_HOF"         amount="300" />
+                    <input fillType="BUTTER"            amount="150" />
+                    <input fillType="EGG"               amount="20" />
+                    <input fillType="BAKERYBOXPALLET"      amount="1000" />
+                    <input fillType="STRAWBERRY"        amount="60" />
+                    <input fillType="SPICEBLENDSBOX"      amount="10" />
+                </inputs>
+                <outputs>
+                    <output fillType="PANCAKES"         amount="3000" />
+                    <output fillType="RUBBISH"          amount="100" sellDirectly="true"/>
+                </outputs>
+            </production> -->
+
+            <!-- <production id="BREAD_HOF10" name="$l10n_fillType_croissantBox" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOURSACKS"         amount="300" />
+                    <input fillType="BUTTER"            amount="150" />
+                    <input fillType="EGG"               amount="20" />
+                    <input fillType="BAKERYBOXPALLET"      amount="1000" />
+                    <input fillType="SPICEBLENDSBOX"      amount="12" />
+                </inputs>
+                <outputs>
+                    <output fillType="CROISSANTBOX"        amount="3000" />
+                    <output fillType="RUBBISH"          amount="100" sellDirectly="true"/>
+                </outputs>
+            </production> -->
+
+<!--             <production id="BREAD_HOF11" name="$l10n_fillType_muffin" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR_HOF"         amount="300" />
+                    <input fillType="BUTTER"            amount="150" />
+                    <input fillType="EGG"               amount="20" />
+                    <input fillType="BAKERYBOXPALLET"      amount="1000" />
+                    <input fillType="SPICEBLENDSBOX"      amount="10" />
+                </inputs>
+                <outputs>
+                    <output fillType="MUFFIN"           amount="3000" />
+                    <output fillType="RUBBISH"          amount="100" sellDirectly="true"/>
+                </outputs>
+            </production> -->
+
+           <production id="CROISSANT_REG" name="$l10n_fillType_croissantBox" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR"             amount="300" />
+                    <input fillType="BUTTER"            amount="150" />
+                    <input fillType="EGG"               amount="20" />
+                    <!-- <input fillType="BAKERYBOXPALLET"      amount="1000" /> -->
+                    <!-- <input fillType="SPICEBLENDSBOX"      amount="12" /> -->
+                    <input fillType="EMPTYPALLET" amount="3000" />
+                </inputs>
+                <outputs>
+                    <output fillType="CROISSANTBOX"        amount="3000" /> <!-- 9,360 per day -->
+                    <!-- <output fillType="RUBBISH"          amount="100" sellDirectly="true"/> -->
+                </outputs>
+            </production>
+
+            <production id="MUFFIN_REG" name="$l10n_fillType_muffinBox" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR"             amount="300" />
+                    <input fillType="BUTTER"            amount="150" />
+                    <input fillType="EGG"               amount="20" />
+                    <!-- <input fillType="BAKERYBOXPALLET"      amount="1000" /> -->
+                    <!-- <input fillType="SPICEBLENDSBOX"      amount="10" /> -->
+                    <input fillType="EMPTYPALLET" amount="3000" />
+                </inputs>
+                <outputs>
+                    <output fillType="MUFFINBOX"           amount="3000" /> <!-- 9,360 per day -->
+                    <!-- <output fillType="RUBBISH"          amount="100" sellDirectly="true"/> -->
+                </outputs>
+            </production>
+
+<!--             <production id="BREAD_HOF14" name="$l10n_fillType_muffin" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="FLOUR"             amount="300" />
+                    <input fillType="MILK_BOTTLED"      amount="150" />
+                    <input fillType="EGG"               amount="20" />
+                    <input fillType="BAKERYBOXPALLET"      amount="1000" />
+                    <input fillType="SPICEBLENDSBOX"      amount="10" />
+                </inputs>
+                <outputs>
+                    <output fillType="MUFFIN"           amount="3000" />
+                    <output fillType="RUBBISH"          amount="100" sellDirectly="true"/>
+                </outputs>
+            </production> -->
+
+<!--             <production id="BREAD_HOF15" name="$l10n_fillType_muffin" cyclesPerHour="0.13" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="RICEFLOUR"         amount="300" />
+                    <input fillType="BUTTER"            amount="150" />
+                    <input fillType="EGG"               amount="20" />
+                    <input fillType="BAKERYBOXPALLET"      amount="1000" />
+                    <input fillType="SPICEBLENDSBOX"      amount="10" />
+                </inputs>
+                <outputs>
+                    <output fillType="MUFFIN"           amount="3000" />
+                    <output fillType="RUBBISH"          amount="100" sellDirectly="true"/>
+                </outputs>
+            </production> -->
+
+            <production id="SPAGHETTIPASTA" name="$l10n_fillType_spaghettiPasta" cyclesPerHour="2" costsPerActiveHour="15">
+                <inputs>
+                    <input fillType="COOKINGOIL"    amount="10" />
+                    <input fillType="EGG"           amount="30" />
+                    <input fillType="MILK_BOTTLED"  amount="40" />
+                    <input fillType="FLOUR"         amount="80" />
+                    <input fillType="EMPTYPALLET" amount="160" />
+                </inputs>
+                <outputs>
+                    <output fillType="SPAGHETTIPASTA" amount="160" /> <!--  per day -->
+                </outputs>
+            </production>
+        </productions>
+
+        <storage isExtension="false" fillLevelSyncThreshold="50">
+            <!-- INCOMING -->
+            <capacity fillType="BUTTER"             capacity="10000" />
+            <capacity fillType="CHOCOLATE"          capacity="10000" />
+            <capacity fillType="COOKINGOIL"         capacity="10000" />
+            <capacity fillType="CORN_DRY"           capacity="80000" />
+            <capacity fillType="CORN_FLOUR"         capacity="50000" />
+            <capacity fillType="EGG"                capacity="10000" />
+            <capacity fillType="HONEY"              capacity="10000" />
+            <capacity fillType="FLOUR"              capacity="100000" />
+            <capacity fillType="MILK_BOTTLED"       capacity="20000" />
+            <capacity fillType="OAT_DRY"            capacity="80000" />
+            <capacity fillType="RAISINS"            capacity="10000" />
+            <capacity fillType="RICE_DRY"           capacity="80000" />
+            <capacity fillType="STRAWBERRY"         capacity="10000" />
+            <capacity fillType="SUGAR"              capacity="20000" />
+            <capacity fillType="WHEAT_DRY"          capacity="80000" />
+            <capacity fillType="WHOLEWHEATFLOUR"    capacity="50000" />
+            <capacity fillType="YEAST"              capacity="10000" />
+            <capacity fillType="EMPTYPALLET"        capacity="200000" />
+            <!-- OUTGOING -->
+            <capacity fillType="BREAD"              capacity="100000" />
+            <capacity fillType="CAKE"               capacity="50000" />
+            <capacity fillType="CEREAL"             capacity="90000" /> <!-- I want more types of cereal -->
+            <capacity fillType="CORNTORTILLA"       capacity="90000" />
+            <capacity fillType="RICECAKES"          capacity="90000" />
+            <capacity fillType="WHOLEWHEATBREAD"    capacity="80000" />
+            <capacity fillType="SPAGHETTIPASTA"     capacity="70000" />
+
+            <!-- <capacity fillType="BAKERYBOXPALLET"       capacity="400000" /> -->
+            <capacity fillType="BREADBOX"   capacity="30000" />
+            <capacity fillType="BAGUETTEBOX"            capacity="30000" />
+            <capacity fillType="DONUTBOX"               capacity="30000" />
+            <capacity fillType="DONUTJELLYBOX"          capacity="30000" />
+            <!-- <capacity fillType="EGGPARTYBOX"       capacity="30000" /> -->
+            <!-- <capacity fillType="SPICEBLENDSBOX"         capacity="30000" /> -->
+            <capacity fillType="MUFFINBOX"          capacity="30000" />
+            <capacity fillType="CROISSANTBOX"           capacity="30000" />
+
+        </storage>
+
+        <sellingStation node="sellingStation" supportsExtension="false" allowMissions="false" storageRadius="0" >
+            <unloadTrigger exactFillRootNode="exactFillRootNode" aiNode="unloadTriggerAINode" fillTypes="CORN_DRY OAT_DRY RICELONGGRAIN_DRY RICE_DRY WHEAT_DRY" >
+                <fillTypeConversion ratio="0.77" outgoingFillType="RICE_DRY" incomingFillType="RICELONGGRAIN_DRY" />
+            </unloadTrigger>
+
+            <palletTrigger triggerNode="palletTrigger" aiNode="unloadTriggerAINode" fillTypes="BUTTER CHOCOLATE COOKINGOIL CORN_FLOUR EGG HONEY MILK_BOTTLED RAISINS STRAWBERRY SUGAR WHOLEWHEATFLOUR BAKERYBOXPALLET FLOUR RICEFLOUR FLOURSACKS SOYFLOUR PEASFLOUR YEAST SUNFLOWER_OIL OLIVE_OIL CANOLA_OIL EMPTYPALLET" > <!-- SPICEBLENDSBOX -->
+                <fillTypeConversion ratio="1" outgoingFillType="FLOUR" incomingFillType="RICEFLOUR" />
+                <fillTypeConversion ratio="1" outgoingFillType="FLOUR" incomingFillType="FLOURSACKS" />
+                <fillTypeConversion ratio="1" outgoingFillType="FLOUR" incomingFillType="PEASFLOUR" />
+
+                <fillTypeConversion ratio="1" outgoingFillType="COOKINGOIL" incomingFillType="SUNFLOWER_OIL" />
+                <fillTypeConversion ratio="1" outgoingFillType="COOKINGOIL" incomingFillType="OLIVE_OIL" />
+                <fillTypeConversion ratio="1" outgoingFillType="COOKINGOIL" incomingFillType="CANOLA_OIL" />
+            </palletTrigger>
+        </sellingStation>
+
+        <palletSpawner>
+            <spawnPlaces>
+                <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01"/>
+                <spawnPlace startNode="palletAreaStart02" endNode="palletAreaEnd02"/>
+            </spawnPlaces>
+        </palletSpawner>
+
+        <playerTrigger node="playerTrigger" />
+
+        <sounds>
+            <idle   template="bakeryIdle" linkNode="0>" />
+            <active template="bakeryWork" linkNode="0>" />
+        </sounds>
+
+    </productionPoint>
+
+    <dynamicallyLoadedParts>
+        <dynamicallyLoadedPart node="0" linkNode="lightSwitch01" filename="$data/shared/assets/lights/rudolfHormann/powerSwitch.i3d" />
+        <dynamicallyLoadedPart node="0" linkNode="lightSwitch02" filename="$data/shared/assets/lights/rudolfHormann/powerSwitch.i3d" />
+    </dynamicallyLoadedParts>
+
+    <lights>
+        <group name="$l10n_action_placeableLightShed" triggerNode="triggerLight">
+            <sounds>
+                <toggle template="lizardFloodLight" innerRadius="50" outerRadius="100" volumeScale="0.2"/>
+            </sounds>
+        </group>
+        <group name="$l10n_action_placeableLightShed" activateTime="17:30" deactivateTime="8:20">
+            <sounds>
+                <toggle template="lizardFloodLight" innerRadius="50" outerRadius="100" volumeScale="0.2"/>
+            </sounds>
+        </group>
+
+        <sharedLight filename="$data/shared/assets/lights/lizard/buildings/industrialWallLight.xml" linkNode="lightNode01" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/lizard/buildings/industrialWallLight.xml" linkNode="lightNode02" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/lizard/buildings/industrialWallLight.xml" linkNode="lightNode03" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/lizard/buildings/industrialWallLight.xml" linkNode="lightNode04" groupIndex="1"/>
+        <realLights>
+            <low>
+                <light node="realLightsLow" groupIndex="1"/>
+                <light node="realLightsLow2" groupIndex="1"/>
+            </low>
+            <high>
+                <light node="realLightsHigh" groupIndex="1"/>
+                <light node="realLightsHigh2" groupIndex="1"/>
+            </high>
+        </realLights>
+    </lights>
+
+    <animatedObjects>
+        <animatedObject saveId="doorRotate01" >
+            <animation duration="1.75">
+                <part node="door01">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 150 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="triggerDoor01" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="door01" template="metalDoorsLoop" />
+                <posEnd linkNode="door01" template="metalDoorsOpen" />
+                <negEnd linkNode="door01" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="doorRotate02" >
+            <animation duration="1.75">
+                <part node="door02">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 150 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="triggerDoor02" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="door02" template="metalDoorsLoop" />
+                <posEnd linkNode="door02" template="metalDoorsOpen" />
+                <negEnd linkNode="door02" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="palletBlocker" >
+            <animation duration="3">
+                <part node="palletBlocker01Anim">
+                    <keyFrame time="0.0" translation="-4.011 0 -1.76"/>
+                    <keyFrame time="0.4" translation="-7 0 -1.76"/>
+                    <keyFrame time="0.8" translation="-6.8 0 -2.314"/>
+                    <keyFrame time="1.0" translation="-6.8 0 -2.314" rotation="0 90 0"/>
+                </part>
+                <part node="palletBlocker02Anim">
+                    <keyFrame time="0.0" translation="-3.93 0 -1.615"/>
+                    <keyFrame time="0.4" translation="-6.8 0 -1.615"/>
+                    <keyFrame time="0.8" translation="-6.8 0 -0.615"/>
+                    <keyFrame time="1.0" translation="-6.8 0 -0.615" rotation="0 90 0"/>
+                </part>
+                <part node="palletBlocker03Anim">
+                    <keyFrame time="0.0" translation="-4 0 1.384"/>
+                    <keyFrame time="0.4" translation="-7 0 1.384"/>
+                    <keyFrame time="0.8" translation="-6.8 0 1.102"/>
+                    <keyFrame time="1.0" translation="-6.8 0 1.102" rotation="0 90 0"/>
+                </part>
+                <part node="palletBlocker04Anim">
+                    <keyFrame time="0.0" translation="-3.926 0 1.662"/>
+                    <keyFrame time="0.4" translation="-6.8 0 1.662"/>
+                    <keyFrame time="0.8" translation="-6.8 0 2.853"/>
+                    <keyFrame time="1.0" translation="-6.8 0 2.853" rotation="0 90 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="triggerPalletBlocker01" posAction="ACTIVATE_HANDTOOL" posText="Block Pallets" negText="Unblock Pallets" />
+        </animatedObject>
+    </animatedObjects>
+
+    <i3dMappings>
+        <i3dMapping id="clearAreaStart01" node="0>0|0" />
+        <i3dMapping id="clearAreaWidth01" node="0>0|0|0" />
+        <i3dMapping id="clearAreaHeight01" node="0>0|0|1" />
+        <i3dMapping id="levelAreaStart01" node="0>1|0" />
+        <i3dMapping id="levelAreaWidth01" node="0>1|0|0" />
+        <i3dMapping id="levelAreaHeight01" node="0>1|0|1" />
+        <i3dMapping id="paintAreaStart01" node="0>2|0" />
+        <i3dMapping id="paintAreaWidth01" node="0>2|0|0" />
+        <i3dMapping id="paintAreaHeight01" node="0>2|0|1" />
+        <i3dMapping id="indoorAreaStart01" node="0>3|0" />
+        <i3dMapping id="indoorAreaWidth01" node="0>3|0|0" />
+        <i3dMapping id="indoorAreaHeight01" node="0>3|0|1" />
+        <i3dMapping id="testAreaStart01" node="0>4|0" />
+        <i3dMapping id="testAreaEnd01" node="0>4|0|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>5|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaEnd01" node="0>5|0|0" />
+        <i3dMapping id="realLightsLow" node="0>6|0|0" />
+        <i3dMapping id="realLightsLow2" node="0>6|0|1" />
+        <i3dMapping id="realLightsHigh" node="0>6|0|2" />
+        <i3dMapping id="realLightsHigh2" node="0>6|0|3" />
+        <i3dMapping id="lightNode01" node="0>6|1|0" />
+        <i3dMapping id="lightNode02" node="0>6|1|1" />
+        <i3dMapping id="lightNode03" node="0>6|1|2" />
+        <i3dMapping id="lightNode04" node="0>6|1|3" />
+        <i3dMapping id="outsideLight1" node="0>6|1|4" />
+        <i3dMapping id="outsideLight2" node="0>6|1|5" />
+        <i3dMapping id="lightSwitch02" node="0>6|2" />
+        <i3dMapping id="lightSwitch01" node="0>6|3" />
+        <i3dMapping id="triggerLight" node="0>6|4" />
+        <i3dMapping id="door01" node="0>7|0|0" />
+        <i3dMapping id="door02" node="0>7|1|0" />
+        <i3dMapping id="triggerDoor01" node="0>7|2" />
+        <i3dMapping id="triggerDoor02" node="0>7|3" />
+        <i3dMapping id="infoTrigger" node="0>8" />
+        <i3dMapping id="exactFillRootNode" node="0>11|0" />
+        <i3dMapping id="palletTrigger" node="0>11|1" />
+        <i3dMapping id="unloadTriggerMarker" node="0>11|2" />
+        <i3dMapping id="unloadTriggerAINode" node="0>11|3" />
+        <i3dMapping id="playerTrigger" node="0>12|0" />
+        <i3dMapping id="playerTriggerMarker" node="0>12|1" />
+        <i3dMapping id="warningStripes01" node="0>13|0" />
+        <i3dMapping id="warningStripes02" node="0>13|1" />
+        <i3dMapping id="palletAreaStart01" node="0>14|0" />
+        <i3dMapping id="palletAreaEnd01" node="0>14|0|0" />
+        <i3dMapping id="palletAreaStart02" node="0>14|1" />
+        <i3dMapping id="palletAreaEnd02" node="0>14|1|0" />
+        <i3dMapping id="smoke01" node="0>15" />
+        <i3dMapping id="smoke02" node="0>16" />
+        <i3dMapping id="palletBlocker01Anim" node="0>18|0" />
+        <i3dMapping id="palletBlocker02Anim" node="0>18|1" />
+        <i3dMapping id="palletBlocker03Anim" node="0>18|2" />
+        <i3dMapping id="palletBlocker04Anim" node="0>18|3" />
+        <i3dMapping id="triggerPalletBlocker01" node="0>18|4" />
+    </i3dMappings>
+</placeable>

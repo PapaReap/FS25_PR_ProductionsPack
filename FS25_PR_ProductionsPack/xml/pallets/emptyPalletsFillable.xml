@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<vehicle type="pallet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/vehicle.xsd">
+    <annotation>Copyright (C) GIANTS Software GmbH, All Rights Reserved.</annotation>
+
+    <storeData>
+        <name>$l10n_fillType_emptyPalletsFillable</name>
+        <image>store/pallets/store_emptyPalletsFillable.png</image>
+        <price>1800</price>
+        <category>pallets</category>
+        <brand>PRI</brand>
+        <showInStore>true</showInStore>
+        <canBeSold>true</canBeSold>
+        <financeCategory>OTHER</financeCategory>
+        <vertexBufferMemoryUsage>48384</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>11264</indexBufferMemoryUsage>
+        <textureMemoryUsage>458752</textureMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+
+        <storeIconRendering>
+            <settings centerIcon="true" cameraXRot="-15" cameraYRot="35"/>
+        </storeIconRendering>
+        <audioMemoryUsage>0</audioMemoryUsage>
+    </storeData>
+
+    <base>
+        <typeDesc>$l10n_typeDesc_pallet</typeDesc>
+        <filename>i3d/pallets/emptyPalletsFillable.i3d</filename>
+        <size width="2.55" length="1.8" height="2.65" lengthOffset="0" />
+        <canBeReset>false</canBeReset>
+        <components maxMass="450">
+            <component centerOfMass="0 0.2 0" solverIterationCount="10" mass="100"/>
+        </components>
+        <showInVehicleMenu>false</showInVehicleMenu>
+        <mapHotspot available="false" />
+        <input allowed="false"/>
+    </base>
+
+    <fillUnit>
+        <fillUnitConfigurations>
+            <fillUnitConfiguration>
+                <fillUnits>
+                    <!-- <fillUnit unitTextOverride="$l10n_unit_pieces" fillTypes="EMPTYPALLETSFILLABLE" capacity="12" startFillLevel="12"/> -->
+					<fillUnit unitTextOverride="$l10n_unit_pieces" fillTypes="EMPTYPALLETSFILLABLE" capacity="12" startFillType="EMPTYPALLETSFILLABLE" startFillLevel="12"/>
+                </fillUnits>
+            </fillUnitConfiguration>
+        </fillUnitConfigurations>
+    </fillUnit>
+
+<!--     <dischargeable requiresTipOcclusionArea="false">
+        <dischargeNode node="dischargeNode" emptySpeed="200" fillUnitIndex="1" maxDistance="6" canStartDischargeAutomatically="true" playSound="false"/>
+    </dischargeable> -->
+
+<!--     <pallet fillUnitIndex="1" node="fillablePallets_vis">
+        <content>
+            <object node="fillablePallet_L1_01_a" tensionBeltNode="fillablePallet_L1_01_a_tension"/>
+            <object node="fillablePallet_L1_01_b" tensionBeltNode="fillablePallet_L1_01_b_tension"/>
+            <object node="fillablePallet_L1_02_a" tensionBeltNode="fillablePallet_L1_02_a_tension"/>
+            <object node="fillablePallet_L1_02_b" tensionBeltNode="fillablePallet_L1_02_b_tension"/>
+            <object node="fillablePallet_L2_01_a" tensionBeltNode="fillablePallet_L2_01_a_tension"/>
+            <object node="fillablePallet_L2_01_b" tensionBeltNode="fillablePallet_L2_01_b_tension"/>
+            <object node="fillablePallet_L2_02_a" tensionBeltNode="fillablePallet_L2_02_a_tension"/>
+            <object node="fillablePallet_L2_02_b" tensionBeltNode="fillablePallet_L2_02_b_tension"/>
+            <object node="fillablePallet_L3_01_a" tensionBeltNode="fillablePallet_L3_01_a_tension"/>
+            <object node="fillablePallet_L3_01_b" tensionBeltNode="fillablePallet_L3_01_b_tension"/>
+            <object node="fillablePallet_L3_02_a" tensionBeltNode="fillablePallet_L3_02_a_tension"/>
+            <object node="fillablePallet_L3_02_b" tensionBeltNode="fillablePallet_L3_02_b_tension"/>
+
+        </content>
+        <sounds>
+            <unload template="palletsFillWood" pitchScale="0.7" volumeScale="2.5" supportsReverb="false"/>
+        </sounds>
+    </pallet> -->
+
+    <dynamicMount triggerNode="dynamicMountTrigger" triggerForceAcceleration="4" additionalMountDistance="2.64" jointTransY="0.152" jointLimitToRotY="true"/>
+
+    <i3dMappings>
+        <i3dMapping id="fillablePallets_component" node="0>" />
+        <i3dMapping id="fillablePallets_vis"       node="0>0" />
+        <i3dMapping id="fillablePallets"           node="0>0|0|0" />
+        <!-- <i3dMapping id="fillablePalletsTension"    node="0>0|0|0|0" /> -->
+
+        <i3dMapping id="fillablePallet_L1_01_a"         node="0>0|0|0|0|0|0" />
+        <i3dMapping id="fillablePallet_L1_01_a_tension" node="0>0|0|0|0|0|0|0" />
+        <i3dMapping id="fillablePallet_L1_01_b"         node="0>0|0|0|0|0|1" />
+        <i3dMapping id="fillablePallet_L1_01_b_tension" node="0>0|0|0|0|0|1|0" />
+        <i3dMapping id="fillablePallet_L1_02_a"         node="0>0|0|0|0|1|0" />
+        <i3dMapping id="fillablePallet_L1_02_a_tension" node="0>0|0|0|0|1|0|0" />
+        <i3dMapping id="fillablePallet_L1_02_b"         node="0>0|0|0|0|1|1" />
+        <i3dMapping id="fillablePallet_L1_02_b_tension" node="0>0|0|0|0|1|1|0" />
+        <i3dMapping id="fillablePallet_L2_01_a"         node="0>0|0|0|1|0|0" />
+        <i3dMapping id="fillablePallet_L2_01_a_tension" node="0>0|0|0|1|0|0|0" />
+        <i3dMapping id="fillablePallet_L2_01_b"         node="0>0|0|0|1|0|1" />
+        <i3dMapping id="fillablePallet_L2_01_b_tension" node="0>0|0|0|1|0|1|0" />
+        <i3dMapping id="fillablePallet_L2_02_a"         node="0>0|0|0|1|1|0" />
+        <i3dMapping id="fillablePallet_L2_02_a_tension" node="0>0|0|0|1|1|0|0" />
+        <i3dMapping id="fillablePallet_L2_02_b"         node="0>0|0|0|1|1|1" />
+        <i3dMapping id="fillablePallet_L2_02_b_tension" node="0>0|0|0|1|1|1|0" />
+        <i3dMapping id="fillablePallet_L3_01_a"         node="0>0|0|0|2|0|0" />
+        <i3dMapping id="fillablePallet_L3_01_a_tension" node="0>0|0|0|2|0|0|0" />
+        <i3dMapping id="fillablePallet_L3_01_b"         node="0>0|0|0|2|0|1" />
+        <i3dMapping id="fillablePallet_L3_01_b_tension" node="0>0|0|0|2|0|1|0" />
+        <i3dMapping id="fillablePallet_L3_02_a"         node="0>0|0|0|2|1|0" />
+        <i3dMapping id="fillablePallet_L3_02_a_tension" node="0>0|0|0|2|1|0|0" />
+        <i3dMapping id="fillablePallet_L3_02_b"         node="0>0|0|0|2|1|1" />
+        <i3dMapping id="fillablePallet_L3_02_b_tension" node="0>0|0|0|2|1|1|0" />
+
+        <!-- <i3dMapping id="palletStrap01"             node="0>0|0|1" />
+        <i3dMapping id="palletStrap02"             node="0>0|0|2" /> -->
+        <i3dMapping id="dynamicMountTrigger"       node="0>0|1" />
+        <i3dMapping id="dischargeNode"             node="0>0|2" />
+    </i3dMappings>
+</vehicle>

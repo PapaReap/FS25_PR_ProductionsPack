@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="donutJellyBox.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="../../textures/food/bakeryBox_diffuse.png"/>
+    <File fileId="5" filename="../../textures/food/bakeryBox_normal.png"/>
+    <File fileId="6" filename="../../textures/food/bakeryBox_specular.png"/>
+    <File fileId="8" filename="../../textures/food/bakeryGoodsFood_diffuse.png"/>
+    <File fileId="9" filename="../../textures/food/bakeryGoodsFood_normal.png"/>
+    <File fileId="10" filename="../../textures/food/bakeryGoodsFood_specular.png"/>
+    <File fileId="1" filename="../../textures/food/butterBox_diffuse.png"/>
+    <File fileId="2" filename="../../textures/food/chocolateBox_normal.png"/>
+    <File fileId="3" filename="../../textures/food/chocolateBox_specular.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="bakeryBox_mat" materialId="5">
+      <Texture fileId="4"/>
+      <Normalmap fileId="5"/>
+      <Glossmap fileId="6"/>
+    </Material>
+    <Material name="bakeryGoodsFood_mat" materialId="6">
+      <Texture fileId="8"/>
+      <Normalmap fileId="9"/>
+      <Glossmap fileId="10"/>
+    </Material>
+    <Material name="lambert1" materialId="7" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+    <Material name="raisinBox_mat" materialId="8">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="donutJellyBox.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="donutJellyBox" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" clipDistance="150" nodeId="16" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="8">
+      <Shape name="donutJellyBox" translation="0 -0.000140315 0" rotation="90 -0 0" shapeId="2" clipDistance="150" nodeId="17" castsShadows="true" receiveShadows="true" materialIds="5">
+        <Shape name="dynamicMountTrigger" rotation="-90 -0 0" shapeId="3" visibility="false" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="18" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+        <TransformGroup name="dischargeNode" rotation="-90 -0 0" nodeId="19"/>
+        <TransformGroup name="content" rotation="-90 -0 0" nodeId="20">
+          <Shape name="donut03_Kiste_DS" rotation="90 -0 0" shapeId="2" clipDistance="150" nodeId="21" castsShadows="true" receiveShadows="true" materialIds="5">
+            <Shape name="bakeryBox01Tension" translation="0 -5.52556e-09 -0.063205" rotation="-90 4.37897e-13 5.00896e-06" shapeId="4" nodeId="22" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+            <Shape name="donut03_DS" translation="-0.178959 0.272936 -0.00911495" rotation="-90 4.4779e-06 63.3774" shapeId="5" clipDistance="50" nodeId="23" castsShadows="true" receiveShadows="true" materialIds="6">
+              <Shape name="donut03" translation="-0.132529 -5.96046e-08 -0.0629638" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="24" castsShadows="true" receiveShadows="true" materialIds="6"/>
+              <Shape name="donut03" translation="-0.256498 0 -0.127845" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="25" castsShadows="true" receiveShadows="true" materialIds="6"/>
+              <Shape name="donut03" translation="-0.374883 -5.96046e-08 -0.191043" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="26" castsShadows="true" receiveShadows="true" materialIds="6"/>
+              <Shape name="donut03" translation="-0.498472 -5.96046e-08 -0.254421" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="27" castsShadows="true" receiveShadows="true" materialIds="6"/>
+              <Shape name="donut03" translation="0.174709 0 -0.350464" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="28" castsShadows="true" receiveShadows="true" materialIds="6">
+                <Shape name="donut03" translation="-0.132529 -5.96046e-08 -0.0629638" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="29" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.256498 0 -0.127845" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="30" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.374883 -5.96046e-08 -0.191043" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="31" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.498472 -5.96046e-08 -0.254421" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="32" castsShadows="true" receiveShadows="true" materialIds="6"/>
+              </Shape>
+              <Shape name="donut03" translation="0.0912004 0.0809356 -0.189015" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="33" castsShadows="true" receiveShadows="true" materialIds="6">
+                <Shape name="donut03" translation="-0.132529 -5.96046e-08 -0.0629638" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="34" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.256498 0 -0.127845" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="35" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.374883 -5.96046e-08 -0.191043" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="36" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.498472 -5.96046e-08 -0.254421" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="37" castsShadows="true" receiveShadows="true" materialIds="6"/>
+              </Shape>
+              <Shape name="donut03" translation="0.0606148 0 -0.115343" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="38" castsShadows="true" receiveShadows="true" materialIds="6">
+                <Shape name="donut03" translation="-0.132529 -5.96046e-08 -0.0629638" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="39" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.256498 0 -0.127845" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="40" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.374883 -5.96046e-08 -0.191043" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="41" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.498472 -5.96046e-08 -0.254421" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="42" castsShadows="true" receiveShadows="true" materialIds="6"/>
+              </Shape>
+              <Shape name="donut03" translation="0.116784 0 -0.232458" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="43" castsShadows="true" receiveShadows="true" materialIds="6">
+                <Shape name="donut03" translation="-0.132529 -5.96046e-08 -0.0629638" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="44" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.256498 0 -0.127845" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="45" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.374883 -5.96046e-08 -0.191043" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="46" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.498472 -5.96046e-08 -0.254421" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="47" castsShadows="true" receiveShadows="true" materialIds="6"/>
+              </Shape>
+              <Shape name="donut03" translation="0.033468 0.0798224 -0.0522232" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="48" castsShadows="true" receiveShadows="true" materialIds="6">
+                <Shape name="donut03" translation="-0.132529 -5.96046e-08 -0.0629638" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="49" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.256498 0 -0.127845" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="50" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.374883 -5.96046e-08 -0.191043" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="51" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.498472 -5.96046e-08 -0.254421" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="52" castsShadows="true" receiveShadows="true" materialIds="6"/>
+              </Shape>
+              <Shape name="donut03" translation="0.155369 0.0809356 -0.292882" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="53" castsShadows="true" receiveShadows="true" materialIds="6">
+                <Shape name="donut03" translation="-0.132529 -5.96046e-08 -0.0629638" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="54" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.256498 0 -0.127845" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="55" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.374883 -5.96046e-08 -0.191043" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="56" castsShadows="true" receiveShadows="true" materialIds="6"/>
+                <Shape name="donut03" translation="-0.498472 -5.96046e-08 -0.254421" rotation="0 -0 4.3386e-20" shapeId="5" clipDistance="50" nodeId="57" castsShadows="true" receiveShadows="true" materialIds="6"/>
+              </Shape>
+            </Shape>
+          </Shape>
+        </TransformGroup>
+        <TransformGroup name="collisions" rotation="-90 -0 0" clipDistance="10" nodeId="58">
+          <Shape name="floorCollision01" shapeId="6" compoundChild="true" collisionFilterGroup="0x100110a" collisionFilterMask="0x100110a" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="59" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+        </TransformGroup>
+      </Shape>
+    </Shape>
+  </Scene>
+
+</i3D>

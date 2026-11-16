@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="waterPumpSmall.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="5" filename="$data/shaders/placeableShader.xml"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="lambert1" materialId="5" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+    <Material name="UnnamedMaterial" materialId="6" diffuseColor="1 1 1 1">
+    </Material>
+    <Material name="wellGarden_mat" materialId="7" diffuseColor="0.00784314 0.0509804 0.027451 1" specularColor="0.294118 1 1" customShaderId="5">
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="waterPumpSmall.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="waterPumpSmall" clipDistance="600" nodeId="13">
+      <Shape name="fillTrigger" translation="0 2.88864 0" scale="1 2.91699 1" shapeId="1" static="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x40000000" clipDistance="300" nodeId="14" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+      <TransformGroup name="aiNode" translation="-2.51348e-16 0 3.725" rotation="0 90 0" nodeId="15"/>
+      <TransformGroup name="loadingMarker" translation="0 0 1.91506" nodeId="16"/>
+      <TransformGroup name="clearAreas" nodeId="17">
+        <TransformGroup name="clearArea1Start" translation="-0.837268 0 -0.282489" nodeId="18">
+          <TransformGroup name="clearArea1Width" translation="1.56248 0 0" nodeId="19"/>
+          <TransformGroup name="clearArea1Height" translation="0.131389 0 0.938714" nodeId="20"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="levelAreas" nodeId="21">
+        <TransformGroup name="Area1Start" translation="-0.901453 0 -0.313041" nodeId="22">
+          <TransformGroup name="Area1Width" translation="1.71851 0 0" nodeId="23"/>
+          <TransformGroup name="Area1Height" translation="0.131 0 0.938714" nodeId="24"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="indoorAreas" nodeId="25">
+        <TransformGroup name="indoorArea1Start" translation="-0.727181 0 -0.404929" nodeId="26">
+          <TransformGroup name="indoorArea1Width" translation="1.52203 0 0" nodeId="27"/>
+          <TransformGroup name="indoorArea1Height" translation="0 0 0.791646" nodeId="28"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="testAreas" nodeId="29">
+        <TransformGroup name="testArea1Start" translation="-0.335094 0 -0.293741" nodeId="30">
+          <TransformGroup name="testArea1End" translation="0.569097 0.5 0.539" nodeId="31"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="tipOcclusionUpdateAreas" nodeId="32">
+        <TransformGroup name="tipOcclusionUpdateArea1Start" translation="-0.8 0 -0.424394" nodeId="33">
+          <TransformGroup name="tipOcclusionUpdateArea1End" translation="1.54387 0 0.6" nodeId="34"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="tipCollision" nodeId="35">
+        <Shape name="collision" translation="-0.0426377 0.297875 0" shapeId="2" visibility="false" static="true" collisionFilterGroup="0x8" collisionFilterMask="0x1" nodeId="36" castsShadows="false" receiveShadows="false" nonRenderable="true" distanceBlending="false" materialIds="6"/>
+      </TransformGroup>
+      <TransformGroup name="visuals" nodeId="37">
+        <Shape name="wellGarden" shapeId="3" clipDistance="60" nodeId="38" castsShadows="true" receiveShadows="true" materialIds="7"/>
+      </TransformGroup>
+      <TransformGroup name="collisions" nodeId="39">
+        <Shape name="wellColi" translation="0 0.535237 0" shapeId="4" static="true" collisionFilterGroup="0x1034" collisionFilterMask="0xfffffbff" clipDistance="500" nodeId="40" castsShadows="true" receiveShadows="true" nonRenderable="true" distanceBlending="false" materialIds="6"/>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

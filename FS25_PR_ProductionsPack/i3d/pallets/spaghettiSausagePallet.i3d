@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="spaghettiSausagePallet.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="3" filename="$data/objects/pallets/chocolateBoxPallet/chocolateBox_normal.png"/>
+    <File fileId="4" filename="$data/objects/pallets/chocolateBoxPallet/chocolateBox_specular.png"/>
+    <File fileId="2" filename="../../textures/food/spaghettiSausageBox_diffuse.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="spaghettiSausageBox_mat1" materialId="45">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+    <Material name="lambert1" materialId="46" diffuseColor="0.501961 0.501961 0.501961 1">
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="spaghettiSausagePallet.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="spaghettiSausagePallet_component1" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" staticFriction="1" dynamicFriction="1" density="0.0001" clipDistance="150" nodeId="53" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46">
+      <Shape name="dynamicMountTrigger" translation="0 0.090475 0" shapeId="2" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="54" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+      <TransformGroup name="content" nodeId="55">
+        <Shape name="spaghettiSausageBox01" translation="-0.303998 0.145827 -0.197137" shapeId="3" nodeId="56" castsShadows="true" receiveShadows="true" skinBindNodeIds="56 58 60 62 64 66 68 70 72 74 76 78" materialIds="45">
+          <Shape name="spaghettiSausageBox_Tension01" translation="-2e-06 0.000173 -0.00266" shapeId="4" nodeId="57" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </Shape>
+        <TransformGroup name="spaghettiSausageBox02" translation="-0.302418 0.145827 0.204286" nodeId="58">
+          <Shape name="spaghettiSausageBox_Tension02" translation="-0.001582 0.000173 -0.002267" shapeId="4" nodeId="59" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+        <TransformGroup name="spaghettiSausageBox03" translation="0.297613 0.145033 -0.197137" nodeId="60">
+          <Shape name="spaghettiSausageBox_Tension03" translation="-0.00074 0.000967 -0.00266" shapeId="4" nodeId="61" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+        <TransformGroup name="spaghettiSausageBox04" translation="0.299194 0.145033 0.204286" nodeId="62">
+          <Shape name="spaghettiSausageBox_Tension04" translation="-0.00232 0.000967 -0.002267" shapeId="4" nodeId="63" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+        <TransformGroup name="spaghettiSausageBox05" translation="-0.303998 0.346826 -0.197137" rotation="0 180 0" nodeId="64">
+          <Shape name="spaghettiSausageBox_Tension05" translation="2e-06 -8.7e-05 0.00266" rotation="0 180 0" shapeId="4" nodeId="65" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+        <TransformGroup name="spaghettiSausageBox06" translation="-0.302418 0.346826 0.204286" rotation="0 180 0" nodeId="66">
+          <Shape name="spaghettiSausageBox_Tension06" translation="0.001582 -8.7e-05 0.002267" rotation="0 180 0" shapeId="4" nodeId="67" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+        <TransformGroup name="spaghettiSausageBox07" translation="0.297613 0.346032 -0.197137" rotation="0 180 0" nodeId="68">
+          <Shape name="spaghettiSausageBox_Tension07" translation="0.00074 0.000707 0.00266" rotation="0 180 0" shapeId="4" nodeId="69" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+        <TransformGroup name="spaghettiSausageBox08" translation="0.299194 0.346032 0.204286" rotation="0 180 0" nodeId="70">
+          <Shape name="spaghettiSausageBox_Tension08" translation="0.00232 0.000707 0.002267" rotation="0 180 0" shapeId="4" nodeId="71" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+        <TransformGroup name="spaghettiSausageBox09" translation="-0.303998 0.547071 -0.197137" nodeId="72">
+          <Shape name="spaghettiSausageBox_Tension09" translation="-2e-06 -0.000393 -0.00266" shapeId="4" nodeId="73" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+        <TransformGroup name="spaghettiSausageBox10" translation="-0.302418 0.547071 0.204286" nodeId="74">
+          <Shape name="spaghettiSausageBox_Tension10" translation="-0.001582 -0.000393 -0.002267" shapeId="4" nodeId="75" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+        <TransformGroup name="spaghettiSausageBox11" translation="0.297613 0.546277 -0.197137" nodeId="76">
+          <Shape name="spaghettiSausageBox_Tension11" translation="-0.00074 0.000401 -0.00266" shapeId="4" nodeId="77" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+        <TransformGroup name="spaghettiSausageBox12" translation="0.299194 0.546277 0.204286" nodeId="78">
+          <Shape name="spaghettiSausageBox_Tension12" translation="-0.00232 0.000401 -0.002267" shapeId="4" nodeId="79" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="collisions" clipDistance="10" nodeId="80">
+        <Shape name="floorCollision01" translation="0.3 0 0" shapeId="5" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="81" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+        <Shape name="floorCollision02" translation="-0.3 0 0" shapeId="5" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="82" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="46"/>
+      </TransformGroup>
+    </Shape>
+  </Scene>
+
+</i3D>

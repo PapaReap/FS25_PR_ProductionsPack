@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="PR_productionPoint_storage" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_storeItem_paperFactory</name>
+        <functions>
+            <function>$l10n_function_productionPoint</function>
+        </functions>
+        <image>$data/placeables/brandless/productionPointsGeneric/paperFactory/store_paperFactory.png</image>
+        <price>525000</price>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>NONE</brand>
+        <species>PLACEABLE</species>
+        <category>productionPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Production</tab>
+        </brush>
+        <vertexBufferMemoryUsage>1548288</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>346112</indexBufferMemoryUsage>
+        <textureMemoryUsage>1638400</textureMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>i3d/placeables/paperFactory/paperFactory.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testAreaStart01" endNode="testAreaEnd01" />
+        </testAreas>
+
+        <sounds>
+            <place template="smallImp" />
+        </sounds>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="clearAreaStart01" widthNode="clearAreaWidth01" heightNode="clearAreaHeight01"/>
+        <clearArea startNode="clearAreaStart02" widthNode="clearAreaWidth02" heightNode="clearAreaHeight02"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="10" maxSlope="75" maxEdgeAngle="30" >
+        <levelAreas>
+            <levelArea startNode="clearAreaStart01" widthNode="clearAreaWidth01" heightNode="clearAreaHeight01" groundType="asphalt"/>
+            <levelArea startNode="clearAreaStart02" widthNode="clearAreaWidth02" heightNode="clearAreaHeight02" groundType="asphalt"/>
+        </levelAreas>
+    </leveling>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01" />
+        <indoorArea startNode="indoorAreaStart02" widthNode="indoorAreaWidth02" heightNode="indoorAreaHeight02" />
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+        </updateAreas>
+    </ai>
+
+    <infoTrigger triggerNode="infoTrigger"/>
+
+    <dynamicallyLoadedParts>
+        <dynamicallyLoadedPart filename="i3d/placeables/paperFactory/props.i3d" node="0" linkNode="propsLinkNode" />
+    </dynamicallyLoadedParts>
+
+    <lights>
+        <group weatherRequiredFlags="NIGHT" />
+
+        <lightShape node="interiorDay" groupIndex="1"/>
+    </lights>
+
+    <productionPoint>
+        <productions>
+            <production id="cartonRoll" name="%s" params="$l10n_fillType_cartonRoll" cyclesPerHour="3" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="WOODCHIPS" amount="420" />
+                    <input fillType="EMPTYPALLET" amount="215" />
+                </inputs>
+                <outputs>
+                    <output fillType="CARTONROLL" amount="215" />
+                </outputs>
+            </production>
+            <production id="paperRoll" name="%s" params="$l10n_fillType_paperRoll" cyclesPerHour="3" costsPerActiveHour="3">
+                <inputs>
+                    <input fillType="WOODCHIPS" amount="535" />
+                    <input fillType="EMPTYPALLET" amount="230" />
+                </inputs>
+                <outputs>
+                    <output fillType="PAPERROLL" amount="230" />
+                </outputs>
+            </production>
+
+            <production id="ropePalletWool" name="%s (%s)" params="$l10n_fillType_rope|$l10n_fillType_wool" cyclesPerHour="20" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="WOOL" amount="80" />
+                    <input fillType="EMPTYPALLET" amount="12" />
+                </inputs>
+                <outputs>
+                    <output fillType="ROPE" amount="12" />
+                </outputs>
+            </production>
+
+            <production id="ropePalletCotton" name="%s (%s)" params="$l10n_fillType_rope|$l10n_fillType_cotton" cyclesPerHour="16" costsPerActiveHour="0.5">
+                <inputs>
+                    <input fillType="COTTON" amount="300" />
+                    <input fillType="EMPTYPALLET" amount="80" />
+                </inputs>
+                <outputs>
+                    <output fillType="ROPE" amount="80" />
+                </outputs>
+            </production>
+
+            <production id="woodchips" name="$l10n_fillType_wood_woodchips" cyclesPerHour="30" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="WOOD" amount="1000" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODCHIPS" amount="1000" />
+                </outputs>
+            </production>
+
+            <!-- TO ALLOW WOODCHIPS TO DECREASE IF OTHER PRODUCTIONS DISABLED -->
+<!--             <production id="woodchipsStorage" name="woodchips dummy" cyclesPerHour="0" costsPerActiveHour="0" visible="false">
+                <inputs>
+                    <input fillType="WOODCHIPS" amount="0" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODCHIPS" amount="0" />
+                </outputs>
+            </production> -->
+
+        </productions>
+
+        <storage isExtension="false" fillLevelSyncThreshold="75">
+            <capacity fillType="WOOD"       capacity="130000" />
+            <capacity fillType="CARTONROLL" capacity="51000" />
+            <capacity fillType="PAPERROLL"  capacity="55000" />
+            <capacity fillType="WATER"      capacity="55000" />
+            <capacity fillType="WOODCHIPS"  capacity="80000" />
+            <capacity fillType="WOOL"       capacity="48000" />
+            <capacity fillType="COTTON"     capacity="100000" />
+            <capacity fillType="ROPE"       capacity="55000" />
+            <capacity fillType="EMPTYPALLET"    capacity="200000" />
+        </storage>
+
+        <effectNodes>
+            <effectNode effectClass="ParticleEffect" effectNode="smokeEffectChimneyShape01" particleType="SMOKE_CHIMNEY" emitCountScale="0.5"/>
+            <effectNode effectClass="ParticleEffect" effectNode="smokeEffectChimneyShape02" particleType="SMOKE_CHIMNEY" emitCountScale="0.5"/>
+            <effectNode effectClass="ParticleEffect" effectNode="smokeEffectShape01"        particleType="SMOKE"         scale="0.1 0.5 0.1"/>
+        </effectNodes>
+
+        <sellingStation node="sellingStation" supportsExtension="false">
+            <unloadTrigger exactFillRootNode="unloadTrigger" fillTypes="WOOD WOODCHIPS WATER" />
+            <woodTrigger fillTypes="WOOD" aiNode="woodTrigger" triggerNode="woodTrigger" activationTriggerNode="woodActivationTrigger" />
+
+            <palletTrigger triggerNode="palletTrigger" aiNode="unloadTriggerAINode" fillTypes="COTTON WOOL WOODCHIPS EMPTYPALLET WOOD" />
+            <baleTrigger triggerNode="baleTrigger" deleteLitersPerSecond="10000" aiNode="unloadTriggerAINode" fillTypes="COTTON WOOL WOODCHIPS ROUNDBALE_WOOD" />
+        </sellingStation>
+
+        <loadingStation node="loadingStation" supportsExtension="false">
+            <loadTrigger triggerNode="loadingTrigger" fillLitersPerSecond="1000" dischargeNode="dischargeNode" fillTypes="WOODCHIPS">
+                <effectNode effectClass="PipeEffect" effectNode="pipeEffect"      materialType="pipe"           fadeTime="0.5" maxBending="0" shapeScaleSpread="1 1 1 0" controlPoint="7.25 0 0 0"/>
+                <effectNode                          effectNode="pipeEffectSmoke" materialType="unloadingSmoke" fadeTime="0.5" />
+            </loadTrigger>
+        </loadingStation>
+
+        <palletSpawner>
+            <spawnPlaces>
+                <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01" fillTypes="CARTONROLL PAPERROLL"/>
+                <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01" fillTypes="ROPE"/>
+                <!-- <spawnPlace startNode="palletAreaStart02" endNode="palletAreaEnd02" fillTypes="ROPE"/> -->
+            </spawnPlaces>
+        </palletSpawner>
+
+        <playerTrigger node="playerTrigger"/>
+
+        <sounds>
+            <idle template="paperFactoryIdle" volumeScale="0.0" />
+            <active template="paperFactoryWork" volumeScale="0.4" />
+        </sounds>
+    </productionPoint>
+
+    <!-- OBJECT STORAGE PAPER & ROPE -->
+    <objectStorage supportsBales="false" supportsPallets="true"  maxLength="2.5" maxWidth="2.5" maxHeight="1.7" capacity="120">
+        <playerTrigger node="playerTriggerStorage" />
+        <objectTrigger node="objectTriggerStorage" />
+        <spawnAreas>
+            <!-- I WANT TO SPAWN PAPER IN THIS AREA -->
+            <spawnArea startNode="spawnArea1Start" endNode="spawnArea1End"/>
+            <!-- I WANT TO SPAWN PAPER IN THIS AREA -->
+            <spawnArea startNode="spawnArea1StartRope" endNode="spawnArea1EndRope"/>
+        </spawnAreas>
+        <storageAreas>
+            <!-- I WANT TO STORE PAPER IN THIS AREA -->
+            <storageArea startNode="storageArea1Start" endNode="storageArea1End"/>
+            <storageArea startNode="storageArea2Start" endNode="storageArea2End"/>
+            <storageArea startNode="storageArea3Start" endNode="storageArea3End"/>
+
+            <!-- I WANT TO STORE ROPE IN THIS AREA -->
+            <storageArea startNode="storageArea1StartRope" endNode="storageArea1EndRope"/>
+            <storageArea startNode="storageArea2StartRope" endNode="storageArea2EndRope"/>
+            <storageArea startNode="storageArea3StartRope" endNode="storageArea3EndRope"/>
+        </storageAreas>
+    </objectStorage>
+
+    <!-- OBJECT STORAGE ROPE -->
+<!--     <objectStorage supportsBales="false" supportsPallets="true"  maxLength="2.5" maxWidth="2.5" maxHeight="1.7" capacity="45">
+        <playerTrigger node="playerTriggerStorageRope" />
+        <objectTrigger node="objectTriggerStorageRope" />
+        <spawnAreas>
+            <spawnArea startNode="spawnArea1StartRope" endNode="spawnArea1EndRope"/>
+        </spawnAreas>
+        <storageAreas>
+             <storageArea startNode="storageArea1StartRope" endNode="storageArea1EndRope"/>
+             <storageArea startNode="storageArea2StartRope" endNode="storageArea2EndRope"/>
+             <storageArea startNode="storageArea3StartRope" endNode="storageArea3EndRope"/>
+        </storageAreas>
+    </objectStorage> -->
+
+    <triggerMarkers>
+        <!-- <triggerMarker node="warningStripes_palletSpawnArea" /> -->
+        <triggerMarker node="playerTriggerMarker"         filename="$data/shared/assets/marker/markerIconWrench.i3d"           adjustToGround="false" />
+        <triggerMarker node="unloadTriggerMarker"         filename="$data/shared/assets/marker/markerIconUnload.i3d"           adjustToGround="true" />
+        <triggerMarker node="palletTriggerunloadTriggerMarker" filename="$data/shared/assets/marker/markerIconPallet.i3d" adjustToGround="true" />
+
+        <triggerMarker node="woodActivationTriggerMarker" filename="$data/shared/assets/marker/markerIconExclamationMark.i3d" adjustToGround="false" />
+        <!-- OBJECT STORAGE PAPER -->
+        <triggerMarker node="objectTriggerMarkerStorage" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true" />
+        <triggerMarker node="playerTriggerMarkerStorage" filename="$data/shared/assets/marker/markerIconPallet.i3d" adjustToGround="true" />
+        <triggerMarker node="warningStripesUnload" adjustToGround="true" />
+        <triggerMarker node="warningStripesLoad" adjustToGround="true" />
+        <!-- OBJECT STORAGE ROPE -->
+<!--         <triggerMarker node="objectTriggerMarkerStorageRope" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true" />
+        <triggerMarker node="playerTriggerMarkerStorageRope" filename="$data/shared/assets/marker/markerIconPallet.i3d" adjustToGround="true" /> -->
+        <!-- <triggerMarker node="warningStripesUnloadRope" adjustToGround="true" />
+        <triggerMarker node="warningStripesLoadRope" adjustToGround="true" /> -->
+    </triggerMarkers>
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker" teleportNode="unloadTriggerMarker" />
+    </hotspots>
+
+    <i3dMappings>
+        <i3dMapping id="clearAreaStart01" node="0>0|0" />
+        <i3dMapping id="clearAreaWidth01" node="0>0|0|0" />
+        <i3dMapping id="clearAreaHeight01" node="0>0|0|1" />
+        <i3dMapping id="clearAreaStart02" node="0>0|1" />
+        <i3dMapping id="clearAreaWidth02" node="0>0|1|0" />
+        <i3dMapping id="clearAreaHeight02" node="0>0|1|1" />
+        <i3dMapping id="indoorAreaStart01" node="0>1|0" />
+        <i3dMapping id="indoorAreaWidth01" node="0>1|0|0" />
+        <i3dMapping id="indoorAreaHeight01" node="0>1|0|1" />
+        <i3dMapping id="indoorAreaStart02" node="0>1|1" />
+        <i3dMapping id="indoorAreaWidth02" node="0>1|1|0" />
+        <i3dMapping id="indoorAreaHeight02" node="0>1|1|1" />
+        <i3dMapping id="testAreaStart01" node="0>2|0" />
+        <i3dMapping id="testAreaEnd01" node="0>2|0|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>3|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaEnd01" node="0>3|0|0" />
+
+        <i3dMapping id="sellingStation" node="0>4" />
+        <i3dMapping id="unloadTrigger" node="0>4|0" />
+        <i3dMapping id="unloadTriggerMarker" node="0>4|1" />
+        <i3dMapping id="palletTrigger" node="0>4|2" />
+        <i3dMapping id="palletTriggerunloadTriggerMarker" node="0>4|3" />
+        <i3dMapping id="baleTrigger" node="0>4|4" />
+
+        <i3dMapping id="productionPoint" node="0>5" />
+        <i3dMapping id="playerTrigger" node="0>5|0" />
+        <i3dMapping id="playerTriggerMarker" node="0>5|0|0" />
+        <i3dMapping id="smokeEffectShape01" node="0>5|1|0" />
+        <i3dMapping id="smokeEffectChimneyShape01" node="0>5|1|1" />
+        <i3dMapping id="smokeEffectChimneyShape02" node="0>5|1|2" />
+        <i3dMapping id="palletSpawner" node="0>6" />
+        <i3dMapping id="palletAreaStart01" node="0>6|0" />
+        <i3dMapping id="palletAreaEnd01" node="0>6|0|0" />
+        <i3dMapping id="palletAreaStart02" node="0>6|1" />
+        <i3dMapping id="palletAreaEnd02" node="0>6|1|0" />
+
+        <i3dMapping id="infoTrigger" node="0>7" />
+
+        <i3dMapping id="woodTrigger" node="0>8" />
+        <i3dMapping id="woodActivationTrigger" node="0>8|0" />
+        <i3dMapping id="woodActivationTriggerMarker" node="0>8|0|0" />
+
+        <i3dMapping id="realLights" node="0>9|0" />
+        <i3dMapping id="interiorDay" node="0>9|1|0" />
+        <i3dMapping id="propsLinkNode" node="0>10|0|0|3" />
+
+        <!-- WOODCHIPS -->
+        <i3dMapping id="loadingTrigger" node="0>13|3|0|0" />
+        <i3dMapping id="dischargeNode" node="0>13|3|0|1" />
+        <i3dMapping id="pipeEffect" node="0>13|3|0|2|0" />
+        <i3dMapping id="pipeEffectSmoke" node="0>13|3|0|2|1" />
+
+        <!-- OBJECT STORAGE PAPER -->
+        <i3dMapping id="CollisionBox1"              node="0>14|0|0" />
+        <i3dMapping id="CollisionBox2"              node="0>14|0|1" />
+
+        <i3dMapping id="warningStripesLoad"         node="0>14|2|0" />
+        <i3dMapping id="warningStripesUnload"       node="0>14|2|1" />
+
+        <i3dMapping id="spawnArea1Start"            node="0>14|3|0|0" />
+        <i3dMapping id="spawnArea1End"              node="0>14|3|0|0|0" />
+        <i3dMapping id="storageArea1Start"          node="0>14|3|0|1" />
+        <i3dMapping id="storageArea1End"            node="0>14|3|0|1|0" />
+        <i3dMapping id="storageArea2Start"          node="0>14|3|0|2" />
+        <i3dMapping id="storageArea2End"            node="0>14|3|0|2|0" />
+        <i3dMapping id="storageArea3Start"          node="0>14|3|0|3" />
+        <i3dMapping id="storageArea3End"            node="0>14|3|0|3|0" />
+        <i3dMapping id="playerTriggerStorage"       node="0>14|3|1" />
+        <i3dMapping id="playerTriggerMarkerStorage" node="0>14|3|1|0" />
+        <i3dMapping id="objectTriggerStorage"       node="0>14|3|2" />
+        <i3dMapping id="objectTriggerMarkerStorage" node="0>14|3|2|0" />
+
+        <!-- OBJECT STORAGE ROPE -->
+        <i3dMapping id="CollisionBox1Rope"              node="0>15|0|0" />
+        <i3dMapping id="CollisionBox2Rope"              node="0>15|0|1" />
+
+        <i3dMapping id="warningStripesLoadRope"         node="0>15|2|0" />
+        <i3dMapping id="warningStripesUnloadRope"       node="0>15|2|1" />
+
+        <i3dMapping id="spawnArea1StartRope"            node="0>15|3|0|0" />
+        <i3dMapping id="spawnArea1EndRope"              node="0>15|3|0|0|0" />
+        <i3dMapping id="storageArea1StartRope"          node="0>15|3|0|1" />
+        <i3dMapping id="storageArea1EndRope"            node="0>15|3|0|1|0" />
+        <i3dMapping id="storageArea2StartRope"          node="0>15|3|0|2" />
+        <i3dMapping id="storageArea2EndRope"            node="0>15|3|0|2|0" />
+        <i3dMapping id="storageArea3StartRope"          node="0>15|3|0|3" />
+        <i3dMapping id="storageArea3EndRope"            node="0>15|3|0|3|0" />
+        <i3dMapping id="playerTriggerStorageRope"       node="0>15|3|1" />
+        <i3dMapping id="playerTriggerMarkerStorageRope" node="0>15|3|1|0" />
+        <i3dMapping id="objectTriggerStorageRope"       node="0>15|3|2" />
+        <i3dMapping id="objectTriggerMarkerStorageRope" node="0>15|3|2|0" />
+    </i3dMappings>
+</placeable>

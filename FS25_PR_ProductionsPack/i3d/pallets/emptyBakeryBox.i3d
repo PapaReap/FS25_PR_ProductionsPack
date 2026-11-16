@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="emptyBakeryBox.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="../../textures/food/bakeryBox_diffuse.png"/>
+    <File fileId="5" filename="../../textures/food/bakeryBox_normal.png"/>
+    <File fileId="6" filename="../../textures/food/bakeryBox_specular.png"/>
+    <File fileId="1" filename="../../textures/food/butterBox_diffuse.png"/>
+    <File fileId="2" filename="../../textures/food/chocolateBox_normal.png"/>
+    <File fileId="3" filename="../../textures/food/chocolateBox_specular.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="bakeryBox_mat" materialId="5">
+      <Texture fileId="4"/>
+      <Normalmap fileId="5"/>
+      <Glossmap fileId="6"/>
+    </Material>
+    <Material name="lambert1" materialId="6" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+    <Material name="raisinBox_mat" materialId="7">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="emptyBakeryBox.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="emptyBakeryBox" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" clipDistance="150" nodeId="14" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7">
+      <Shape name="emptyBakeryBox" translation="0 -0.000140315 0" rotation="90 -0 0" shapeId="2" clipDistance="150" nodeId="15" castsShadows="true" receiveShadows="true" materialIds="5">
+        <Shape name="dynamicMountTrigger" rotation="-90 -0 0" shapeId="3" visibility="false" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="16" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        <TransformGroup name="dischargeNode" rotation="-90 -0 0" nodeId="17"/>
+        <TransformGroup name="content" rotation="-90 -0 0" nodeId="18">
+          <Shape name="emptyBakeryBox" rotation="90 -0 0" shapeId="2" clipDistance="150" nodeId="19" castsShadows="true" receiveShadows="true" materialIds="5">
+            <Shape name="bakeryBox01Tension" translation="0 -5.52556e-09 -0.063205" rotation="-90 4.37897e-13 5.00896e-06" shapeId="4" nodeId="20" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+        </TransformGroup>
+        <TransformGroup name="collisions" rotation="-90 -0 0" clipDistance="10" nodeId="21">
+          <Shape name="floorCollision01" shapeId="5" compoundChild="true" collisionFilterGroup="0x100110a" collisionFilterMask="0x100110a" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="22" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+      </Shape>
+    </Shape>
+  </Scene>
+
+</i3D>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="propsPlaceable" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+
+  <Files>
+    <File fileId="13" filename="$data/maps/mapEU/textures/props/accessPointFence_diffuse.png" />
+    <File fileId="14" filename="$data/maps/mapEU/textures/props/accessPointFence_normal.png" />
+    <File fileId="15" filename="$data/maps/mapEU/textures/props/accessPointFence_specular.png" />
+    <File fileId="17" filename="$data/maps/mapEU/textures/props/industrialBuildingAttachmentsVentArray.png" />
+    <File fileId="10" filename="$data/maps/mapEU/textures/props/industrialBuildingAttachments_diffuse.png" />
+    <File fileId="11" filename="$data/maps/mapEU/textures/props/industrialBuildingAttachments_normal.png" />
+    <File fileId="12" filename="$data/maps/mapEU/textures/props/industrialBuildingAttachments_specular.png" />
+    <File fileId="9" filename="$data/maps/mapEU/textures/props/roofVentsAcUnitVarSmallRotArray.png" />
+    <File fileId="5" filename="$data/maps/mapEU/textures/props/roofVentsGrid_diffuse.png" />
+    <File fileId="6" filename="$data/maps/mapEU/textures/props/roofVentsGrid_normal.png" />
+    <File fileId="7" filename="$data/maps/mapEU/textures/props/roofVentsGrid_specular.png" />
+    <File fileId="1" filename="$data/maps/mapEU/textures/props/roofVents_diffuse.png" />
+    <File fileId="2" filename="$data/maps/mapEU/textures/props/roofVents_normal.png" />
+    <File fileId="3" filename="$data/maps/mapEU/textures/props/roofVents_specular.png" />
+    <File fileId="4" filename="$data/shaders/placeableShader.xml" />
+    <File fileId="8" filename="$data/shaders/vtxRotateShader.xml" />
+    <File fileId="16" filename="$data/shaders/vtxVentShader.xml" />
+  </Files>
+
+  <Materials>
+    <Material name="lambert1" materialId="2" diffuseColor="0.5 0.5 0.5 1">
+    </Material>
+    <Material name="roofVents_mat" materialId="1" customShaderId="4">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+    </Material>
+    <Material name="roofVentsGrid_mat" materialId="3">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+    </Material>
+    <Material name="roofVents_mat1" materialId="4" customShaderId="8">
+      <CustomParameter name="rotation" value="0 4"/>
+      <Custommap name="mArray" fileId="9"/>
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+    </Material>
+    <Material name="industrialBuildingAttachments_mat" materialId="5" customShaderId="4">
+      <Texture fileId="10"/>
+      <Normalmap fileId="11"/>
+      <Glossmap fileId="12"/>
+    </Material>
+    <Material name="accessPointFence_mat" materialId="7">
+      <Texture fileId="13"/>
+      <Normalmap fileId="14"/>
+      <Glossmap fileId="15"/>
+    </Material>
+    <Material name="industrialBuildingAttachments_mat1" materialId="6" customShaderId="16">
+      <Custommap name="mArray" fileId="17"/>
+      <Texture fileId="10"/>
+      <Normalmap fileId="11"/>
+      <Glossmap fileId="12"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="propsPlaceable.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="props" nodeId="1">
+      <Shape name="acUnitSmallVariation" translation="7.046389 3.384958 -4.314901" rotation="0 -90 0" shapeId="1" castsShadows="true" receiveShadows="true" materialIds="1" skinBindNodeIds="2 23 51 55 59 63 67 69" clipDistance="100" nodeId="2">
+        <Shape name="collision" translation="-0.352443 0 0" shapeId="2" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="3"/>
+        <Shape name="grid" translation="-0.352443 0 0" shapeId="3" castsShadows="true" receiveShadows="true" materialIds="3" clipDistance="300" nodeId="4">
+          <Shape name="roofVentsAcUnitSmallRot" translation="-0.250134 0.706658 0.023771" shapeId="4" castsShadows="true" receiveShadows="true" materialIds="4" clipDistance="75" nodeId="5"/>
+        </Shape>
+      </Shape>
+      <Shape name="metalProtection_big10" translation="1.067006 0.063158 -8.904601" rotation="0 90 0" shapeId="5" castsShadows="true" receiveShadows="true" materialIds="5" skinBindNodeIds="6 8 17 27 29 31 33 35 37 39 41 43 45 47 49 83 85" clipDistance="60" nodeId="6">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="7"/>
+      </Shape>
+      <TransformGroup name="metalProtection_small1" translation="11.24347 0.039484 1.055899" collision="false" clipDistance="60" nodeId="8">
+        <Shape name="collision" shapeId="7" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="9"/>
+      </TransformGroup>
+      <TransformGroup name="ac_square_lod" translation="11.190277 5.820569 2.528891" rotation="0 90 0" lodDistance="0 30" static="true" clipDistance="60" nodeId="10">
+        <Shape name="LOD0" shapeId="8" castsShadows="true" receiveShadows="true" materialIds="5" clipDistance="60" nodeId="11">
+          <Shape name="flaps" shapeId="9" castsShadows="true" receiveShadows="true" materialIds="6" clipDistance="40" nodeId="12"/>
+        </Shape>
+        <Shape name="LOD1" shapeId="10" castsShadows="true" receiveShadows="true" materialIds="5" nodeId="13"/>
+      </TransformGroup>
+      <TransformGroup name="fireAlarm1_lod" translation="-3.913465 3.580557 -8.90811" rotation="0 90 0" lodDistance="0 8" static="true" nodeId="14">
+        <Shape name="LOD0" shapeId="11" castsShadows="true" receiveShadows="true" materialIds="5" clipDistance="60" nodeId="15"/>
+        <Shape name="LOD1" shapeId="12" castsShadows="true" receiveShadows="true" materialIds="5" clipDistance="60" nodeId="16"/>
+      </TransformGroup>
+      <TransformGroup name="ac14" translation="11.260987 5.524559 4.476456" collision="false" clipDistance="60" nodeId="17">
+        <Shape name="net" translation="0 -0.18045 0" shapeId="13" castsShadows="true" receiveShadows="true" materialIds="7" nodeId="18"/>
+      </TransformGroup>
+      <TransformGroup name="firehose6_lod" translation="11.246471 1.340018 5.265723" rotation="0 360 0" lodDistance="0 8" collision="false" density="0" clipDistance="80" nodeId="19">
+        <Shape name="LOD0" shapeId="14" castsShadows="true" receiveShadows="true" materialIds="5" nodeId="20"/>
+        <Shape name="LOD1" shapeId="15" castsShadows="true" receiveShadows="true" materialIds="5" nodeId="21"/>
+        <Shape name="collision" shapeId="16" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="22"/>
+      </TransformGroup>
+      <TransformGroup name="acUnitSmallVariation17" translation="9.196838 3.384958 -4.314901" rotation="0 -90 0" collision="false" clipDistance="100" nodeId="23">
+        <Shape name="collision" translation="-0.352443 0 0" shapeId="2" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="24"/>
+        <Shape name="grid" translation="-0.352443 0 0" shapeId="3" castsShadows="true" receiveShadows="true" materialIds="3" clipDistance="300" nodeId="25">
+          <Shape name="roofVentsAcUnitSmallRot" translation="-0.250134 0.706658 0.023771" shapeId="17" castsShadows="true" receiveShadows="true" materialIds="4" clipDistance="75" nodeId="26"/>
+        </Shape>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_small10" translation="11.24347 0.039484 4.053882" rotation="0 90 0" collision="false" clipDistance="60" nodeId="27">
+        <Shape name="collision" shapeId="7" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="28"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big16" translation="4.05115 0.063269 -8.903034" rotation="0 180 0" collision="false" clipDistance="60" nodeId="29">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="30"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big17" translation="-0.448292 0.061259 -8.903034" rotation="0 180 0" collision="false" clipDistance="60" nodeId="31">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="32"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big18" translation="-3.436144 0.060749 -8.903034" rotation="0 90 0" collision="false" clipDistance="60" nodeId="33">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="34"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big19" translation="-4.94748 0.064091 -8.903034" rotation="0 180 0" collision="false" clipDistance="60" nodeId="35">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="36"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big20" translation="-7.933533 0.064041 -8.903034" rotation="0 90 0" collision="false" clipDistance="60" nodeId="37">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="38"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big21" translation="-7.933533 0.063478 14.006906" collision="false" clipDistance="60" nodeId="39">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="40"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big22" translation="-4.946203 0.062981 14.006906" rotation="0 -90 0" collision="false" clipDistance="60" nodeId="41">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="42"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big23" translation="-3.432577 0.059746 14.006906" collision="false" clipDistance="60" nodeId="43">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="44"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big24" translation="-0.442339 0.060584 14.006906" rotation="0 -90 0" collision="false" clipDistance="60" nodeId="45">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="46"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big25" translation="1.070134 0.062933 14.006906" collision="false" clipDistance="60" nodeId="47">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="48"/>
+      </TransformGroup>
+      <TransformGroup name="metalProtection_big26" translation="4.055746 0.062783 14.006906" rotation="0 -90 0" collision="false" clipDistance="60" nodeId="49">
+        <Shape name="collision" shapeId="6" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="50"/>
+      </TransformGroup>
+      <TransformGroup name="acUnitSmallVariation18" translation="-9.43613 1.963125 9.604126" collision="false" clipDistance="100" nodeId="51">
+        <Shape name="collision" translation="-0.352443 0 0" shapeId="2" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="52"/>
+        <Shape name="grid" translation="-0.352443 0 0" shapeId="3" castsShadows="true" receiveShadows="true" materialIds="3" clipDistance="300" nodeId="53">
+          <Shape name="roofVentsAcUnitSmallRot" translation="-0.250134 0.706658 0.023771" shapeId="18" castsShadows="true" receiveShadows="true" materialIds="4" clipDistance="75" nodeId="54"/>
+        </Shape>
+      </TransformGroup>
+      <TransformGroup name="acUnitSmallVariation19" translation="-9.43613 3.687479 9.604126" collision="false" clipDistance="100" nodeId="55">
+        <Shape name="collision" translation="-0.352443 0 0" shapeId="2" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="56"/>
+        <Shape name="grid" translation="-0.352443 0 0" shapeId="3" castsShadows="true" receiveShadows="true" materialIds="3" clipDistance="300" nodeId="57">
+          <Shape name="roofVentsAcUnitSmallRot" translation="-0.250134 0.706658 0.023771" shapeId="19" castsShadows="true" receiveShadows="true" materialIds="4" clipDistance="75" nodeId="58"/>
+        </Shape>
+      </TransformGroup>
+      <TransformGroup name="acUnitSmallVariation20" translation="-9.43613 3.687479 0.407297" collision="false" clipDistance="100" nodeId="59">
+        <Shape name="collision" translation="-0.352443 0 0" shapeId="2" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="60"/>
+        <Shape name="grid" translation="-0.352443 0 0" shapeId="3" castsShadows="true" receiveShadows="true" materialIds="3" clipDistance="300" nodeId="61">
+          <Shape name="roofVentsAcUnitSmallRot" translation="-0.250134 0.706658 0.023771" shapeId="20" castsShadows="true" receiveShadows="true" materialIds="4" clipDistance="75" nodeId="62"/>
+        </Shape>
+      </TransformGroup>
+      <TransformGroup name="acUnitSmallVariation21" translation="-9.064525 3.687479 -4.373071" collision="false" clipDistance="100" nodeId="63">
+        <Shape name="collision" translation="-0.352443 0 0" shapeId="2" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="64"/>
+        <Shape name="grid" translation="-0.352443 0 0" shapeId="3" castsShadows="true" receiveShadows="true" materialIds="3" clipDistance="300" nodeId="65">
+          <Shape name="roofVentsAcUnitSmallRot" translation="-0.250134 0.706658 0.023771" shapeId="21" castsShadows="true" receiveShadows="true" materialIds="4" clipDistance="75" nodeId="66"/>
+        </Shape>
+      </TransformGroup>
+      <TransformGroup name="airVentThick13" translation="-3.817179 5.441515 14.066318" collision="false" clipDistance="100" nodeId="67">
+        <Shape name="collision" shapeId="22" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="68"/>
+      </TransformGroup>
+      <TransformGroup name="airVentThick1" translation="-0.059677 5.441515 14.066318" collision="false" clipDistance="100" nodeId="69">
+        <Shape name="collision" shapeId="22" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="70"/>
+      </TransformGroup>
+      <TransformGroup name="firehose8_lod" translation="-8.598109 1.340018 -8.901067" rotation="0 450 0" lodDistance="0 8" collision="false" density="0" clipDistance="80" nodeId="71">
+        <Shape name="LOD0" shapeId="14" castsShadows="true" receiveShadows="true" materialIds="5" nodeId="72"/>
+        <Shape name="LOD1" shapeId="15" castsShadows="true" receiveShadows="true" materialIds="5" nodeId="73"/>
+        <Shape name="collision" shapeId="16" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="74"/>
+      </TransformGroup>
+      <TransformGroup name="firehose9_lod" translation="-9.430273 1.340018 0.720882" rotation="0 540 0" lodDistance="0 8" collision="false" density="0" clipDistance="80" nodeId="75">
+        <Shape name="LOD0" shapeId="14" castsShadows="true" receiveShadows="true" materialIds="5" nodeId="76"/>
+        <Shape name="LOD1" shapeId="15" castsShadows="true" receiveShadows="true" materialIds="5" nodeId="77"/>
+        <Shape name="collision" shapeId="16" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="78"/>
+      </TransformGroup>
+      <TransformGroup name="firehose10_lod" translation="4.672625 1.340018 14.006806" rotation="0 630 0" lodDistance="0 8" collision="false" density="0" clipDistance="80" nodeId="79">
+        <Shape name="LOD0" shapeId="14" castsShadows="true" receiveShadows="true" materialIds="5" nodeId="80"/>
+        <Shape name="LOD1" shapeId="15" castsShadows="true" receiveShadows="true" materialIds="5" nodeId="81"/>
+        <Shape name="collision" shapeId="16" static="true" collisionFilterMask="0xfffffbff" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="2" nodeId="82"/>
+      </TransformGroup>
+      <TransformGroup name="ac17" translation="11.260987 5.524559 0.64676" collision="false" clipDistance="60" nodeId="83">
+        <Shape name="net" translation="0 -0.18045 0" shapeId="13" castsShadows="true" receiveShadows="true" materialIds="7" nodeId="84"/>
+      </TransformGroup>
+      <TransformGroup name="ac19" translation="7.082674 4.154965 9.450088" rotation="0 -90 0" collision="false" clipDistance="60" nodeId="85">
+        <Shape name="net" translation="0 -0.18045 0" shapeId="13" castsShadows="true" receiveShadows="true" materialIds="7" nodeId="86"/>
+      </TransformGroup>
+      <TransformGroup name="fireAlarm6_lod" translation="-7.735529 3.580557 14.008591" rotation="0 270 0" lodDistance="0 8" static="true" nodeId="87">
+        <Shape name="LOD0" shapeId="11" castsShadows="true" receiveShadows="true" materialIds="5" clipDistance="60" nodeId="88"/>
+        <Shape name="LOD1" shapeId="12" castsShadows="true" receiveShadows="true" materialIds="5" clipDistance="60" nodeId="89"/>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+  <UserAttributes>
+  </UserAttributes>
+</i3D>

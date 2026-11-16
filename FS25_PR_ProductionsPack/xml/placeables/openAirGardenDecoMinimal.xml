@@ -1,0 +1,772 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="greenhouse" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_storeItem_openAirGardenDecoMinimal</name>
+        <functions>
+            <function>$l10n_function_openAirGardenDecoMinimalg</function>
+        </functions>
+        <image>store/store_openAirGardenDecoMinimal.dds</image>
+        <price>8000</price>
+        <dailyUpkeep>10</dailyUpkeep>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>NONE</brand>
+        <species>placeable</species>
+        <category>placeableMisc</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Greenhouse</tab>
+        </brush>
+        <canBeSold>true</canBeSold>
+        <storeIconRendering>
+            <settings cameraXRot="-20" cameraYRot="30" advancedBoundingBox="true"/>
+        </storeIconRendering>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <vertexBufferMemoryUsage>1539072</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>315392</indexBufferMemoryUsage>
+        <textureMemoryUsage>27000832</textureMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>i3d/placeables/openAirGarden/openAirGardenDecoMinimal.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+        <boughtWithFarmland>true</boughtWithFarmland>
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testArea1Start" endNode="testArea1End" />
+        </testAreas>
+        <sounds>
+            <place template="medImp" />
+        </sounds>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="clearArea1Start" widthNode="clearArea1Width" heightNode="clearArea1Height"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="1" maxSlope="75" maxEdgeAngle="30">
+        <levelAreas>
+            <levelArea startNode="levelArea1Start" widthNode="levelArea1Width" heightNode="levelArea1Height" />
+        </levelAreas>
+        <paintAreas>
+            <paintArea startNode="paintArea1StartGravel" heightNode="paintArea1HeightGravel" groundType="gravel" widthNode="paintArea1WidthGravel" />
+            <paintArea startNode="paintArea2StartGravel" heightNode="paintArea2HeightGravel" groundType="gravel" widthNode="paintArea2WidthGravel" />
+            <paintArea startNode="paintArea3StartGravel" heightNode="paintArea3HeightGravel" groundType="gravel" widthNode="paintArea3WidthGravel" />
+            <paintArea startNode="paintArea4StartGrass" heightNode="paintArea4HeightGrass" groundType="grass" widthNode="paintArea4WidthGrass" />
+            <paintArea startNode="paintArea5StartGrass" heightNode="paintArea5HeightGrass" groundType="grass" widthNode="paintArea5WidthGrass" />
+        </paintAreas>
+    </leveling>
+
+
+    <foliageAreas>
+        <foliageArea widthNode="paintArea4WidthGrass" heightNode="paintArea4HeightGrass" decoFoliage="grassShort" startNode="paintArea4StartGrass" />
+        <foliageArea widthNode="paintArea5WidthGrass" heightNode="paintArea5HeightGrass" decoFoliage="grassShort" startNode="paintArea5StartGrass" />
+
+        <foliageArea widthNode="foliageArea6WidthGrass" heightNode="foliageArea6HeightGrass" decoFoliage="grassShort" startNode="foliageArea6StartGrass" />
+        <foliageArea widthNode="foliageArea7WidthGrass" heightNode="foliageArea7HeightGrass" decoFoliage="grassShort" startNode="foliageArea7StartGrass" />
+        <foliageArea widthNode="foliageArea8WidthGrass" heightNode="foliageArea8HeightGrass" decoFoliage="grassShort" startNode="foliageArea8StartGrass" />
+        <foliageArea widthNode="foliageArea9WidthGrass" heightNode="foliageArea9HeightGrass" decoFoliage="grassShort" startNode="foliageArea9StartGrass" />
+    </foliageAreas>
+
+
+    <indoorAreas>
+        <indoorArea startNode="indoorArea1Start" widthNode="indoorArea1Width" heightNode="indoorArea1Height"/>
+        <indoorArea startNode="indoorArea2Start" widthNode="indoorArea2Width" heightNode="indoorArea2Height"/>
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateArea1Start" endNode="tipOcclusionUpdateArea1End" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateArea1Start" endNode="tipOcclusionUpdateArea1End" />
+        </updateAreas>
+        <splines>
+            <spline node="aiLoadingSpline" />
+        </splines>
+    </ai>
+
+    <infoTrigger triggerNode="infoTrigger" />
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker" teleportNode="teleportNode" />
+    </hotspots>
+
+    <triggerMarkers>
+        <triggerMarker node="warningStripes" />
+        <triggerMarker node="markerLoading"   filename="$data/shared/assets/marker/markerIconLoad.i3d" adjustToGround="true" />
+        <triggerMarker node="playerTriggerMarker" filename="$data/shared/assets/marker/markerIconWrench.i3d" adjustToGround="true" />
+        <triggerMarker node="unloadTriggerMarker" filename="$data/shared/assets/marker/markerIconUnload.i3d"  adjustToGround="true" />
+    </triggerMarkers>
+
+    <greenhouse>
+        <plants>
+            <plant fillType="LETTUCE"       xmlFilename="xml/fruit/lettuce.xml" />
+            <plant fillType="tomato"        xmlFilename="xml/fruit/tomatoes.xml" />
+            <plant fillType="strawberry"    xmlFilename="xml/fruit/strawberry.xml" />
+            <plant fillType="SPRING_ONION"  xmlFilename="xml/fruit/springOnion.xml" />
+            <plant fillType="NAPACABBAGE"   xmlFilename="xml/fruit/napaCabbage.xml" />
+            <plant fillType="chilli"        xmlFilename="xml/fruit/chilli.xml" />
+            <plant fillType="garlic"        xmlFilename="xml/fruit/garlic.xml" />
+
+            <plant fillType="potato"        xmlFilename="xml/fruit/potato.xml" />
+            <plant fillType="sunflower"     xmlFilename="xml/fruit/sunflower.xml" />
+            <plant fillType="carrot"        xmlFilename="xml/fruit/carrot.xml" />
+            <plant fillType="pea"           xmlFilename="xml/fruit/pea.xml" />
+            <plant fillType="GREENBEAN"     xmlFilename="xml/fruit/greenBean.xml" />
+            <plant fillType="SPINACH"       xmlFilename="xml/fruit/spinach.xml" />
+            <plant fillType="PARSNIP"       xmlFilename="xml/fruit/parsnip.xml" />
+            <plant fillType="BEETROOT"      xmlFilename="xml/fruit/beetRoot.xml" />
+            <plant fillType="GRAPE"         xmlFilename="xml/fruit/grape.xml" />
+            <plant fillType="OLIVE"         xmlFilename="xml/fruit/olive.xml" />
+        </plants>
+
+        <plantSpaces>
+            <spacesParent node="plantNodes" useRandomYRot="false" />
+        </plantSpaces>
+
+        <sounds>
+            <watering template="defaultSprayer" linkNode="0>" loops="0" />
+        </sounds>
+
+        <!--<effectNodes>-->
+            <!--<effectNode effectNode="0>4|1" materialType="smoke" materialTypeId="1" fadeTime="0.5" />-->
+        <!--</effectNodes>-->
+    </greenhouse>
+
+    <productionPoint>
+        <productions>
+            <production id="lettuceSF" name="$l10n_fillType_lettuce" cyclesPerHour="16" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="42" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLET" amount="84" />
+                </inputs>
+                <outputs>
+                    <output fillType="LETTUCE" amount="84" />
+                </outputs>
+            </production>
+
+            <production id="tomatoSF" name="$l10n_fillType_tomato" cyclesPerHour="16" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="44" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLET" amount="88" />
+                </inputs>
+                <outputs>
+                    <output fillType="TOMATO" amount="88" />
+                </outputs>
+            </production>
+
+            <production id="strawberrySF" name="$l10n_fillType_strawberry" cyclesPerHour="8" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="44" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLET" amount="176" />
+                </inputs>
+                <outputs>
+                    <output fillType="STRAWBERRY" amount="176" />
+                </outputs>
+            </production>
+
+            <production id="springOnionSF" name="$l10n_fillType_springOnion" cyclesPerHour="8" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="42" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLET" amount="168" />
+                </inputs>
+                <outputs>
+                    <output fillType="SPRING_ONION" amount="168" />
+                </outputs>
+            </production>
+
+            <production id="napaCabbageSF" name="$l10n_fillType_napaCabbage" cyclesPerHour="8" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="84" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLET" amount="168" />
+                </inputs>
+                <outputs>
+                    <output fillType="NAPACABBAGE" amount="168" />
+                </outputs>
+            </production>
+
+            <production id="chilliSF" name="$l10n_fillType_chilli" cyclesPerHour="8" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="66" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLET" amount="176" />
+                </inputs>
+                <outputs>
+                    <output fillType="CHILLI" amount="176" />
+                </outputs>
+            </production>
+
+            <production id="garlicSF" name="$l10n_fillType_garlic" cyclesPerHour="12" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="30" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLET" amount="120" />
+                </inputs>
+                <outputs>
+                    <output fillType="GARLIC" amount="120" />
+                </outputs>
+            </production>
+
+            <production id="potatoSF" name="$l10n_fillType_potato" cyclesPerHour="32" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="22" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLETSFILLABLE" amount="0.110" />
+                </inputs>
+                <outputs>
+                    <output fillType="POTATO" amount="110" />
+                </outputs>
+            </production>
+
+            <production id="sunflowerSF" name="$l10n_fillType_sunflower" cyclesPerHour="16" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="40" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLETSFILLABLE" amount="0.080" />
+                </inputs>
+                <outputs>
+                    <output fillType="SUNFLOWER" amount="80" />
+                </outputs>
+            </production>
+
+            <production id="carrotSF" name="$l10n_fillType_carrots" cyclesPerHour="32" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="22" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLETSFILLABLE" amount="0.176" />
+                </inputs>
+                <outputs>
+                    <output fillType="CARROT" amount="176" />
+                </outputs>
+            </production>
+
+            <production id="parsnipSF" name="$l10n_fillType_parsnip" cyclesPerHour="32" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="22" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLETSFILLABLE" amount="0.176" />
+                </inputs>
+                <outputs>
+                    <output fillType="PARSNIP" amount="176" />
+                </outputs>
+            </production>
+
+            <production id="BEETROOTSF" name="$l10n_fillType_beetRoot" cyclesPerHour="32" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="22" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLETSFILLABLE" amount="0.198" />
+                </inputs>
+                <outputs>
+                    <output fillType="BEETROOT" amount="198" />
+                </outputs>
+            </production>
+
+            <production id="peaSF" name="$l10n_fillType_pea" cyclesPerHour="8" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="36" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLETSFILLABLE" amount="0.088" />
+                </inputs>
+                <outputs>
+                    <output fillType="PEA" amount="88" />
+                </outputs>
+            </production>
+
+            <production id="greenbeanSF" name="$l10n_fillType_greenBean" cyclesPerHour="16" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="22" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLETSFILLABLE" amount="0.066" />
+                </inputs>
+                <outputs>
+                    <output fillType="greenbean" amount="66" />
+                </outputs>
+            </production>
+
+            <production id="spinachSF" name="$l10n_fillType_spinach" cyclesPerHour="32" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="22" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLETSFILLABLE" amount="0.110" />
+                </inputs>
+                <outputs>
+                    <output fillType="spinach" amount="110" />
+                </outputs>
+            </production>
+
+            <production id="grapeSF" name="$l10n_fillType_grape" cyclesPerHour="16" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="44" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLETSFILLABLE" amount="0.088" />
+                </inputs>
+                <outputs>
+                    <output fillType="GRAPE" amount="88" />
+                </outputs>
+            </production>
+
+            <production id="oliveSF" name="$l10n_fillType_olive" cyclesPerHour="16" costsPerActiveHour="0.1">
+                <inputs>
+                    <input fillType="WATER" amount="44" />
+                    <input fillType="SEEDS" amount="1" />
+                    <input fillType="FERTILIZER" amount="1" />
+                    <input fillType="EMPTYPALLETSFILLABLE" amount="0.088" />
+                </inputs>
+                <outputs>
+                    <output fillType="OLIVE" amount="88" />
+                </outputs>
+            </production>
+        </productions>
+
+        <sellingStation node="sellingStation" appearsOnStats="false" supportsExtension="true" hideFromPricesMenu="true">
+            <unloadTrigger exactFillRootNode="unloadTrigger" fillTypes="WATER SEEDS FERTILIZER MANURE" aiNode="unloadTriggerAINode" >
+                <fillTypeConversion ratio="0.2" outgoingFillType="fertilizer" incomingFillType="manure" />
+            </unloadTrigger>
+            <palletTrigger triggerNode="palletTrigger" aiNode="unloadTriggerAINode" fillTypes="EMPTYPALLET EMPTYPALLETSFILLABLE SEEDS FERTILIZER"/>
+        </sellingStation>
+
+        <loadingStation supportsExtension="false" >
+            <loadTrigger triggerNode="loadingTrigger" fillTypes="POTATO SUNFLOWER CARROT PARSNIP BEETROOT PEA GREENBEAN SPINACH GRAPE OLIVE" fillLitersPerSecond="2000" aiNode="aiNodeLoading">
+            </loadTrigger>
+        </loadingStation>
+
+        <palletSpawner node="palletSpawner">
+            <spawnPlaces>
+                <spawnPlace startNode="spawnPlace1Start" />
+            </spawnPlaces>
+        </palletSpawner>
+
+        <storage node="storage" isExtension="false" fillTypes="WATER SEEDS FERTILIZER" >
+            <capacity fillType="WATER"          capacity="60000" />
+            <capacity fillType="SEEDS"          capacity="20000" />
+            <capacity fillType="FERTILIZER"     capacity="20000" />
+            <capacity fillType="EMPTYPALLET"    capacity="20000" />
+            <capacity fillType="EMPTYPALLETSFILLABLE" capacity="30" />
+
+            <capacity fillType="LETTUCE"        capacity="60000" />
+            <capacity fillType="TOMATO"         capacity="60000" />
+            <capacity fillType="STRAWBERRY"     capacity="60000" />
+            <capacity fillType="SPRING_ONION"   capacity="60000" />
+            <capacity fillType="NAPACABBAGE"    capacity="60000" />
+            <capacity fillType="CHILLI"         capacity="60000" />
+            <capacity fillType="GARLIC"         capacity="60000" />
+
+            <capacity fillType="POTATO"         capacity="100000" />
+            <capacity fillType="SUNFLOWER"      capacity="60000" />
+            <capacity fillType="CARROT"         capacity="100000" />
+            <capacity fillType="PARSNIP"        capacity="100000" />
+            <capacity fillType="BEETROOT"       capacity="100000" />
+            <capacity fillType="PEA"            capacity="60000" />
+            <capacity fillType="GREENBEAN"      capacity="60000" />
+            <capacity fillType="SPINACH"        capacity="100000" />
+
+            <capacity fillType="GRAPE"          capacity="60000" />
+            <capacity fillType="OLIVE"          capacity="60000" />
+
+        </storage>
+
+        <playerTrigger node="playerTrigger" />
+    </productionPoint>
+
+    <animatedObjects>
+        <animatedObject saveId="door1" >
+            <animation duration="3">
+                <part node="door1Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door1Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+                <part node="door1LeftSpring">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door1RightSpring">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+
+                <part node="doorFenceColi1Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="doorFenceColi1Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+
+            </animation>
+            <controls triggerNode="door1Trigger" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="door1" template="glassDoorLoop"/>
+                <negEnd linkNode="door1" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+        <animatedObject saveId="door2" >
+            <animation duration="3">
+                <part node="door2Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door2Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+                <part node="door2LeftSpring">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="door2RightSpring">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+                <part node="doorFenceColi2Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="doorFenceColi2Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 90 0"/>
+                </part>
+
+            </animation>
+            <controls triggerNode="door2Trigger" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="door2" template="glassDoorLoop"/>
+                <negEnd linkNode="door2" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+        <animatedObject saveId="door3" >
+            <animation duration="3">
+                <part node="door3Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+                <part node="door3Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 100 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="door3Trigger" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="door3" template="glassDoorLoop" />
+                <negEnd linkNode="door3" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+        <animatedObject saveId="door4" >
+            <animation duration="3">
+                <part node="door4Left">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+                <part node="door4Right">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="0.9" rotation="0 100 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="door4Trigger" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="door4" template="glassDoorLoop" />
+                <negEnd linkNode="door4" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="doorWide" >
+            <animation duration="3">
+                <part node="doorWideLeft2">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 180 0"/>
+                </part>
+                <part node="doorWideLeft1">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+                <part node="doorWideRight2">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -180 0"/>
+                </part>
+                <part node="doorWideRight1">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 90 0"/>
+                </part>
+
+                <part node="doorFenceColiWideLeft2">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -180 0"/>
+                </part>
+                <part node="doorFenceColiWideLeft1">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 90 0"/>
+                </part>
+                <part node="doorFenceColiWideRight2">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 180 0"/>
+                </part>
+                <part node="doorFenceColiWideRight1">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -90 0"/>
+                </part>
+
+            </animation>
+            <controls triggerNode="doorWideTrigger" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving file="$data/sounds/doors/doorFenceLoop_01.wav" loops="0" linkNode="doorWide" volume="0.8" radius="25" innerRadius="3" fadeOut="0.25"/>
+                <posEnd file="$data/sounds/doors/doorWoodOpen_01.wav" linkNode="doorWide" volume="0.8" radius="25" innerRadius="3" />
+                <negEnd file="$data/sounds/doors/doorWoodClose_01.wav" linkNode="doorWide" volume="0.8" radius="25" innerRadius="3" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="doorGardenHut" >
+            <animation duration="3">
+                <part node="doorGardenHut">
+                    <keyFrame time="0.1" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -130 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="doorGardenHutTrigger" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="doorGardenHut" template="glassDoorLoop" />
+                <negEnd linkNode="doorGardenHut" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="GreenhouseUp" >
+            <animation duration="3">
+                <part node="leverGreenhouse">
+                    <keyFrame time="0.0" rotation="60 0 0"/>
+                    <keyFrame time="0.1" rotation="-60 0 0"/>
+                </part>
+                <part node="greenhouse">
+                    <keyFrame time="0.0" translation="0 -5 0"/>
+                    <keyFrame time="1.0" translation="0 0 0"/>
+                </part>
+                <part node="greenhouseDoors">
+                    <keyFrame time="0.0" translation="0 -5 0"/>
+                    <keyFrame time="1.0" translation="0 0 0"/>
+                </part>
+
+            </animation>
+            <controls triggerNode="greenhouseTrigger" posAction="ACTIVATE_HANDTOOL" posText="l10nGreenhouseUp" negText="l10nGreenhouseDown" />
+            <sounds>
+                <moving file="$data/sounds/tools/milkrobot/milkrobot_door_01.wav" loops="0" linkNode="leverGreenhouse" volume="0.8" radius="5" innerRadius="3" fadeOut="0.25"/>
+                <posEnd file="$data/sounds/doors/doorWoodOpen_01.wav" linkNode="leverGreenhouse" volume="0.8" radius="5" innerRadius="3" />
+                <negEnd file="$data/sounds/doors/doorWoodClose_01.wav" linkNode="leverGreenhouse" volume="0.8" radius="5" innerRadius="3" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="CollisionUp" >
+            <animation duration="3">
+                <part node="leverCollision">
+                    <keyFrame time="0.0" rotation="60 0 0"/>
+                    <keyFrame time="0.1" rotation="-60 0 0"/>
+                </part>
+                <part node="fenceColis">
+                    <keyFrame time="0.0" translation="0 -2 0"/>
+                    <keyFrame time="1.0" translation="0 0 0"/>
+                </part>
+                <part node="fenceGateColis">
+                    <keyFrame time="0.0" translation="0 -2 0"/>
+                    <keyFrame time="1.0" translation="0 0 0"/>
+                </part>
+
+            </animation>
+            <controls triggerNode="collisionTrigger" posAction="ACTIVATE_HANDTOOL" posText="l10nColiUp" negText="l10nColiDown" />
+            <sounds>
+                <moving file="$data/sounds/tools/milkrobot/milkrobot_door_01.wav" loops="0" linkNode="leverCollision" volume="0.8" radius="5" innerRadius="3" fadeOut="0.25"/>
+                <posEnd file="$data/sounds/doors/doorWoodOpen_01.wav" linkNode="leverCollision" volume="0.8" radius="5" innerRadius="3" />
+                <negEnd file="$data/sounds/doors/doorWoodClose_01.wav" linkNode="leverCollision" volume="0.8" radius="5" innerRadius="3" />
+            </sounds>
+        </animatedObject>
+
+    </animatedObjects>
+
+    <solarPanels>
+        <solarPanelsConfigurations title="$l10n_gardenConfiguration">
+            <solarPanelsConfiguration name="$l10n_FenceGardenBeds" isActive="true" >
+                <objectChange node="fences" visibilityActive="true"/>
+                <objectChange node="doorFences" visibilityActive="true"/>
+                <objectChange node="noFence" visibilityActive="false"/>
+                <objectChange node="gardenBeds" visibilityActive="true"/>
+            </solarPanelsConfiguration>
+            <solarPanelsConfiguration name="$l10n_NoFenceGardenBeds" isActive="false" price="-1000">
+                <objectChange node="fences" visibilityActive="false"/>
+                <objectChange node="doorFences" visibilityActive="false"/>
+                <objectChange node="noFence" visibilityActive="true"/>
+                <objectChange node="gardenBeds" visibilityActive="true"/>
+            </solarPanelsConfiguration>
+            <solarPanelsConfiguration name="$l10n_FenceNoGardenBeds" isActive="false" price="-1000">
+                <objectChange node="fences" visibilityActive="true"/>
+                <objectChange node="doorFences" visibilityActive="true"/>
+                <objectChange node="noFence" visibilityActive="false"/>
+                <objectChange node="gardenBeds" visibilityActive="false"/>
+            </solarPanelsConfiguration>
+            <solarPanelsConfiguration name="$l10n_NoFenceNoGardenBeds" isActive="false" price="-2000">
+                <objectChange node="fences" visibilityActive="false"/>
+                <objectChange node="doorFences" visibilityActive="false"/>
+                <objectChange node="noFence" visibilityActive="true"/>
+                <objectChange node="gardenBeds" visibilityActive="false"/>
+            </solarPanelsConfiguration>
+        </solarPanelsConfigurations>
+    </solarPanels>
+
+    <i3dMappings>
+        <i3dMapping id="plantNodes" node="0>0|1" />
+        <i3dMapping id="sellingStation" node="0>0|3" />
+        <i3dMapping id="unloadTrigger" node="0>0|3|0" />
+        <i3dMapping id="unloadTriggerMarker" node="0>0|3|1" />
+        <i3dMapping id="unloadTriggerAINode" node="0>0|3|2" />
+        <i3dMapping id="palletTrigger" node="0>0|3|3" />
+
+        <i3dMapping id="storage" node="0>0|4" />
+        <i3dMapping id="playerTrigger" node="0>0|5" />
+        <i3dMapping id="playerTriggerMarker" node="0>0|6" />
+        <i3dMapping id="palletSpawner" node="0>0|7" />
+        <i3dMapping id="spawnPlace1Start" node="0>0|7|0" />
+        <i3dMapping id="spawnPlace1End" node="0>0|7|0|0" />
+
+        <i3dMapping id="doorGardenHutTrigger" node="0>9|2|0|0" />
+        <i3dMapping id="doorGardenHut" node="0>9|2|0|1" />
+
+        <i3dMapping id="door1" node="0>11|0" />
+        <i3dMapping id="door2" node="0>11|1" />
+        <i3dMapping id="doorWide" node="0>11|2" />
+        <i3dMapping id="door3" node="0>11|3" />
+        <i3dMapping id="door4" node="0>11|4" />
+
+        <i3dMapping id="door1Trigger" node="0>11|0|0" />
+        <i3dMapping id="door2Trigger" node="0>11|1|0" />
+        <i3dMapping id="doorWideTrigger" node="0>11|2|0" />
+        <i3dMapping id="door3Trigger" node="0>11|3|0" />
+        <i3dMapping id="door4Trigger" node="0>11|4|0" />
+
+        <i3dMapping id="fences" node="0>12|0" />
+        <i3dMapping id="noFence" node="0>12|1" />
+        <i3dMapping id="doorFences" node="0>12|2" />
+        <i3dMapping id="gardenBeds" node="0>12|3" />
+
+        <i3dMapping id="door1LeftSpring" node="0>12|2|0|0" />
+        <i3dMapping id="door1RightSpring" node="0>12|2|0|1" />
+        <i3dMapping id="door2LeftSpring" node="0>12|2|1|0" />
+        <i3dMapping id="door2RightSpring" node="0>12|2|1|1" />
+        <i3dMapping id="doorWideLeft1" node="0>12|2|2|0" />
+        <i3dMapping id="doorWideLeft2" node="0>12|2|2|0|0" />
+        <i3dMapping id="doorWideRight1" node="0>12|2|2|1" />
+        <i3dMapping id="doorWideRight2" node="0>12|2|2|1|0" />
+
+        <i3dMapping id="door1Left" node="0>13|1|0|0" />
+        <i3dMapping id="door1Right" node="0>13|1|0|1" />
+        <i3dMapping id="door2Left" node="0>13|1|1|0" />
+        <i3dMapping id="door2Right" node="0>13|1|1|1" />
+        <i3dMapping id="door3Left" node="0>13|1|2|0" />
+        <i3dMapping id="door3Right" node="0>13|1|2|1" />
+        <i3dMapping id="door4Left" node="0>13|1|3|0" />
+        <i3dMapping id="door4Right" node="0>13|1|3|1" />
+
+        <i3dMapping id="doorFenceColi1Left" node="0>13|4|0" />
+        <i3dMapping id="doorFenceColi1Right" node="0>13|4|1" />
+        <i3dMapping id="doorFenceColi2Left" node="0>13|4|2" />
+        <i3dMapping id="doorFenceColi2Right" node="0>13|4|3" />
+        
+        <i3dMapping id="doorFenceColiWideLeft1" node="0>13|4|4" />
+        <i3dMapping id="doorFenceColiWideLeft2" node="0>13|4|4|0" />
+        <i3dMapping id="doorFenceColiWideRight1" node="0>13|4|5" />
+        <i3dMapping id="doorFenceColiWideRight2" node="0>13|4|5|0" />
+
+        <i3dMapping id="clearArea1Start" node="0>2|0" />
+        <i3dMapping id="clearArea1Width" node="0>2|0|0" />
+        <i3dMapping id="clearArea1Height" node="0>2|0|1" />
+        <i3dMapping id="levelArea1Start" node="0>3|0" />
+        <i3dMapping id="levelArea1Width" node="0>3|0|0" />
+        <i3dMapping id="levelArea1Height" node="0>3|0|1" />
+
+        <i3dMapping id="paintArea1StartGravel" node="0>3|1" />
+        <i3dMapping id="paintArea1WidthGravel" node="0>3|1|0" />
+        <i3dMapping id="paintArea1HeightGravel" node="0>3|1|1" />
+        <i3dMapping id="paintArea2StartGravel" node="0>3|2" />
+        <i3dMapping id="paintArea2WidthGravel" node="0>3|2|0" />
+        <i3dMapping id="paintArea2HeightGravel" node="0>3|2|1" />
+        <i3dMapping id="paintArea3StartGravel" node="0>3|3" />
+        <i3dMapping id="paintArea3WidthGravel" node="0>3|3|0" />
+        <i3dMapping id="paintArea3HeightGravel" node="0>3|3|1" />
+        <i3dMapping id="paintArea4StartGrass" node="0>3|4" />
+        <i3dMapping id="paintArea4WidthGrass" node="0>3|4|0" />
+        <i3dMapping id="paintArea4HeightGrass" node="0>3|4|1" />
+        <i3dMapping id="paintArea5StartGrass" node="0>3|5" />
+        <i3dMapping id="paintArea5WidthGrass" node="0>3|5|0" />
+        <i3dMapping id="paintArea5HeightGrass" node="0>3|5|1" />
+        <i3dMapping id="foliageArea6StartGrass" node="0>3|6" />
+        <i3dMapping id="foliageArea6WidthGrass" node="0>3|6|0" />
+        <i3dMapping id="foliageArea6HeightGrass" node="0>3|6|1" />
+        <i3dMapping id="foliageArea7StartGrass" node="0>3|7" />
+        <i3dMapping id="foliageArea7WidthGrass" node="0>3|7|0" />
+        <i3dMapping id="foliageArea7HeightGrass" node="0>3|7|1" />
+        <i3dMapping id="foliageArea8StartGrass" node="0>3|8" />
+        <i3dMapping id="foliageArea8WidthGrass" node="0>3|8|0" />
+        <i3dMapping id="foliageArea8HeightGrass" node="0>3|8|1" />
+        <i3dMapping id="foliageArea9StartGrass" node="0>3|9" />
+        <i3dMapping id="foliageArea9WidthGrass" node="0>3|9|0" />
+        <i3dMapping id="foliageArea9HeightGrass" node="0>3|9|1" />
+
+        <i3dMapping id="indoorArea1Start" node="0>4|0" />
+        <i3dMapping id="indoorArea1Width" node="0>4|0|0" />
+        <i3dMapping id="indoorArea1Height" node="0>4|0|1" />
+        <i3dMapping id="indoorArea2Start" node="0>4|1" />
+        <i3dMapping id="indoorArea2Width" node="0>4|1|0" />
+        <i3dMapping id="indoorArea2Height" node="0>4|1|1" />
+        <i3dMapping id="testArea1Start" node="0>5|0" />
+        <i3dMapping id="testArea1End" node="0>5|0|0" />
+        <i3dMapping id="tipOcclusionUpdateArea1Start" node="0>6|0" />
+        <i3dMapping id="tipOcclusionUpdateArea1End" node="0>6|0|0" />
+        <i3dMapping id="infoTrigger" node="0>7" />
+        <i3dMapping id="warningStripes" node="0>8" />
+        <i3dMapping id="teleportNode" node="0>1" />
+
+        <i3dMapping id="loadingTrigger" node="0>0|8|0|0" />
+        <i3dMapping id="markerLoading" node="0>0|8|0|0|0" />
+        <i3dMapping id="aiNodeLoading" node="0>0|8|0|0|1" />
+        <i3dMapping id="aiLoadingSpline" node="0>0|8|1" />
+
+        <i3dMapping id="leverGreenhouse" node="0>13|0|1|0" />
+        <i3dMapping id="greenhouseDoors" node="0>13|1" />
+        <i3dMapping id="greenhouse" node="0>13|2" />
+        <i3dMapping id="greenhouseTrigger" node="0>13|0|0" />
+
+        <i3dMapping id="leverCollision" node="0>13|0|3|0" />
+        <i3dMapping id="fenceGateColis" node="0>13|4" />
+        <i3dMapping id="fenceColis" node="0>13|3" />
+        <i3dMapping id="collisionTrigger" node="0>13|0|2" />
+
+
+    </i3dMappings>
+</placeable>

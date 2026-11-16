@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="PR_productionPoint_storage" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_storeItem_readyMealsProcessing</name>
+        <functions>
+            <function>$l10n_function_readyMealsProcessing</function>
+        </functions>
+        <image>store/store_readyMealsProcessing.png</image>
+        <price>20000</price>
+        <dailyUpkeep>40</dailyUpkeep>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>PRI</brand>
+        <species>PLACEABLE</species>
+        <category>productionPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Production</tab>
+        </brush>
+        <vertexBufferMemoryUsage>432896</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>64256</indexBufferMemoryUsage>
+        <textureMemoryUsage>11075584</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>i3d/readyMealsProcessing.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+        <boughtWithFarmland>true</boughtWithFarmland>
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testAreaStart01" endNode="testAreaEnd01" />
+        </testAreas>
+
+        <sounds>
+            <place template="medImp" />
+        </sounds>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="clearAreaStart01" widthNode="clearAreaWidth01" heightNode="clearAreaHeight01"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="10" maxSlope="75" maxEdgeAngle="30">
+        <levelAreas>
+            <levelArea startNode="levelAreaStart01" widthNode="levelAreaWidth01" heightNode="levelAreaHeight01" groundType="gravel"/>
+        </levelAreas>
+    </leveling>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01" />
+    </indoorAreas>
+
+    <triggerMarkers>
+        <triggerMarker node="warningStripesUnload" adjustToGround="true" />
+        <triggerMarker node="warningStripesSpawn" adjustToGround="true" />
+        <triggerMarker node="playerTriggerMarker" filename="$data/shared/assets/marker/markerIconWrench.i3d" adjustToGround="true"/>
+        <triggerMarker node="unloadTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+        <triggerMarker node="objectTriggerMarkerStorage" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true" />
+        <triggerMarker node="playerTriggerMarkerStorage" filename="$data/shared/assets/marker/markerIconPallet.i3d" adjustToGround="true" />
+    </triggerMarkers>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+        </updateAreas>
+    </ai>
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker" teleportNode="playerTriggerMarker"/>
+    </hotspots>
+
+    <infoTrigger triggerNode="infoTrigger"/>
+
+    <productionPoint>
+        <productions>
+            <production id="crawfishEtouffee" name="$l10n_fillType_crawfishEtouffee" cyclesPerHour="2" costsPerActiveHour="16">
+                <inputs>
+                    <input fillType="COOKINGOIL" amount="15" />
+                    <input fillType="FLOUR" amount="20" />
+                    <input fillType="SPRING_ONION" amount="28" />
+                    <input fillType="CHILLI" amount="28" />
+                    <input fillType="GARLIC" amount="28" />
+                    <input fillType="CRAWFISH" amount="100" />
+                    <input fillType="WATER" amount="100" />
+                    <input fillType="RICE_DRY" amount="55" />
+                    <input fillType="EMPTYPALLET" amount="250" />
+                </inputs>
+                <outputs>
+                    <output fillType="CRAWFISHETOUFFEE" amount="250" /> <!-- 12,000 per day -->
+                </outputs>
+            </production>
+            <production id="spaghettiMeatballs" name="$l10n_fillType_spaghettiMeatballs" cyclesPerHour="3" costsPerActiveHour="16">
+                <inputs>
+                    <input fillType="SPRING_ONION" amount="18" />
+                    <input fillType="CHILLI" amount="18" />
+                    <input fillType="GARLIC" amount="28" />
+                    <input fillType="TOMATO" amount="38" /> <!-- Add tomato sauce -->
+                    <input fillType="CHEESE" amount="18" />
+                    <input fillType="SPAGHETTIPASTA" amount="90" />
+                    <input fillType="GROUNDBEEF" amount="60" />
+                    <input fillType="WATER" amount="100" />
+                    <input fillType="EMPTYPALLET" amount="240" />
+                </inputs>
+                <outputs>
+                    <output fillType="SPAGHETTIMEATBALLS" amount="240" /> <!--  per day -->
+                </outputs>
+            </production>
+            <production id="spaghettiSausage" name="$l10n_fillType_spaghettiSausage" cyclesPerHour="3" costsPerActiveHour="16">
+                <inputs>
+                    <input fillType="SPRING_ONION" amount="18" />
+                    <input fillType="CHILLI" amount="28" />
+                    <input fillType="GARLIC" amount="28" />
+                    <input fillType="TOMATO" amount="40" /> <!-- Add tomato sauce -->
+                    <input fillType="CHEESE" amount="18" />
+                    <input fillType="SPAGHETTIPASTA" amount="90" />
+                    <input fillType="SAUSAGE" amount="50" />
+                    <input fillType="WATER" amount="100" />
+                    <input fillType="EMPTYPALLET" amount="230" />
+                </inputs>
+                <outputs>
+                    <output fillType="SPAGHETTISAUSAGE" amount="230" /> <!--  per day -->
+                </outputs>
+            </production>
+        </productions>
+
+        <storage isExtension="false" fillLevelSyncThreshold="50">
+            <!-- INPUT -->
+            <capacity fillType="COOKINGOIL"     capacity="10000" />
+            <capacity fillType="FLOUR"          capacity="50000" />
+            <capacity fillType="SPRING_ONION"   capacity="10000" />
+            <capacity fillType="CHILLI"         capacity="10000" />
+            <capacity fillType="GARLIC"         capacity="10000" />
+            <capacity fillType="TOMATO"         capacity="10000" />
+            <capacity fillType="CHEESE"         capacity="10000" />
+            <capacity fillType="CRAWFISH"       capacity="20000" />
+            <capacity fillType="WATER"          capacity="50000" />
+            <capacity fillType="RICE_DRY"       capacity="50000" />
+            <capacity fillType="SPAGHETTIPASTA" capacity="40000" />
+            <capacity fillType="CRAWFISH"       capacity="20000" />
+            <capacity fillType="GROUNDBEEF"     capacity="30000" />
+            <capacity fillType="SAUSAGE"        capacity="30000" />
+            <capacity fillType="EMPTYPALLET"    capacity="200000" />
+            <!-- OUTPUT -->
+            <capacity fillType="CRAWFISHETOUFFEE"   capacity="70000" />
+            <capacity fillType="SPAGHETTIMEATBALLS" capacity="80000" />
+            <capacity fillType="SPAGHETTISAUSAGE"   capacity="80000" />
+        </storage>
+
+        <sellingStation node="sellingStation" supportsExtension="false">
+            <unloadTrigger exactFillRootNode="exactFillRootNode" aiNode="unloadTriggerAINode" fillTypes="WATER RICELONGGRAIN_DRY RICE_DRY" >
+                <fillTypeConversion ratio="0.77" outgoingFillType="RICE_DRY" incomingFillType="RICELONGGRAIN_DRY" />
+            </unloadTrigger>
+
+            <palletTrigger triggerNode="palletTrigger" aiNode="unloadTriggerAINode" fillTypes="COOKINGOIL FLOUR SPRING_ONION CHILLI GARLIC TOMATO CHEESE SPAGHETTIPASTA GROUNDBEEF SAUSAGE CRAWFISH RICE_DRY RICELONGGRAIN_DRY SUNFLOWER_OIL CANOLA_OIL OLIVE_OIL RICEFLOUR FLOURSACKS PEASFLOUR EMPTYPALLET" >
+            <!-- CRAWFISHETOUFFEE SPAGHETTIMEATBALLS SPAGHETTISAUSAGE  -->
+
+                <fillTypeConversion ratio="1" outgoingFillType="COOKINGOIL" incomingFillType="SUNFLOWER_OIL" />
+                <fillTypeConversion ratio="1" outgoingFillType="COOKINGOIL" incomingFillType="OLIVE_OIL" />
+                <fillTypeConversion ratio="1" outgoingFillType="COOKINGOIL" incomingFillType="CANOLA_OIL" />
+
+                <fillTypeConversion ratio="1" outgoingFillType="FLOUR" incomingFillType="RICEFLOUR" />
+                <fillTypeConversion ratio="1" outgoingFillType="FLOUR" incomingFillType="FLOURSACKS" />
+                <fillTypeConversion ratio="1" outgoingFillType="FLOUR" incomingFillType="PEASFLOUR" />
+            </palletTrigger>
+
+        </sellingStation>
+
+        <palletSpawner>
+            <spawnPlaces>
+                <spawnPlace startNode="spawnAreaStart01Production" endNode="spawnAreaEnd01Production"/>
+            </spawnPlaces>
+        </palletSpawner>
+
+        <playerTrigger node="playerTrigger" />
+        <sounds>
+            <!-- <idle   template="dairyIdle" linkNode="0>" /> -->
+            <idle />
+            <active template="dairyWork" linkNode="0>" />
+        </sounds>
+    </productionPoint>
+
+    <objectStorage supportsBales="false" supportsPallets="true"  maxLength="2.5" maxWidth="2.5" maxHeight="1.7" capacity="116">
+        <playerTrigger node="playerTriggerStorage" />
+        <objectTrigger node="objectTriggerStorage" />
+        <spawnAreas>
+            <spawnArea startNode="spawnAreaStart01Storage" endNode="spawnAreaEnd01Storage" directionNode="spawnDirectionNode"/>
+        </spawnAreas>
+        <storageAreas>
+            <storageArea startNode="storageAreaA1Start" endNode="storageAreaA1End"/>
+            <storageArea startNode="storageAreaA2Start" endNode="storageAreaA2End"/>
+            <storageArea startNode="storageAreaA3Start" endNode="storageAreaA3End"/>
+            <storageArea startNode="storageAreaA4Start" endNode="storageAreaA4End"/>
+            <storageArea startNode="storageAreaB1Start" endNode="storageAreaB1End"/>
+            <storageArea startNode="storageAreaB2Start" endNode="storageAreaB2End"/>
+            <storageArea startNode="storageAreaB3Start" endNode="storageAreaB3End"/>
+            <storageArea startNode="storageAreaB4Start" endNode="storageAreaB4End"/>
+            <storageArea startNode="storageAreaC1Start" endNode="storageAreaC1End"/>
+            <storageArea startNode="storageAreaC2Start" endNode="storageAreaC2End"/>
+            <storageArea startNode="storageAreaC3Start" endNode="storageAreaC3End"/>
+            <storageArea startNode="storageAreaC4Start" endNode="storageAreaC4End"/>
+            <storageArea startNode="storageAreaD1Start" endNode="storageAreaD1End"/>
+            <storageArea startNode="storageAreaD2Start" endNode="storageAreaD2End"/>
+            <storageArea startNode="storageAreaD3Start" endNode="storageAreaD3End"/>
+            <storageArea startNode="storageAreaD4Start" endNode="storageAreaD4End"/>
+            <storageArea startNode="storageAreaE1Start" endNode="storageAreaE1End"/>
+            <storageArea startNode="storageAreaE2Start" endNode="storageAreaE2End"/>
+            <storageArea startNode="storageAreaE3Start" endNode="storageAreaE3End"/>
+            <storageArea startNode="storageAreaE4Start" endNode="storageAreaE4End"/>
+            <!-- "spawnDirectionNode"
+            "spawnDirectionNode90" -->
+
+        </storageAreas>
+    </objectStorage>
+
+    <animatedObjects>
+        <animatedObject saveId="Door1" >
+            <animation duration="1.5">
+                <part node="door1">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="triggerDoor1" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="triggerDoor1" template="woodDoorSqueaksSmall" pitchScale="0.8"/>
+                <posEnd linkNode="triggerDoor1" template="woodDoorOpen" />
+                <negEnd linkNode="triggerDoor1" template="woodDoorCloseRandom" />
+            </sounds>
+        </animatedObject>
+        <animatedObject saveId="rollingDoor1" >
+            <animation duration="5">
+                <part node="rollingDoor1ColBottom">
+                    <keyFrame time="0.0" translation="0 0 0"/>
+                    <keyFrame time="1.0" translation="0 3.8 0"/>
+                </part>
+                <part node="rollingDoor1ColTop">
+                    <keyFrame time="0.0" translation="0 0 0"/>
+                    <keyFrame time="0.55" translation="0 0 0"/>
+                    <keyFrame time="1.0" translation="0 1.7 0"/>
+                </part>
+                <part node="rollingDoor1">
+                    <keyFrame time="0.0" translation="0 0 0" />
+                    <keyFrame time="1.0" translation="0 3.85 0" />
+                </part>
+                <shader node="rollingDoor1" parameterName="visibilityCutThreshold">
+                    <keyFrame time="0.0" values="0 - - -" />
+                    <keyFrame time="1.0" values="0.94 - - -" />
+                </shader>
+            </animation>
+            <!-- <controls triggerNode="rollingDoor1Trigger" posAction="ACTIVATE_HANDTOOL" posText="action_openGate" negText="action_closeGate" /> -->
+            <controls triggerNode="triggerGateRollup01" posAction="ACTIVATE_HANDTOOL" posText="Open Storage Door" negText="Close Storage Door" />
+            <sounds>
+                <moving linkNode="rollingDoor1Base" template="rollingGarageDoor" />
+                <posEnd linkNode="rollingDoor1Base" template="slidingGateMetalOpen" />
+                <negEnd linkNode="rollingDoor1Base" template="slidingGateMetalClose" />
+            </sounds>
+        </animatedObject>
+        <animatedObject saveId="rollingDoor2" >
+            <animation duration="5">
+                <part node="rollingDoor2ColBottom">
+                    <keyFrame time="0.0" translation="0 0 0"/>
+                    <keyFrame time="1.0" translation="0 3.8 0"/>
+                </part>
+                <part node="rollingDoor2ColTop">
+                    <keyFrame time="0.0" translation="0 0 0"/>
+                    <keyFrame time="0.55" translation="0 0 0"/>
+                    <keyFrame time="1.0" translation="0 1.7 0"/>
+                </part>
+                <part node="rollingDoor2">
+                    <keyFrame time="0.0" translation="0 0 0"/>
+                    <keyFrame time="1.0" translation="0 3.85 0"/>
+                </part>
+                <shader node="rollingDoor2" parameterName="visibilityCutThreshold">
+                    <keyFrame time="0.0" values="0 - - -" />
+                    <keyFrame time="1.0" values="0.94 - - -" />
+                </shader>
+            </animation>
+            <!-- <controls triggerNode="rollingDoor2Trigger" posAction="ACTIVATE_HANDTOOL" posText="action_openGate" negText="action_closeGate" /> -->
+            <controls triggerNode="triggerGateDrapes01" posAction="ACTIVATE_HANDTOOL" posText="Open Storage Door" negText="Close Storage Door" />
+            <sounds>
+                <moving linkNode="rollingDoor2Base" template="rollingGarageDoor" />
+                <posEnd linkNode="rollingDoor2Base" template="slidingGateMetalOpen" />
+                <negEnd linkNode="rollingDoor2Base" template="slidingGateMetalClose" />
+            </sounds>
+        </animatedObject>
+
+    </animatedObjects>
+
+    <i3dMappings>
+        <!--Doors-->
+        <i3dMapping id="Door1" node="0>0|0" />
+        <i3dMapping id="door1" node="0>0|0|0" />
+        <i3dMapping id="triggerDoor1" node="0>0|0|1" />
+        <i3dMapping id="rollingDoor1Base" node="0>0|1" />
+        <i3dMapping id="rollingDoor1ColBottom" node="0>0|1|0" />
+        <i3dMapping id="rollingDoor1ColTop" node="0>0|1|1" />
+        <i3dMapping id="rollingDoor1" node="0>0|1|2" />
+        <i3dMapping id="triggerGateRollup01" node="0>0|1|3|0" />
+        <i3dMapping id="powerSwitchRollup01" node="0>0|1|3|1" />
+        <!-- <i3dMapping id="rollingDoor1Trigger" node="0>0|1|4" /> -->
+
+        <i3dMapping id="rollingDoor2Base" node="0>0|2" />
+        <i3dMapping id="rollingDoor2ColBottom" node="0>0|2|0" />
+        <i3dMapping id="rollingDoor2ColTop" node="0>0|2|1" />
+        <i3dMapping id="rollingDoor2" node="0>0|2|2" />
+        <i3dMapping id="triggerGateDrapes01" node="0>0|2|3|0" />
+        <i3dMapping id="powerSwitchDrapes01" node="0>0|2|3|1" />
+        <!-- <i3dMapping id="rollingDoor2Trigger" node="0>0|2|4" /> -->
+
+        <!--Area-->
+        <i3dMapping id="clearAreaStart01" node="0>1|0" />
+        <i3dMapping id="clearAreaWidth01" node="0>1|0|0" />
+        <i3dMapping id="clearAreaHeight01" node="0>1|0|1" />
+        <i3dMapping id="levelAreaStart01" node="0>2|0" />
+        <i3dMapping id="levelAreaWidth01" node="0>2|0|0" />
+        <i3dMapping id="levelAreaHeight01" node="0>2|0|1" />
+        <i3dMapping id="indoorAreaStart01" node="0>3|0" />
+        <i3dMapping id="indoorAreaWidth01" node="0>3|0|0" />
+        <i3dMapping id="indoorAreaHeight01" node="0>3|0|1" />
+        <i3dMapping id="testAreaStart01" node="0>4|0" />
+        <i3dMapping id="testAreaEnd01" node="0>4|0|0" />
+
+        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>5|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaEnd01" node="0>5|0|0" />
+
+        <i3dMapping id="spawnAreaStart01Storage" node="0>6|0|0" />
+        <i3dMapping id="spawnAreaEnd01Storage"   node="0>6|0|0|0" />
+        <i3dMapping id="spawnAreaStart01Production" node="0>6|0|1" />
+        <i3dMapping id="spawnAreaEnd01Production"   node="0>6|0|1|0" />
+
+        <i3dMapping id="storageAreaA1Start" node="0>6|0|2" />
+        <i3dMapping id="storageAreaA1End"   node="0>6|0|2|0" />
+        <i3dMapping id="storageAreaA2Start" node="0>6|0|3" />
+        <i3dMapping id="storageAreaA2End"   node="0>6|0|3|0" />
+        <i3dMapping id="storageAreaA3Start" node="0>6|0|4" />
+        <i3dMapping id="storageAreaA3End"   node="0>6|0|4|0" />
+        <i3dMapping id="storageAreaA4Start" node="0>6|0|5" />
+        <i3dMapping id="storageAreaA4End"   node="0>6|0|5|0" />
+        <i3dMapping id="storageAreaB1Start" node="0>6|0|6" />
+        <i3dMapping id="storageAreaB1End"   node="0>6|0|6|0" />
+        <i3dMapping id="storageAreaB2Start" node="0>6|0|7" />
+        <i3dMapping id="storageAreaB2End"   node="0>6|0|7|0" />
+        <i3dMapping id="storageAreaB3Start" node="0>6|0|8" />
+        <i3dMapping id="storageAreaB3End"   node="0>6|0|8|0" />
+        <i3dMapping id="storageAreaB4Start" node="0>6|0|9" />
+        <i3dMapping id="storageAreaB4End"   node="0>6|0|9|0" />
+        <i3dMapping id="storageAreaC1Start" node="0>6|0|10" />
+        <i3dMapping id="storageAreaC1End"   node="0>6|0|10|0" />
+        <i3dMapping id="storageAreaC2Start" node="0>6|0|11" />
+        <i3dMapping id="storageAreaC2End"   node="0>6|0|11|0" />
+        <i3dMapping id="storageAreaC3Start" node="0>6|0|12" />
+        <i3dMapping id="storageAreaC3End"   node="0>6|0|12|0" />
+        <i3dMapping id="storageAreaC4Start" node="0>6|0|13" />
+        <i3dMapping id="storageAreaC4End"   node="0>6|0|13|0" />
+        <i3dMapping id="storageAreaD1Start" node="0>6|0|14" />
+        <i3dMapping id="storageAreaD1End"   node="0>6|0|14|0" />
+        <i3dMapping id="storageAreaD2Start" node="0>6|0|15" />
+        <i3dMapping id="storageAreaD2End"   node="0>6|0|15|0" />
+        <i3dMapping id="storageAreaD3Start" node="0>6|0|16" />
+        <i3dMapping id="storageAreaD3End"   node="0>6|0|16|0" />
+        <i3dMapping id="storageAreaD4Start" node="0>6|0|17" />
+        <i3dMapping id="storageAreaD4End"   node="0>6|0|17|0" />
+        <i3dMapping id="storageAreaE1Start" node="0>6|0|18" />
+        <i3dMapping id="storageAreaE1End"   node="0>6|0|18|0" />
+        <i3dMapping id="storageAreaE2Start" node="0>6|0|19" />
+        <i3dMapping id="storageAreaE2End"   node="0>6|0|19|0" />
+        <i3dMapping id="storageAreaE3Start" node="0>6|0|20" />
+        <i3dMapping id="storageAreaE3End"   node="0>6|0|20|0" />
+        <i3dMapping id="storageAreaE4Start" node="0>6|0|21" />
+        <i3dMapping id="storageAreaE4End"   node="0>6|0|21|0" />
+
+        <i3dMapping id="playerTrigger"              node="0>6|1" />
+        <i3dMapping id="playerTriggerMarker"        node="0>6|1|0" />
+        <i3dMapping id="infoTrigger"                node="0>6|2" />
+        <i3dMapping id="playerTriggerStorage"       node="0>6|4" />
+        <i3dMapping id="playerTriggerMarkerStorage" node="0>6|4|0" />
+        <i3dMapping id="spawnDirectionNode"         node="0>6|5" />
+        <i3dMapping id="spawnDirectionNode90"       node="0>6|6" />
+
+        <i3dMapping id="sellingStation"             node="0>7" />
+        <i3dMapping id="exactFillRootNode"          node="0>7|0" />
+        <i3dMapping id="palletTrigger"              node="0>7|1" />
+        <i3dMapping id="unloadTriggerMarker"        node="0>7|2" />
+        <i3dMapping id="unloadTriggerAINode"        node="0>7|3" />
+        <i3dMapping id="objectTriggerStorage"       node="0>7|4|0" />
+        <i3dMapping id="objectTriggerMarkerStorage" node="0>7|4|1" />
+        <i3dMapping id="warningStripesUnload"       node="0>7|4|2" />
+        <i3dMapping id="warningStripesSpawn"        node="0>7|5" />
+    </i3dMappings>
+</placeable>

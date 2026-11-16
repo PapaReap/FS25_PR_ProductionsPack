@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+
+<placeable type="productionPoint" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_storeItem_grainDryerShed</name>
+        <functions>
+            <function>$l10n_function_grainDryerShed</function>
+        </functions>
+        <image>store/store_grainDryerShed.dds</image>
+        <price>40000</price>
+        <dailyUpkeep>50</dailyUpkeep>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>PRI</brand>
+        <species>placeable</species>
+        <category>productionPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Production</tab>
+        </brush>
+        <vertexBufferMemoryUsage>1645824</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>378112</indexBufferMemoryUsage>
+        <textureMemoryUsage>21299200</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+     <base>
+        <filename>i3d/grainDryerShed.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+        <boughtWithFarmland>true</boughtWithFarmland>
+    </base>
+
+   <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testArea1Start" endNode="testArea1End" />
+        </testAreas>
+
+        <sounds>
+            <place template="largeImp" />
+        </sounds>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="clearArea1Start" widthNode="clearArea1Width" heightNode="clearArea1Height"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="1" maxSlope="75" maxEdgeAngle="30">
+        <levelAreas>
+            <levelArea startNode="levelArea1Start" widthNode="levelArea1Width" heightNode="levelArea1Height" groundType="concrete"/>
+        </levelAreas>
+    </leveling>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorArea1Start" widthNode="indoorArea1Width" heightNode="indoorArea1Height" />
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateArea1Start" endNode="tipOcclusionUpdateArea1End" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateArea1Start" endNode="tipOcclusionUpdateArea1End" />
+        </updateAreas>
+    </ai>
+
+    <infoTrigger triggerNode="infoTrigger"/>
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="hotspotMarker" teleportNode="teleportNode"/>
+    </hotspots>
+
+    <animatedObjects>
+        <animatedObject saveId="items">
+            <animation duration="0.1">
+                <part node="items">
+                    <keyFrame time="0.0" translation="0 0.207 5.554" visibility="true" />
+                    <keyFrame time="1.0" translation="0 0.207 5.554" visibility="false" />
+                </part>
+            </animation>
+             <controls triggerNode="itemsTrigger" posAction="ACTIVATE_HANDTOOL" posText="Hide_Items" negText="Show_Items" />
+        </animatedObject>
+    </animatedObjects>
+
+    <productionPoint>
+        <productions sharedThroughputCapacity="false">
+<!-- WOODCHIPS -->
+            <production id="WHEAT_DRY" name="$l10n_fillType_wheat_dry" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="WHEAT" amount="1000" />
+                    <input fillType="WOODCHIPS" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="WHEAT_DRY" amount="1000" />
+                </outputs>
+            </production>
+            <production id="BARLEY_DRY" name="$l10n_fillType_barley_dry" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="BARLEY" amount="1000" />
+                    <input fillType="WOODCHIPS" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="BARLEY_DRY" amount="1000" />
+                </outputs>
+            </production>
+            <production id="OAT_DRY" name="$l10n_fillType_oat_dry" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="OAT" amount="1000" />
+                    <input fillType="WOODCHIPS" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="OAT_DRY" amount="1000" />
+                </outputs>
+            </production>
+            <production id="CORN_DRY" name="$l10n_fillType_corn_dry" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="MAIZE" amount="1000" />
+                    <input fillType="WOODCHIPS" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="CORN_DRY" amount="1000" />
+                </outputs>
+            </production>
+    <!-- NEW -->
+            <production id="RICELONGGRAIN_DRY" name="$l10n_fillType_riceLongGrain_dry" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="RICELONGGRAIN" amount="1000" />
+                    <input fillType="WOODCHIPS" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="RICELONGGRAIN_DRY" amount="1000" />
+                </outputs>
+            </production>
+
+            <production id="RICE_DRY" name="$l10n_fillType_rice_dry" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="RICE" amount="1000" />
+                    <input fillType="WOODCHIPS" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="RICE_DRY" amount="1000" />
+                </outputs>
+            </production>
+
+            <production id="SORGHUM_DRY" name="$l10n_fillType_sorghum_dry" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="SORGHUM" amount="1000" />
+                    <input fillType="WOODCHIPS" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="SORGHUM_DRY" amount="1000" />
+                </outputs>
+            </production>
+    <!-- NEW END -->
+<!-- WOODCHIPS END -->
+
+<!-- METHANE -->
+            <production id="WHEAT_DRY_M" name="$l10n_wheat_methane" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="WHEAT" amount="1000" />
+                    <input fillType="METHANE" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="WHEAT_DRY" amount="1000" />
+                </outputs>
+            </production>
+            <production id="BARLEY_DRY_M" name="$l10n_barley_methane" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="BARLEY" amount="1000" />
+                    <input fillType="METHANE" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="BARLEY_DRY" amount="1000" />
+                </outputs>
+            </production>
+            <production id="OAT_DRY_M" name="$l10n_oats_methane" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="OAT" amount="1000" />
+                    <input fillType="METHANE" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="OAT_DRY" amount="1000" />
+                </outputs>
+            </production>
+            <production id="CORN_DRY_M" name="$l10n_corn_methane" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="MAIZE" amount="1000" />
+                    <input fillType="METHANE" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="CORN_DRY" amount="1000" />
+                </outputs>
+            </production>
+    <!-- NEW -->
+            <production id="RICELONGGRAIN_DRY_M" name="$l10n_riceLongGrain_methane" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="RICELONGGRAIN" amount="1000" />
+                    <input fillType="METHANE" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="RICELONGGRAIN_DRY" amount="1000" />
+                </outputs>
+            </production>
+
+            <production id="RICE_DRY_M" name="$l10n_rice_methane" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="RICE" amount="1000" />
+                    <input fillType="METHANE" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="RICE_DRY" amount="1000" />
+                </outputs>
+            </production>
+
+            <production id="SORGHUM_DRY_M" name="$l10n_sorghum_methane" cyclesPerHour="100" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="SORGHUM" amount="1000" />
+                    <input fillType="METHANE" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="SORGHUM_DRY" amount="1000" />
+                </outputs>
+            </production>
+    <!-- NEW END -->
+<!-- METHANE END-->
+
+        </productions>
+
+        <storage isExtension="false" fillLevelSyncThreshold="50">
+            <capacity fillType="WHEAT"    capacity="500000" />
+            <capacity fillType="WHEAT_DRY"   capacity="500000" />
+            <capacity fillType="BARLEY"    capacity="500000" />
+            <capacity fillType="BARLEY_DRY"   capacity="500000" />
+            <capacity fillType="OAT"    capacity="500000" />
+            <capacity fillType="OAT_DRY"   capacity="500000" />
+            <capacity fillType="MAIZE"    capacity="500000" />
+            <capacity fillType="CORN_DRY"   capacity="500000" />
+    <!-- NEW -->
+            <capacity fillType="RICELONGGRAIN"   capacity="500000" />
+            <capacity fillType="RICELONGGRAIN_DRY"   capacity="500000" />
+            <capacity fillType="RICE"   capacity="500000" />
+            <capacity fillType="RICE_DRY"   capacity="500000" />
+            <capacity fillType="SORGHUM"   capacity="500000" />
+            <capacity fillType="SORGHUM_DRY"   capacity="500000" />
+    <!-- NEW END -->
+            <capacity fillType="WOODCHIPS"    capacity="500000" />
+            <capacity fillType="METHANE"    capacity="500000" />
+       </storage>
+
+        <sellingStation node="sellingStation" appearsOnStats="false" supportsExtension="false" allowMissions="false" hideFromPricesMenu="true">
+            <unloadTrigger exactFillRootNode="unloadTrigger" fillTypes="WHEAT BARLEY OAT MAIZE RICELONGGRAIN RICE SORGHUM"/>
+            <unloadTrigger exactFillRootNode="unloadTrigger1" fillTypes="WOODCHIPS"/>
+            <unloadTrigger exactFillRootNode="unloadTrigger2" fillTypes="METHANE"/>
+            <baleTrigger triggerNode="BaleUnloadTrigger" fillTypes="WOODCHIPS"/>
+        </sellingStation>
+
+       <loadingStation node="loadingTrigger">
+            <loadTrigger triggerNode="loadingTrigger" fillTypes="WHEAT_DRY WHEAT BARLEY_DRY BARLEY OAT_DRY OAT CORN_DRY MAIZE RICELONGGRAIN RICELONGGRAIN_DRY RICE RICE_DRY SORGHUM SORGHUM_DRY" fillLitersPerSecond="2000" dischargeNode="dischargeNode" >
+                <effectNode effectClass="PipeEffect" effectNode="pipeEffect"      materialType="pipe"           fadeTime="0.5" maxBending="0" controlPoint="4.8 0 0 0" />
+                <effectNode                          effectNode="pipeEffectSmoke" materialType="unloadingSmoke" fadeTime="0.5" />
+            </loadTrigger>
+        </loadingStation>
+
+
+        <playerTrigger node="playerTrigger" />
+
+        <sounds>
+            <active template="grainMillWork" linkNode="0>" />
+        </sounds>
+
+    </productionPoint>
+
+    <triggerMarkers>
+        <triggerMarker node="0>14|1" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true" />
+        <triggerMarker node="0>14|2|1" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true" />
+        <triggerMarker node="0>12|0" filename="$data/shared/assets/marker/markerIconWrench.i3d" adjustToGround="true" />
+        <triggerMarker node="0>10|1" filename="$data/shared/assets/marker/markerIconLoad.i3d"   adjustToGround="true" />
+        <triggerMarker node="0>15|1" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true" />
+        <triggerMarker node="0>0|9" filename="$data/shared/assets/marker/markerIconWrench.i3d" adjustToGround="true" />
+    </triggerMarkers>
+
+    <storeItems>
+        <storeItem xmlFilename="vehicles/mks8/mks8.xml"/>
+        <storeItem xmlFilename="vehicles/mks32/mks32.xml"/>
+    </storeItems>
+    <i3dMappings>
+        <i3dMapping id="sellingStation" node="0>14" />
+        <i3dMapping id="unloadTrigger" node="0>14|0" />
+        <i3dMapping id="unloadTriggerMarker" node="0>14|1" />
+        <i3dMapping id="clearAreas" node="0>4" />
+        <i3dMapping id="clearArea1Start" node="0>4|0" />
+        <i3dMapping id="clearArea1Width" node="0>4|0|0" />
+        <i3dMapping id="clearArea1Height" node="0>4|0|1" />
+        <i3dMapping id="mapPosition" node="0>13" />
+        <i3dMapping id="levelAreas" node="0>5" />
+        <i3dMapping id="levelArea1Start" node="0>5|0" />
+        <i3dMapping id="levelArea1Width" node="0>5|0|0" />
+        <i3dMapping id="levelArea1Height" node="0>5|0|1" />
+        <i3dMapping id="paintArea1Start" node="0>6|0" />
+        <i3dMapping id="paintArea1Width" node="0>6|0|0" />
+        <i3dMapping id="paintArea1Height" node="0>6|0|1" />
+        <i3dMapping id="paintArea2Start" node="0>6|1" />
+        <i3dMapping id="paintArea2Width" node="0>6|1|0" />
+        <i3dMapping id="paintArea2Height" node="0>6|1|1" />
+        <i3dMapping id="testAreas" node="0>7" />
+        <i3dMapping id="testArea1Start" node="0>7|0" />
+        <i3dMapping id="testArea1End" node="0>7|0|0" />
+        <i3dMapping id="tipOcclusionUpdateAreas" node="0>9" />
+        <i3dMapping id="tipOcclusionUpdateArea1Start" node="0>9|0" />
+        <i3dMapping id="tipOcclusionUpdateArea1End" node="0>9|0|0" />
+        <i3dMapping id="infoTrigger" node="0>3" />
+        <i3dMapping id="occluderMesh" node="0>0|1|2" />
+        <i3dMapping id="indoorAreas" node="0>8" />
+        <i3dMapping id="indoorArea1Start" node="0>8|0" />
+        <i3dMapping id="indoorArea1Width" node="0>8|0|0" />
+        <i3dMapping id="indoorArea1Height" node="0>8|0|1" />
+        <i3dMapping id="unloadTrigger1" node="0>14|2|0" />
+        <i3dMapping id="unloadTriggerMarker" node="0>14|2|1" />
+        <i3dMapping id="loadingTrigger" node="0>10|0|0" />
+        <i3dMapping id="dischargeNode" node="0>10|0|1" />
+        <i3dMapping id="markerUnloading" node="0>10|1" />
+        <i3dMapping id="teleportNode" node="0>1" />
+        <i3dMapping id="navigationRootNode" node="0>2" />
+        <i3dMapping id="playerTrigger" node="0>12" />
+        <i3dMapping id="playerTriggerMarker" node="0>12|0" />
+        <i3dMapping id="hotspotMarker" node="0>13" />
+        <i3dMapping id="pipeEffect" node="0>10|0|2|0" />
+        <i3dMapping id="pipeEffectSmoke" node="0>10|0|2|1" />
+        <i3dMapping id="unloadTrigger2" node="0>15|0" />
+        <i3dMapping id="unloadTriggerMarker" node="0>15|1" />
+        <i3dMapping id="items" node="0>0|8" />
+        <i3dMapping id="itemsTrigger" node="0>0|9" />
+        <i3dMapping id="BaleUnloadTrigger" node="0>14|2|2" />
+    </i3dMappings>
+</placeable>

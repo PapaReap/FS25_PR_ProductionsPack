@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="flourSacks.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="5" filename="../../textures/food/bakeryGoodsFood_diffuse.png"/>
+    <File fileId="6" filename="../../textures/food/bakeryGoodsFood_normal.png"/>
+    <File fileId="7" filename="../../textures/food/bakeryGoodsFood_specular.png"/>
+    <File fileId="2" filename="../../textures/food/flourSackSet_diffuse.dds"/>
+    <File fileId="3" filename="../../textures/food/flourSackSet_normal.dds"/>
+    <File fileId="4" filename="../../textures/food/flourSackSet_specular.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="bakeryGoodsFood_mat" materialId="5">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+    </Material>
+    <Material name="flourSackSet_mat" materialId="6">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+    <Material name="lambert1" materialId="7" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="flourSacks.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="flourSacks" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" clipDistance="150" nodeId="15" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7">
+      <Shape name="flourSacks04" lockedgroup="true" shapeId="2" clipDistance="140" nodeId="16" castsShadows="true" receiveShadows="true" materialIds="6">
+        <Shape name="dynamicMountTrigger" shapeId="3" visibility="false" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="17" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+        <TransformGroup name="dischargeNode" nodeId="18"/>
+        <TransformGroup name="content" nodeId="19">
+          <Shape name="bread01" shapeId="4" clipDistance="50" nodeId="20" castsShadows="true" receiveShadows="true" materialIds="5">
+            <Shape name="flourBox01Tension" shapeId="5" nodeId="21" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+          </Shape>
+        </TransformGroup>
+        <TransformGroup name="collisions" clipDistance="10" nodeId="22">
+          <Shape name="floorCollision01" shapeId="6" compoundChild="true" collisionFilterGroup="0x100110a" collisionFilterMask="0x100110a" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="23" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+        </TransformGroup>
+      </Shape>
+    </Shape>
+  </Scene>
+
+</i3D>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="doghouse_DS.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="8" filename="$data/shaders/placeableShader.xml"/>
+    <File fileId="5" filename="../../textures/product/doghouse_diffuse.dds"/>
+    <File fileId="6" filename="../../textures/product/doghouse_normal.dds"/>
+    <File fileId="7" filename="../../textures/product/doghouse_specular.dds"/>
+    <File fileId="2" filename="../../textures/food/euroPallet01_diffuse.dds"/>
+    <File fileId="3" filename="../../textures/food/euroPallet01_normal.dds"/>
+    <File fileId="4" filename="../../textures/food/euroPallet01_specular.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="doghouse_mat" materialId="5" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+    </Material>
+    <Material name="euroPallet01_mat" materialId="6">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+    <Material name="lambert1" materialId="7" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="doghouse_DS.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="doghouse_DS_component1" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" clipDistance="150" nodeId="15" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7">
+      <Shape name="doghouse_DS" translation="0 0 0.00714842" shapeId="2" nodeId="16" castsShadows="true" receiveShadows="true" materialIds="6">
+        <Shape name="dynamicMountTrigger" translation="0 0.0904753 0" shapeId="3" visibility="false" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="17" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+        <TransformGroup name="dischargeNode" translation="0 0.6 0" nodeId="18"/>
+        <TransformGroup name="content" nodeId="19">
+          <TransformGroup name="doghouse" translation="-0.0359472 0.136587 -1.17131e-08" rotation="-1.4534e-05 -90 4.54936e-05" scale="1 0.929843 1" nodeId="20">
+            <Shape name="Tension1" translation="1.84823e-07 -0.00225538 0.00536129" rotation="-3.02839e-12 1.36604e-05 8.00388e-12" scale="1 1.07545 1" shapeId="4" nodeId="21" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+            <TransformGroup name="winter" nodeId="22"/>
+            <Shape name="doghouse" shapeId="5" clipDistance="200" nodeId="23" castsShadows="true" receiveShadows="true" materialIds="5"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="collisions" clipDistance="10" nodeId="24">
+          <Shape name="floorCollision01" translation="0.3 0 0" shapeId="6" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="25" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+          <Shape name="floorCollision02" translation="-0.3 0 0" shapeId="6" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="26" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+        </TransformGroup>
+      </Shape>
+    </Shape>
+  </Scene>
+
+</i3D>

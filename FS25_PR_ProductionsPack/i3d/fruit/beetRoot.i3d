@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="beetRoot.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="14" filename="$data/foliage/beetRoot/dead_alpha.png"/>
+    <File fileId="11" filename="$data/foliage/beetRoot/dead_diffuse.png"/>
+    <File fileId="12" filename="$data/foliage/beetRoot/dead_normal.png"/>
+    <File fileId="13" filename="$data/foliage/beetRoot/dead_specular.png"/>
+    <File fileId="6" filename="$data/foliage/beetRoot/greenBig_alpha.png"/>
+    <File fileId="1" filename="$data/foliage/beetRoot/greenBig_diffuse.png"/>
+    <File fileId="2" filename="$data/foliage/beetRoot/greenBig_normal.png"/>
+    <File fileId="3" filename="$data/foliage/beetRoot/greenBig_specular.png"/>
+    <File fileId="10" filename="$data/foliage/beetRoot/harvestReady_alpha.png"/>
+    <File fileId="7" filename="$data/foliage/beetRoot/harvestReady_diffuse.png"/>
+    <File fileId="8" filename="$data/foliage/beetRoot/harvestReady_normal.png"/>
+    <File fileId="9" filename="$data/foliage/beetRoot/harvestReady_specular.png"/>
+    <File fileId="4" filename="$data/shaders/fruitGrowthFoliageShader.xml"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="dead_mat" materialId="5" customShaderId="4" customShaderVariation="PLANT_ROWS">
+      <Texture fileId="11"/>
+      <Normalmap fileId="12"/>
+      <Glossmap fileId="13"/>
+      <Custommap name="alphaMap" fileId="14"/>
+    </Material>
+    <Material name="greenBig_mat" materialId="6" customShaderId="4" customShaderVariation="PLANT_ROWS">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <Custommap name="alphaMap" fileId="6"/>
+    </Material>
+    <Material name="harvestReady_mat" materialId="7" customShaderId="4" customShaderVariation="PLANT_ROWS">
+      <Texture fileId="7"/>
+      <Normalmap fileId="8"/>
+      <Glossmap fileId="9"/>
+      <Custommap name="alphaMap" fileId="10"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="beetRoot.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="beetRoot" nodeId="21">
+      <TransformGroup name="greenBig" nodeId="22">
+        <Shape name="gb1" translation="0 0 -0.145074" shapeId="1" clipDistance="500" nodeId="23" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb2" translation="0 0 0.17403" shapeId="2" clipDistance="500" nodeId="24" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb1_x_inv" translation="0 0 -0.560723" shapeId="3" clipDistance="500" nodeId="25" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb2_x_inv" translation="0 0 -0.978721" shapeId="4" clipDistance="500" nodeId="26" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb1_x_inv" translation="0 0 1.08159" shapeId="3" clipDistance="500" nodeId="27" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="gb2_x_inv" translation="0 0 0.663597" shapeId="4" clipDistance="500" nodeId="28" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+      </TransformGroup>
+      <TransformGroup name="harvestReady" nodeId="29">
+        <Shape name="hr1" translation="0 0 -0.0722521" shapeId="5" clipDistance="500" nodeId="30" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr2" translation="0 0 0.377658" shapeId="6" clipDistance="500" nodeId="31" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr1_x_inv" translation="0 0 -0.591164" shapeId="7" clipDistance="500" nodeId="32" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr2_x_inv" translation="0 0 -0.975732" shapeId="8" clipDistance="500" nodeId="33" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr1_x_inv" translation="0 0 1.00816" shapeId="7" clipDistance="500" nodeId="34" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="hr2_x_inv" translation="0 0 0.623594" shapeId="8" clipDistance="500" nodeId="35" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+      </TransformGroup>
+      <TransformGroup name="dead" nodeId="36">
+        <Shape name="d1" translation="0 0 -0.122941" shapeId="9" clipDistance="500" nodeId="37" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="d2" translation="0 0 0.35162" shapeId="10" clipDistance="500" nodeId="38" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="d1_x_inv" translation="0 0 -0.641852" shapeId="11" clipDistance="500" nodeId="39" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="d2_x_inv" translation="0 0 -1.07397" shapeId="12" clipDistance="500" nodeId="40" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="d1_x_inv" translation="0 0 1.10553" shapeId="11" clipDistance="500" nodeId="41" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="d2_x_inv" translation="0 0 0.673416" shapeId="12" clipDistance="500" nodeId="42" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

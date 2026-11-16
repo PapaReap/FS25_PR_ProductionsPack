@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="productionPoint" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_storeItem_woodChipProduction</name>
+        <functions>
+            <function>$l10n_function_woodChipProduction</function>
+        </functions>
+        <image>store/store_newWoodchipProduction.dds</image>
+        <price>53000</price>
+        <showInStore>true</showInStore>
+        <lifetime>1000</lifetime>
+        <dailyUpkeep>85</dailyUpkeep>
+        <rotation>0</rotation>
+        <brand>PRI</brand>
+        <species>PLACEABLE</species>
+        <category>productionPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Production</tab>
+        </brush>
+        <vertexBufferMemoryUsage>3383808</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>839680</indexBufferMemoryUsage>
+        <textureMemoryUsage>47644672</textureMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>i3d/newWoodchipProduction.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true">
+        <testAreas>
+            <testArea startNode="testAreaStart01" endNode="testAreaEnd01" />
+            <testArea startNode="testAreaStart02" endNode="testAreaEnd02" />
+        </testAreas>
+        <sounds>
+            <place template="buildableImp" />
+        </sounds>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="clearAreaStart01" widthNode="clearAreaWidth01" heightNode="clearAreaHeight01"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="10" maxSlope="75" maxEdgeAngle="30" >
+        <levelAreas>
+            <levelArea startNode="levelAreaStart01" widthNode="levelAreaWidth01" heightNode="levelAreaHeight01" />
+            <levelArea startNode="levelAreaStart02" widthNode="levelAreaWidth02" heightNode="levelAreaHeight02" />
+        </levelAreas>
+        <paintAreas>
+            <paintArea startNode="paintAreaStart01" widthNode="paintAreaWidth01" heightNode="paintAreaHeight01" groundType="concrete" />
+            <paintArea startNode="paintAreaStart02" widthNode="paintAreaWidth02" heightNode="paintAreaHeight02" groundType="concrete" />
+        </paintAreas>
+    </leveling>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01" />
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+        </updateAreas>
+    </ai>
+
+    <infoTrigger triggerNode="infoTrigger"/>
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker" teleportNode="playerTriggerMarker" />
+    </hotspots>
+
+    <triggerMarkers>
+        <triggerMarker node="unloadTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+        <triggerMarker node="playerTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconWrench.i3d"/>
+        <triggerMarker node="unloadTriggerMarkerLiquid" adjustToGround="true" filename="$data/shared/assets/marker/markerIconWater.i3d"/>
+        <triggerMarker node="woodActivationTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconExclamationMark.i3d" />
+        <triggerMarker node="loadingTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconLoad.i3d" />
+        <triggerMarker node="warningStripes"/>
+    </triggerMarkers>
+
+    <lights>
+        <group name="$l10n_action_placeableLightShed" triggerNode="triggerLight">
+            <sounds>
+                <toggle template="lizardFloodLight" innerRadius="50" outerRadius="100" volumeScale="0.2"/>
+            </sounds>
+        </group>
+        <group name="$l10n_action_placeableLightShed" activateTime="17:30" deactivateTime="8:20">
+            <sounds>
+                <toggle template="lizardFloodLight" innerRadius="50" outerRadius="100" volumeScale="0.2"/>
+            </sounds>
+        </group>
+
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="sharedLight01" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="sharedLight02" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="sharedLight03" groupIndex="1"/>
+        <realLights>
+            <low>
+                <light node="realLightsLow" groupIndex="1"/>
+            </low>
+            <high>
+                <light node="realLightsHigh" groupIndex="1"/>
+            </high>
+        </realLights>
+    </lights>
+
+    <animatedObjects>
+        <animatedObject saveId="door01" >
+            <animation duration="2">
+                <part node="doorLeftSmallRef">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 110 0"/>
+                </part>
+                <part node="doorLeftSmall_lod0">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 110 0"/>
+                </part>
+                <part node="doorLeftSmall_lod1">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 110 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="triggerDoor01" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving  template="woodDoorSqueaksSmall" linkNode="doorLeftSmallRef" volumeScale="0.6" pitchScale="0.8"/>
+                <posEnd  template="woodDoorOpen"    linkNode="doorLeftSmallRef" volumeScale="0.2"/>
+                <negEnd  template="woodDoorCloseRandom"   linkNode="doorLeftSmallRef"/>
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="door02" >
+            <animation duration="2">
+                <part node="gate01_doorLeftRef">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+                <part node="gate01_doorLeft_lod0">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+                <part node="gate01_doorLeft_lod1">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+
+                <part node="gate01_doorRightRef">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 100 0"/>
+                </part>
+                <part node="gate01_doorRight_lod0">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 100 0"/>
+                </part>
+                <part node="gate01_doorRight_lod1">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 100 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="triggerDoor02" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="gate01_doorLeftRef" template="woodBigDoorLoop" />
+                <posEnd linkNode="gate01_doorLeftRef" template="metalDoorsOpen" />
+                <negEnd linkNode="gate01_doorLeftRef" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="door03" >
+            <animation duration="2">
+                <part node="gate02_doorLeftRef">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+                <part node="gate02_doorLeft_lod0">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+                <part node="gate02_doorLeft_lod1">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+
+                <part node="gate02_doorRightRef">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 100 0"/>
+                </part>
+                <part node="gate02_doorRight_lod0">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 100 0"/>
+                </part>
+                <part node="gate02_doorRight_lod1">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 100 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="triggerDoor03" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="gate02_doorLeftRef" template="woodBigDoorLoop" />
+                <posEnd linkNode="gate02_doorLeftRef" template="metalDoorsOpen" />
+                <negEnd linkNode="gate02_doorLeftRef" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="door04" >
+            <animation duration="2">
+                <part node="gate03_doorLeftRef">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+                <part node="gate03_doorLeft_lod0">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+                <part node="gate03_doorLeft_lod1">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 -100 0"/>
+                </part>
+
+                <part node="gate03_doorRightRef">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 110 0"/>
+                </part>
+                <part node="gate03_doorRight_lod0">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 100 0"/>
+                </part>
+                <part node="gate03_doorRight_lod1">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="0 100 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="triggerDoor04" posAction="ACTIVATE_HANDTOOL" posText="action_openDoor" negText="action_closeDoor" />
+            <sounds>
+                <moving linkNode="gate03_doorLeftRef" template="woodBigDoorLoop" />
+                <posEnd linkNode="gate03_doorLeftRef" template="metalDoorsOpen" />
+                <negEnd linkNode="gate03_doorLeftRef" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="grainLid" >
+            <animation duration="3">
+                <part node="grainLid">
+                    <keyFrame time="0.0" rotation="0 0 0"/>
+                    <keyFrame time="1.0" rotation="-105 0 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="triggerDoor05" posAction="ACTIVATE_HANDTOOL" posText="action_openGrainLid" negText="action_closeGrainLid" />
+            <sounds>
+                <moving linkNode="grainLid" template="metalDoorsLoop" />
+                <posEnd linkNode="grainLid" template="metalDoorsOpen" />
+                <negEnd linkNode="grainLid" template="metalDoorsClose" />
+            </sounds>
+        </animatedObject>
+
+        <animatedObject saveId="palletBlocker" >
+            <animation duration="3">
+                <part node="palletBlocker01Anim">
+                    <keyFrame time="0.0" translation="-10.747 0 -1.387"/>
+                    <keyFrame time="0.4" translation="-12.724 0 -2.101"/>
+                    <keyFrame time="0.8" translation="-12.424 0 -2.301"/>
+                    <keyFrame time="1.0" translation="-12.424 0 -2.301" rotation="0 90 0"/>
+                </part>
+                <part node="palletBlocker02Anim">
+                    <keyFrame time="0.0" translation="-10.649 0 -1.214"/>
+                    <keyFrame time="0.4" translation="-12.624 0 -1.929"/>
+                    <keyFrame time="0.8" translation="-12.424 0 -0.587"/>
+                    <keyFrame time="1.0" translation="-12.424 0 -0.587" rotation="0 90 0"/>
+                </part>
+                <part node="palletBlocker03Anim">
+                    <keyFrame time="0.0" translation="-10.747 0 1.587"/>
+                    <keyFrame time="0.4" translation="-12.724 0 1.929"/>
+                    <keyFrame time="0.8" translation="-12.424 0 1.129"/>
+                    <keyFrame time="1.0" translation="-12.424 0 1.129" rotation="0 90 0"/>
+                </part>
+                <part node="palletBlocker04Anim">
+                    <keyFrame time="0.0" translation="-10.649 0 1.803"/>
+                    <keyFrame time="0.4" translation="-12.624 0 2.101"/>
+                    <keyFrame time="0.8" translation="-12.424 0 2.783"/>
+                    <keyFrame time="1.0" translation="-12.424 0 2.783" rotation="0 90 0"/>
+                </part>
+            </animation>
+            <controls triggerNode="palletBlockerTrigger" posAction="ACTIVATE_HANDTOOL" posText="action_blockPallets" negText="action_unblockPallets" />
+        </animatedObject>
+    </animatedObjects>
+
+    <productionPoint>
+        <productions sharedThroughputCapacity="false">
+            <production id="mdfBoards" name="$l10n_fillType_mdfBoards" cyclesPerHour="14" costsPerActiveHour="1"><!-- 16,800 per day -->
+                <inputs>
+                    <input fillType="WOODCHIPS" amount="100" />
+                    <input fillType="WATER" amount="10" />
+                    <input fillType="EMPTYPALLET" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="MDFBOARDS" amount="50" />
+                </outputs>
+            </production>
+
+            <production id="osbBoards" name="$l10n_fillType_osbBoards" cyclesPerHour="15" costsPerActiveHour="1"><!-- 23,400 per day -->
+                <inputs>
+                    <input fillType="WOODCHIPS" amount="100" />
+                    <input fillType="WATER" amount="10" />
+                    <input fillType="EMPTYPALLET" amount="65" />
+                </inputs>
+                <outputs>
+                    <output fillType="OSBBOARDS" amount="65" />
+                </outputs>
+            </production>
+
+            <production id="darkBrownWoodMulch" name="$l10n_fillType_woodMulchDarkBrown" cyclesPerHour="18" costsPerActiveHour="1"><!-- 43,200 per day -->
+                <inputs>
+                    <input fillType="WOODCHIPS" amount="100" />
+                    <input fillType="EMPTYPALLET" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODMULCHDARKBROWN" amount="100" />
+                </outputs>
+            </production>
+            <production id="naturalWoodMulch" name="$l10n_fillType_woodMulchNatural" cyclesPerHour="18" costsPerActiveHour="1"><!-- 43,200 per day -->
+                <inputs>
+                    <input fillType="WOODCHIPS" amount="100" />
+                    <input fillType="EMPTYPALLET" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODMULCHNATURAL" amount="100" />
+                </outputs>
+            </production>
+            <production id="redWoodMulch" name="$l10n_fillType_woodMulchRed" cyclesPerHour="18" costsPerActiveHour="1"><!-- 43,200 per day -->
+                <inputs>
+                    <input fillType="WOODCHIPS" amount="100" />
+                    <input fillType="EMPTYPALLET" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODMULCHRED" amount="100" />
+                </outputs>
+            </production>
+
+            <production id="fireLogs" name="$l10n_fillType_fireLogs" cyclesPerHour="10" costsPerActiveHour="1"><!-- 14,400 per day -->
+                <inputs>
+                    <input fillType="WOODCHIPS" amount="100" />
+                    <input fillType="DIESEL" amount="10" />
+                    <input fillType="WATER" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="60" />
+                </inputs>
+                <outputs>
+                    <output fillType="FIRELOGS" amount="60" />
+                </outputs>
+            </production>
+            <production id="smokerPellets" name="$l10n_fillType_smokerPellets" cyclesPerHour="12" costsPerActiveHour="1"><!-- 12,960 per day -->
+                <inputs>
+                    <input fillType="WOODCHIPS" amount="100" />
+                    <input fillType="WATER" amount="10" />
+                    <input fillType="EMPTYPALLET" amount="45" />
+                </inputs>
+                <outputs>
+                    <output fillType="SMOKERPELLETS" amount="45" />
+                </outputs>
+            </production>
+            <production id="wood" name="$l10n_fillType_wood_woodchips" cyclesPerHour="60" costsPerActiveHour="1"><!-- 1,440,000 per day -->
+                <inputs>
+                    <input fillType="WOOD" amount="1000" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODCHIPS" amount="1000" />
+                </outputs>
+            </production>
+        </productions>
+
+        <sellingStation node="sellingStation" supportsExtension="false" allowMissions="false" storageRadius="0">
+            <unloadTrigger exactFillRootNode="exactFillRootNode" aiNode="unloadTriggerAINode" fillTypes="WOODCHIPS"/>
+
+            <unloadTrigger exactFillRootNode="exactFillRootNodeLiquid" fillTypes="DIESEL WATER" aiNode="unloadTriggerAINodeLiquid"/>
+            <baleTrigger triggerNode="baleTrigger" deleteLitersPerSecond="10000" fillTypes="WOOD WOODCHIPS" aiNode="unloadTriggerAINodeBale" />
+
+            <woodTrigger fillTypes="WOOD" triggerNode="woodTrigger" autoUnload="false" activationTriggerNode="woodActivationTrigger"/>
+			<!-- <woodTrigger fillTypes="WOOD" triggerNode="woodTriggerContainer" autoUnload="false" activationTriggerNode="woodActivationTrigger"/> -->
+            <palletTrigger triggerNode="palletTrigger" fillTypes="WOODCHIPS EMPTYPALLET WOOD"/>
+			
+			<!-- <palletTrigger fillTypes="WOOD" triggerNode="woodTriggerContainer"/> -->
+			<!-- <unloadTrigger exactFillRootNode="unloadWoodTrigger" aiNode="unloadWoodTriggerAINode" fillTypes="WOOD"/> -->
+        </sellingStation>
+		
+		
+
+        <loadingStation node="loadingStation" supportsExtension="false">
+            <loadTrigger triggerNode="loadingTrigger" fillLitersPerSecond="5000" dischargeNode="dischargeNode" fillTypes="WOODCHIPS">
+                <effectNode effectClass="PipeEffect" effectNode="pipeEffect"      materialType="pipe"           fadeTime="0.5" maxBending="0" shapeScaleSpread="1 1 1 0" controlPoint="7.25 0 0 0"/>
+                <effectNode                          effectNode="pipeEffectSmoke" materialType="unloadingSmoke" fadeTime="0.5" />
+            </loadTrigger>
+        </loadingStation>
+
+        <palletSpawner>
+            <spawnPlaces>
+                <!-- <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01" fillTypes="SMOKERPELLETS WOODMULCHRED WOODMULCHDARKBROWN WOODMULCHNATURAL OSBBOARDS MDFBOARDS FIRELOGS"/> -->
+                <!-- <spawnPlace startNode="palletAreaStart02" endNode="palletAreaEnd02" fillTypes="SMOKERPELLETS WOODMULCHRED WOODMULCHDARKBROWN WOODMULCHNATURAL OSBBOARDS MDFBOARDS FIRELOGS"/> -->
+                <spawnPlace startNode="mulchStart01" endNode="mulchEnd01" fillTypes="WOODMULCHDARKBROWN WOODMULCHNATURAL WOODMULCHRED"/>
+                <spawnPlace startNode="mulchStart02" endNode="mulchEnd02" fillTypes="WOODMULCHDARKBROWN WOODMULCHNATURAL WOODMULCHRED"/>
+                <spawnPlace startNode="mulchStart03" endNode="mulchEnd03" fillTypes="WOODMULCHDARKBROWN WOODMULCHNATURAL WOODMULCHRED"/>
+                <spawnPlace startNode="mulchStart04" endNode="mulchEnd04" fillTypes="WOODMULCHDARKBROWN WOODMULCHNATURAL WOODMULCHRED"/>
+
+                <spawnPlace startNode="mdfStart01" endNode="mdfEnd01" fillTypes="MDFBOARDS"/>
+                <spawnPlace startNode="mdfStart02" endNode="mdfEnd02" fillTypes="MDFBOARDS"/>
+                <spawnPlace startNode="mdfStart03" endNode="mdfEnd03" fillTypes="MDFBOARDS"/>
+                <spawnPlace startNode="mdfStart04" endNode="mdfEnd04" fillTypes="MDFBOARDS"/>
+
+                <spawnPlace startNode="osbStart01" endNode="osbEnd01" fillTypes="OSBBOARDS"/>
+                <spawnPlace startNode="osbStart02" endNode="osbEnd02" fillTypes="OSBBOARDS"/>
+                <spawnPlace startNode="osbStart03" endNode="osbEnd03" fillTypes="OSBBOARDS"/>
+                <spawnPlace startNode="osbStart04" endNode="osbEnd04" fillTypes="OSBBOARDS"/>
+
+                <spawnPlace startNode="pelletStart01" endNode="pelletEnd01" fillTypes="SMOKERPELLETS FIRELOGS"/>
+                <spawnPlace startNode="pelletStart02" endNode="pelletEnd02" fillTypes="SMOKERPELLETS FIRELOGS"/>
+                <spawnPlace startNode="pelletStart03" endNode="pelletEnd03" fillTypes="SMOKERPELLETS FIRELOGS"/>
+            </spawnPlaces>
+        </palletSpawner>
+
+        <playerTrigger node="playerTrigger" />
+        <sounds>
+            <idle   template="carpenterIdle" linkNode="0>" />
+            <active template="carpenterWork" linkNode="0>" />
+        </sounds>
+
+        <storage isExtension="false" fillLevelSyncThreshold="50">
+            <capacity fillType="WOODCHIPS"          capacity="5000000" />
+            <capacity fillType="MDFBOARDS"          capacity="2500000" />
+            <capacity fillType="OSBBOARDS"          capacity="2500000" />
+            <capacity fillType="WOODMULCHDARKBROWN" capacity="2500000" />
+            <capacity fillType="WOODMULCHNATURAL"   capacity="2500000" />
+            <capacity fillType="WOODMULCHRED"       capacity="2500000" />
+            <capacity fillType="FIRELOGS"           capacity="2500000" />
+            <capacity fillType="SMOKERPELLETS"      capacity="2500000" />
+            <capacity fillType="DIESEL"             capacity="50000" />
+            <capacity fillType="WATER"              capacity="50000" />
+            <capacity fillType="WOOD"               capacity="3500000" />
+            <capacity fillType="EMPTYPALLET"        capacity="300000" />
+        </storage>
+
+        <effectNodes>
+            <effectNode effectClass="ParticleEffect" effectNode="smokeEffectChimney" particleType="SMOKE" scale="0.3 1 0.3" shaderParameterName="colorAlpha" shaderParameter="1 1 1 1"/>
+        </effectNodes>
+    </productionPoint>
+
+    <i3dMappings>
+        <i3dMapping id="clearAreaStart01" node="0>0|0" />
+        <i3dMapping id="clearAreaWidth01" node="0>0|0|0" />
+        <i3dMapping id="clearAreaHeight01" node="0>0|0|1" />
+        <i3dMapping id="levelAreaStart01" node="0>1|0" />
+        <i3dMapping id="levelAreaWidth01" node="0>1|0|0" />
+        <i3dMapping id="levelAreaHeight01" node="0>1|0|1" />
+        <i3dMapping id="levelAreaStart02" node="0>1|1" />
+        <i3dMapping id="levelAreaWidth02" node="0>1|1|0" />
+        <i3dMapping id="levelAreaHeight02" node="0>1|1|1" />
+        <i3dMapping id="paintAreaStart01" node="0>2|0" />
+        <i3dMapping id="paintAreaWidth01" node="0>2|0|0" />
+        <i3dMapping id="paintAreaHeight01" node="0>2|0|1" />
+        <i3dMapping id="paintAreaStart02" node="0>2|1" />
+        <i3dMapping id="paintAreaWidth02" node="0>2|1|0" />
+        <i3dMapping id="paintAreaHeight02" node="0>2|1|1" />
+        <i3dMapping id="indoorAreaStart01" node="0>3|0" />
+        <i3dMapping id="indoorAreaWidth01" node="0>3|0|0" />
+        <i3dMapping id="indoorAreaHeight01" node="0>3|0|1" />
+        <i3dMapping id="testAreaStart01" node="0>4|0" />
+        <i3dMapping id="testAreaEnd01" node="0>4|0|0" />
+        <i3dMapping id="testAreaStart02" node="0>4|1" />
+        <i3dMapping id="testAreaEnd02" node="0>4|1|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>5|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaEnd01" node="0>5|0|0" />
+        <i3dMapping id="infoTrigger" node="0>6" />
+        <i3dMapping id="doors" node="0>7" />
+        <i3dMapping id="doorLeftSmallRef" node="0>7|0" />
+        <i3dMapping id="gate01_doorLeftRef" node="0>7|1" />
+        <i3dMapping id="gate01_doorRightRef" node="0>7|2" />
+        <i3dMapping id="gate02_doorLeftRef" node="0>7|3" />
+        <i3dMapping id="gate02_doorRightRef" node="0>7|4" />
+        <i3dMapping id="gate03_doorLeftRef" node="0>7|5" />
+        <i3dMapping id="gate03_doorRightRef" node="0>7|6" />
+        <i3dMapping id="triggerDoor01" node="0>7|7" />
+        <i3dMapping id="triggerDoor02" node="0>7|8" />
+        <i3dMapping id="triggerDoor03" node="0>7|9" />
+        <i3dMapping id="triggerDoor04" node="0>7|10" />
+        <i3dMapping id="triggerDoor05" node="0>7|11" />
+
+        <i3dMapping id="sharedLight01" node="0>8|0|0" />
+        <i3dMapping id="sharedLight02" node="0>8|0|1" />
+        <i3dMapping id="sharedLight03" node="0>8|0|2" />
+        <i3dMapping id="realLightsLow" node="0>8|1|0" />
+        <i3dMapping id="realLightsHigh" node="0>8|1|1" />
+        <i3dMapping id="triggerLight" node="0>8|2" />
+
+        <i3dMapping id="baseConcrete" node="0>9|0|0|0" />
+        <i3dMapping id="doorLeftSmall_lod0" node="0>9|0|0|7|0" />
+        <i3dMapping id="gate01_doorLeft_lod0" node="0>9|0|0|8|0" />
+        <i3dMapping id="gate01_doorRight_lod0" node="0>9|0|0|9|0" />
+        <i3dMapping id="gate02_doorLeft_lod0" node="0>9|0|0|10|0" />
+        <i3dMapping id="gate02_doorRight_lod0" node="0>9|0|0|11|0" />
+        <i3dMapping id="gate03_doorLeft_lod0" node="0>9|0|0|12|0" />
+        <i3dMapping id="gate03_doorRight_lod0" node="0>9|0|0|13|0" />
+        <i3dMapping id="glass" node="0>9|0|0|14" />
+        <i3dMapping id="gutters" node="0>9|0|0|15" />
+        <i3dMapping id="farmGarageBuildable03_lod1" node="0>9|0|1" />
+        <i3dMapping id="doorLeftSmall_lod1" node="0>9|0|1|1|0" />
+        <i3dMapping id="gate01_doorLeft_lod1" node="0>9|0|1|1|1" />
+        <i3dMapping id="gate01_doorRight_lod1" node="0>9|0|1|1|2" />
+        <i3dMapping id="gate02_doorLeft_lod1" node="0>9|0|1|1|3" />
+        <i3dMapping id="gate02_doorRight_lod1" node="0>9|0|1|1|4" />
+        <i3dMapping id="gate03_doorLeft_lod1" node="0>9|0|1|1|5" />
+        <i3dMapping id="gate03_doorRight_lod1" node="0>9|0|1|1|6" />
+        <i3dMapping id="props" node="0>9|1" />
+        <i3dMapping id="grainLid" node="0>9|1|1" />
+        <i3dMapping id="exactFillRootNode" node="0>9|1|1|0" />
+        <i3dMapping id="baleTrigger" node="0>9|1|1|1" />
+        <i3dMapping id="palletTrigger" node="0>9|1|1|2" />
+        <i3dMapping id="sellingStation" node="0>9|1|2" />
+        <i3dMapping id="unloadTriggerMarker" node="0>9|1|5" />
+        <i3dMapping id="unloadTriggerAINode" node="0>9|1|6" />
+        <i3dMapping id="unloadTriggerAINodeBale" node="0>9|1|11" />
+        <i3dMapping id="exactFillRootNodeLiquid" node="0>9|5|0" />
+        <i3dMapping id="unloadTriggerAINodeLiquid" node="0>9|5|1" />
+        <i3dMapping id="unloadTriggerMarkerLiquid" node="0>9|5|2" />
+        <i3dMapping id="playerTrigger" node="0>11|0" />
+        <i3dMapping id="playerTriggerMarker" node="0>11|1" />
+        <i3dMapping id="smokeEffectChimney" node="0>11|2|0" />
+
+        <i3dMapping id="warningStripes01" node="0>12|0" />
+        <i3dMapping id="warningStripes02" node="0>12|1" />
+        <i3dMapping id="warningStripes03" node="0>12|2" />
+
+        <i3dMapping id="mulchStart01" node="0>13|0" />
+        <i3dMapping id="mulchEnd01" node="0>13|0|0" />
+        <i3dMapping id="mulchStart02" node="0>13|1" />
+        <i3dMapping id="mulchEnd02" node="0>13|1|0" />
+        <i3dMapping id="mulchStart03" node="0>13|2" />
+        <i3dMapping id="mulchEnd03" node="0>13|2|0" />
+        <i3dMapping id="mulchStart04" node="0>13|3" />
+        <i3dMapping id="mulchEnd04" node="0>13|3|0" />
+
+        <i3dMapping id="mdfStart01" node="0>13|4" />
+        <i3dMapping id="mdfEnd01" node="0>13|4|0" />
+        <i3dMapping id="mdfStart02" node="0>13|5" />
+        <i3dMapping id="mdfEnd02" node="0>13|5|0" />
+        <i3dMapping id="mdfStart03" node="0>13|6" />
+        <i3dMapping id="mdfEnd03" node="0>13|6|0" />
+        <i3dMapping id="mdfStart04" node="0>13|7" />
+        <i3dMapping id="mdfEnd04" node="0>13|7|0" />
+
+        <i3dMapping id="osbStart01" node="0>13|8" />
+        <i3dMapping id="osbEnd01" node="0>13|8|0" />
+        <i3dMapping id="osbStart02" node="0>13|9" />
+        <i3dMapping id="osbEnd02" node="0>13|9|0" />
+        <i3dMapping id="osbStart03" node="0>13|10" />
+        <i3dMapping id="osbEnd03" node="0>13|10|0" />
+        <i3dMapping id="osbStart04" node="0>13|11" />
+        <i3dMapping id="osbEnd04" node="0>13|11|0" />
+
+        <i3dMapping id="pelletStart01" node="0>13|12" />
+        <i3dMapping id="pelletEnd01" node="0>13|12|0" />
+        <i3dMapping id="pelletStart02" node="0>13|13" />
+        <i3dMapping id="pelletEnd02" node="0>13|13|0" />
+        <i3dMapping id="pelletStart03" node="0>13|14" />
+        <i3dMapping id="pelletEnd03" node="0>13|14|0" />
+
+        <i3dMapping id="palletBlocker01Anim" node="0>14|0" />
+        <i3dMapping id="palletBlocker02Anim" node="0>14|1" />
+        <i3dMapping id="palletBlocker03Anim" node="0>14|2" />
+        <i3dMapping id="palletBlocker04Anim" node="0>14|3" />
+        <i3dMapping id="palletBlockerTrigger" node="0>14|4" />
+
+        <i3dMapping id="woodTrigger" node="0>15|0" />
+        <i3dMapping id="woodActivationTrigger" node="0>15|1" />
+        <i3dMapping id="woodActivationTriggerMarker" node="0>15|1|0" />
+        <i3dMapping id="warningStripes" node="0>15|2" />
+        <i3dMapping id="woodTriggerContainer" node="0>15|3" />
+        <i3dMapping id="unloadTriggerContainerMarker" node="0>15|3|0" />
+        <i3dMapping id="unloadWoodTrigger" node="0>15|4" />
+        <i3dMapping id="unloadWoodTriggerAINode" node="0>15|4|0" />
+		
+        <i3dMapping id="loadingStation" node="0>16" />
+        <i3dMapping id="loadingTrigger" node="0>16|0" />
+        <i3dMapping id="dischargeNode" node="0>16|1" />
+        <i3dMapping id="pipeEffect" node="0>16|2|0" />
+        <i3dMapping id="pipeEffectSmoke" node="0>16|2|1" />
+        <i3dMapping id="loadingTriggerMarker" node="0>16|3" />
+    </i3dMappings>
+</placeable>

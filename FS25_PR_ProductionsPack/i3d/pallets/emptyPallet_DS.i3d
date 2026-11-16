@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="emptyPallet_DS.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="6" filename="$data/shared/materialHolders/tensionBelts/tensionBelt_normal.dds"/>
+    <File fileId="7" filename="$data/shared/materialHolders/tensionBelts/tensionBelt_specular.dds"/>
+    <File fileId="2" filename="../../textures/food/euroPallet01_diffuse.png"/>
+    <File fileId="3" filename="../../textures/food/euroPallet01_normal.png"/>
+    <File fileId="4" filename="../../textures/food/euroPallet01_specular.png"/>
+    <File fileId="5" filename="../../textures/food/tensionBelt1_diffuse.dds"/>
+  </Files>
+
+  <Materials>
+    <Material name="euroPallet01_mat" materialId="5">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+    <Material name="lambert1" materialId="6" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+    <Material name="UnnamedMaterial" materialId="7">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="emptyPallet_DS.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="emplyPallet_DS_component1" scale="0.997095 0.900973 1.00557" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" staticFriction="1" dynamicFriction="1" density="0.0001" clipDistance="150" nodeId="16" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6">
+      <Shape name="pallet_vis" scale="1.00291 1.10991 0.994464" shapeId="2" nodeId="17" castsShadows="true" receiveShadows="true" materialIds="5">
+        <Shape name="dynamicMountTrigger" translation="0 0.0904753 0" shapeId="3" visibility="false" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="18" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        <TransformGroup name="dischargeNode" translation="0 0.6 0" nodeId="19"/>
+        <TransformGroup name="content" nodeId="20">
+          <Shape name="pallet1" lockedgroup="true" translation="0 0.145 0" shapeId="4" compoundChild="true" clipDistance="80" nodeId="21" castsShadows="true" receiveShadows="true" materialIds="5">
+            <Shape name="Tension1" translation="0 0.000285998 0" scale="2 0.493774 2" shapeId="5" nodeId="22" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="pallet2" lockedgroup="true" translation="0 0.31 0" shapeId="4" compoundChild="true" clipDistance="80" nodeId="23" castsShadows="true" receiveShadows="true" materialIds="5">
+            <Shape name="Tension2" translation="0 -0.02 0" scale="2 0.556143 2" shapeId="5" nodeId="24" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="pallet3" lockedgroup="true" translation="0 0.475478 0" shapeId="4" compoundChild="true" clipDistance="80" nodeId="25" castsShadows="true" receiveShadows="true" materialIds="5">
+            <Shape name="Tension3" translation="0 -0.000174399 0" scale="2 0.500334 2" shapeId="5" nodeId="26" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="pallet4" lockedgroup="true" translation="0 0.64 0" shapeId="4" compoundChild="true" clipDistance="80" nodeId="27" castsShadows="true" receiveShadows="true" materialIds="5">
+            <Shape name="Tension4" translation="0 0.0044459 0" scale="2 0.482242 2" shapeId="5" nodeId="28" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="pallet5" lockedgroup="true" translation="0 0.805 0" shapeId="4" compoundChild="true" clipDistance="80" nodeId="29" castsShadows="true" receiveShadows="true" materialIds="5">
+            <Shape name="Tension5" translation="0 0.00368309 0" scale="2 0.486716 2" shapeId="5" nodeId="30" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="pallet6" lockedgroup="true" translation="0 0.97 0" shapeId="4" compoundChild="true" clipDistance="80" nodeId="31" castsShadows="true" receiveShadows="true" materialIds="5">
+            <Shape name="Tension6" translation="0 0.00239293 0" scale="2 0.496632 2" shapeId="5" nodeId="32" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="pallet7" lockedgroup="true" translation="0 1.135 0" shapeId="4" compoundChild="true" clipDistance="80" nodeId="33" castsShadows="true" receiveShadows="true" materialIds="5">
+            <Shape name="Tension7" translation="0 0.00310571 0" scale="2 0.495257 2" shapeId="5" nodeId="34" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+            <Shape name="belt_DS" translation="-0.00285418 0.16694 0.320172" rotation="-5.00894e-06 -90 0" scale="0.437413 1 1.6449" shapeId="6" clipDistance="150" nodeId="35" castsShadows="false" receiveShadows="false" distanceBlending="false" materialIds="7">
+              <Shape name="belt_DS" translation="-0.00148994 -0.586187 -0.367022" rotation="-90 -8.14222e-13 -180" scale="1 0.623441 1.59725" shapeId="6" clipDistance="150" nodeId="36" castsShadows="false" receiveShadows="false" distanceBlending="false" materialIds="7"/>
+              <Shape name="belt_DS" translation="-0.00148994 -0.586187 0.366089" rotation="89.9995 -3.63259e-06 1.28546e-10" scale="1 0.620554 1.59725" shapeId="6" clipDistance="150" nodeId="37" castsShadows="false" receiveShadows="false" distanceBlending="false" materialIds="7"/>
+            </Shape>
+            <Shape name="belt_DS" translation="0.00337193 0.16694 -0.319999" rotation="-5.00894e-06 -90 0" scale="0.437413 1 1.6449" shapeId="6" clipDistance="150" nodeId="38" castsShadows="false" receiveShadows="false" distanceBlending="false" materialIds="7">
+              <Shape name="belt_DS" translation="-0.00148994 -0.586187 -0.367022" rotation="-90 -8.14222e-13 -180" scale="1 0.623441 1.59725" shapeId="6" clipDistance="150" nodeId="39" castsShadows="false" receiveShadows="false" distanceBlending="false" materialIds="7"/>
+              <Shape name="belt_DS" translation="-0.00148994 -0.586187 0.367014" rotation="89.9995 -3.63259e-06 1.28546e-10" scale="1 0.620554 1.59725" shapeId="6" clipDistance="150" nodeId="40" castsShadows="false" receiveShadows="false" distanceBlending="false" materialIds="7"/>
+            </Shape>
+          </Shape>
+        </TransformGroup>
+        <TransformGroup name="collisions" clipDistance="10" nodeId="41">
+          <Shape name="floorCollision01" translation="0.3 0 0" shapeId="7" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="42" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          <Shape name="floorCollision02" translation="-0.3 0 0" shapeId="7" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="43" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+      </Shape>
+    </Shape>
+  </Scene>
+
+</i3D>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="productionPoint" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_storeItem_chipsFactory</name>
+        <functions>
+            <function>$l10n_function_chipsFactory</function>
+        </functions>
+        <image>store/store_chipsFactory.png</image>
+        <price>55000</price>
+        <dailyUpkeep>50</dailyUpkeep>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>NONE</brand>
+        <species>PLACEABLE</species>
+        <category>productionPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>factories</tab>
+        </brush>
+        <canBeSold>true</canBeSold>
+        <showInStore>true</showInStore>
+        <vertexBufferMemoryUsage>891648</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>130560</indexBufferMemoryUsage>
+        <textureMemoryUsage>8454144</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>i3d/chipsFactory.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+        <boughtWithFarmland>true</boughtWithFarmland>
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testAreaStart01" endNode="testAreaEnd01" />
+        </testAreas>
+        <sounds>
+            <place template="largeImp"/>
+        </sounds>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="paintArea1Start" widthNode="paintArea1Width" heightNode="paintArea1Height"/>
+        <clearArea startNode="paintArea2Start" widthNode="paintArea2Width" heightNode="paintArea2Height"/>
+        <clearArea startNode="paintArea3Start" widthNode="paintArea3Width" heightNode="paintArea3Height"/>
+        <clearArea startNode="paintArea4Start" widthNode="paintArea4Width" heightNode="paintArea4Height"/>
+        <clearArea startNode="clearAreaStart01" widthNode="clearAreaWidth01" heightNode="clearAreaHeight01"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="10" maxSlope="75" maxEdgeAngle="30" >
+        <paintAreas>
+            <paintArea startNode="paintArea1Start" heightNode="paintArea1Height" widthNode="paintArea1Width" groundType="gravel"/>
+            <paintArea startNode="paintArea2Start" heightNode="paintArea2Height" widthNode="paintArea2Width" groundType="gravel"/>
+            <paintArea startNode="paintArea3Start" heightNode="paintArea3Height" widthNode="paintArea3Width" groundType="gravel"/>
+            <paintArea startNode="paintArea4Start" heightNode="paintArea4Height" widthNode="paintArea4Width" groundType="gravel"/>
+        </paintAreas>
+        <levelAreas>
+            <levelArea startNode="clearAreaStart01" widthNode="clearAreaWidth01" heightNode="clearAreaHeight01"/>
+        </levelAreas>
+    </leveling>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01" />
+        <indoorArea startNode="indoorAreaStart02" widthNode="indoorAreaWidth02" heightNode="indoorAreaHeight02" />
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+        </updateAreas>
+    </ai>
+
+    <infoTrigger triggerNode="infoTrigger" />
+
+    <dynamicallyLoadedParts>
+
+        <dynamicallyLoadedPart filename="i3d/chipsFactoryProps.i3d"                                                 node="0" linkNode="props" />
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d"                    node="1" linkNode="smoke01" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5" position="0 -0.2 0"/>
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d"                    node="1" linkNode="smoke02" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5" position="0 -0.2 0"/>
+    </dynamicallyLoadedParts>
+
+    <productionPoint>
+        <productions>
+            <!--BeetRoot-->
+            <production id="beetrootChips_cookingOil" name="$l10n_fillType_beetrootChips" cyclesPerHour="20" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="BEETROOT" amount="100" />
+                    <input fillType="COOKINGOIL" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="30" />
+                </inputs>
+                <outputs>
+                    <output fillType="BEETROOTCHIPS" amount="30" />
+                </outputs>
+            </production>
+
+            <!--Carrot-->
+            <production id="carrotChips_cookingOil" name="$l10n_fillType_carrotChips" cyclesPerHour="30" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="CARROT" amount="100" />
+                    <input fillType="COOKINGOIL" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="25" />
+                </inputs>
+                <outputs>
+                    <output fillType="CARROTCHIPS" amount="25" />
+                </outputs>
+            </production>
+
+            <!--Chili-->
+            <production id="chiliChips_cookingOil" name="$l10n_fillType_chiliChips" cyclesPerHour="18" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="POTATO" amount="100" />
+                    <input fillType="CHILLI" amount="15" />
+                    <input fillType="COOKINGOIL" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="30" />
+                </inputs>
+                <outputs>
+                    <output fillType="CHILICHIPS" amount="30" />
+                </outputs>
+            </production>
+
+            <!--Garlic Onion-->
+            <production id="onionsChips_cookingOil" name="$l10n_fillType_onionsChips" cyclesPerHour="18" costsPerActiveHour="6">
+                <inputs>
+                    <input fillType="POTATO" amount="100" />
+                    <input fillType="SPRING_ONION" amount="10" />
+                    <input fillType="GARLIC" amount="15" />
+                    <input fillType="COOKINGOIL" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="30" />
+                </inputs>
+                <outputs>
+                    <output fillType="ONIONCHIPS" amount="30" />
+                </outputs>
+            </production>
+
+            <!--Honey-->
+            <production id="honeyChips_cookingOil" name="$l10n_fillType_honeyChips" cyclesPerHour="16" costsPerActiveHour="7">
+                <inputs>
+                    <input fillType="POTATO" amount="100" />
+                    <input fillType="HONEY" amount="5" />
+                    <input fillType="GOATCHEESE" amount="5" />
+                    <input fillType="COOKINGOIL" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="30" />
+                </inputs>
+                <outputs>
+                    <output fillType="HONEYCHIPS" amount="30" />
+                </outputs>
+            </production>
+
+            <!--Parsnip-->
+            <production id="parsnipChips_cookingOil" name="$l10n_fillType_parsnipChips" cyclesPerHour="30" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="PARSNIP" amount="100" />
+                    <input fillType="COOKINGOIL" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="25" />
+                </inputs>
+                <outputs>
+                    <output fillType="PARSNIPCHIPS" amount="25" />
+                </outputs>
+            </production>
+
+            <!--Potato-->
+            <production id="potatoChips_cookingOil" name="$l10n_fillType_potatoChipsNew" cyclesPerHour="20" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="POTATO" amount="100" />
+                    <input fillType="COOKINGOIL" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="30" />
+                </inputs>
+                <outputs>
+                    <output fillType="POTATOCHIPS" amount="30" />
+                </outputs>
+            </production>
+
+        <!--Tomato-->
+            <production id="tomatoChips_cookingOil" name="$l10n_fillType_tomatoChips" cyclesPerHour="20" costsPerActiveHour="6">
+                <inputs>
+                    <input fillType="POTATO" amount="100" />
+                    <input fillType="TOMATO" amount="10" />
+                    <input fillType="COOKINGOIL" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="30" />
+                </inputs>
+                <outputs>
+                    <output fillType="TOMATOCHIPS" amount="30" />
+                </outputs>
+            </production>
+
+        <!--Moza-->
+            <production id="mozaChips_cookingOil" name="$l10n_fillType_mozaChips" cyclesPerHour="16" costsPerActiveHour="7">
+                <inputs>
+                    <input fillType="POTATO" amount="100" />
+                    <input fillType="TOMATO" amount="5" />
+                    <input fillType="BUFFALOMOZZARELLA" amount="5" />
+                    <input fillType="COOKINGOIL" amount="5" />
+                    <input fillType="EMPTYPALLET" amount="30" />
+                </inputs>
+                <outputs>
+                    <output fillType="MOZZACHIPS" amount="30" />
+                </outputs>
+            </production>
+
+        </productions>
+
+        <storage isExtension="false" fillLevelSyncThreshold="50">
+            <!-- INPUT -->
+            <capacity fillType="POTATO"             capacity="70000" />
+            <capacity fillType="CARROT"             capacity="70000" />
+            <capacity fillType="BEETROOT"           capacity="70000" />
+            <capacity fillType="PARSNIP"            capacity="70000" />
+            <capacity fillType="HONEY"              capacity="8000" />
+            <capacity fillType="TOMATO"             capacity="8000" />
+            <capacity fillType="SPRING_ONION"       capacity="8000" />
+            <capacity fillType="GARLIC"             capacity="8000" />
+            <capacity fillType="CHILLI"             capacity="8000" />
+            <capacity fillType="BUFFALOMOZZARELLA"  capacity="8000" />
+            <capacity fillType="GOATCHEESE"         capacity="8000" />
+            <capacity fillType="COOKINGOIL"         capacity="12000" />
+            <capacity fillType="EMPTYPALLET"        capacity="100000" />
+            <!-- OUTPUT -->
+            <capacity fillType="BEETROOTCHIPS"      capacity="20000" />
+            <capacity fillType="CARROTCHIPS"        capacity="20000" />
+            <capacity fillType="CHILICHIPS"         capacity="20000" />
+            <capacity fillType="HONEYCHIPS"         capacity="20000" />
+            <capacity fillType="MOZZACHIPS"         capacity="20000" />
+            <capacity fillType="ONIONCHIPS"         capacity="20000" />
+            <capacity fillType="PARSNIPCHIPS"       capacity="20000" />
+            <capacity fillType="POTATOCHIPS"        capacity="20000" />
+            <capacity fillType="TOMATOCHIPS"        capacity="20000" />
+        </storage>
+
+        <sellingStation node="sellingStation" supportsExtension="false">
+            <unloadTrigger exactFillRootNode="exactFillNode" aiNode="unloadTriggerAINode" fillTypes="POTATO CARROT BEETROOT PARSNIP"/>
+
+            <palletTrigger triggerNode="palletTrigger" aiNode="unloadTriggerAINode" fillTypes="POTATO CARROT BEETROOT PARSNIP SUNFLOWER_OIL CANOLA_OIL OLIVE_OIL HONEY TOMATO SPRING_ONION CHILLI GARLIC BUFFALOMOZZARELLA GOATCHEESE COOKINGOIL EMPTYPALLET" >
+
+                <fillTypeConversion ratio="1" outgoingFillType="COOKINGOIL" incomingFillType="SUNFLOWER_OIL" />
+                <fillTypeConversion ratio="1" outgoingFillType="COOKINGOIL" incomingFillType="OLIVE_OIL" />
+                <fillTypeConversion ratio="1" outgoingFillType="COOKINGOIL" incomingFillType="CANOLA_OIL" />
+            </palletTrigger>
+        </sellingStation>
+
+        <palletSpawner>
+            <spawnPlaces>
+                <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01"/>
+                <spawnPlace startNode="palletAreaStart02" endNode="palletAreaEnd02" />
+                <spawnPlace startNode="palletAreaStart03" endNode="palletAreaEnd03" />
+            </spawnPlaces>
+        </palletSpawner>
+
+        <playerTrigger node="playerTrigger" />
+        <!-- <sounds>
+            <idle/> -->
+            <!-- <idle   template="cerealFactoryIdle" linkNode="0>" outerRadius="40"/> -->
+            <!-- <active template="cerealFactoryWork" linkNode="0>" innerRadius="10" outerRadius="40" volumeScale="0.5" />
+        </sounds> -->
+        <sounds>
+            <idle template="dairyIdle" linkNode="0>" volumeScale="0.5" />
+            <active template="dairyWork" linkNode="0>" volumeScale="0.5" />
+        </sounds>
+    </productionPoint>
+
+    <triggerMarkers>
+        <triggerMarker node="warningStripes01"/>
+        <triggerMarker node="playerTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconWrench.i3d"/>
+        <triggerMarker node="unloadTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+    </triggerMarkers>
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="playerTrigger" teleportNode="playerTrigger" />
+    </hotspots>
+
+    <i3dMappings>
+        <!--Area-->
+        <i3dMapping id="paintArea1Start" node="0>12|0" />
+        <i3dMapping id="paintArea1Width" node="0>12|0|0" />
+        <i3dMapping id="paintArea1Height" node="0>12|0|1" />
+        <i3dMapping id="paintArea2Start" node="0>12|1" />
+        <i3dMapping id="paintArea2Width" node="0>12|1|0" />
+        <i3dMapping id="paintArea2Height" node="0>12|1|1" />
+        <i3dMapping id="paintArea3Start" node="0>12|2" />
+        <i3dMapping id="paintArea3Width" node="0>12|2|0" />
+        <i3dMapping id="paintArea3Height" node="0>12|2|1" />
+        <i3dMapping id="paintArea4Start" node="0>12|3" />
+        <i3dMapping id="paintArea4Width" node="0>12|3|0" />
+        <i3dMapping id="paintArea4Height" node="0>12|3|1" />
+        <i3dMapping id="clearAreaStart01" node="0>0|0" />
+        <i3dMapping id="clearAreaWidth01" node="0>0|0|0" />
+        <i3dMapping id="clearAreaHeight01" node="0>0|0|1" />
+        <i3dMapping id="testAreaStart01" node="0>1|0" />
+        <i3dMapping id="testAreaEnd01" node="0>1|0|0" />
+        <i3dMapping id="indoorAreaStart01" node="0>2|0" />
+        <i3dMapping id="indoorAreaWidth01" node="0>2|0|0" />
+        <i3dMapping id="indoorAreaHeight01" node="0>2|0|1" />
+        <i3dMapping id="indoorAreaStart02" node="0>2|1" />
+        <i3dMapping id="indoorAreaWidth02" node="0>2|1|0" />
+        <i3dMapping id="indoorAreaHeight02" node="0>2|1|1" />
+        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>3|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaEnd01" node="0>3|0|0" />
+        <!--Game-->
+        <i3dMapping id="infoTrigger" node="0>4" />
+        <i3dMapping id="sellingStation" node="0>5" />
+        <i3dMapping id="exactFillNode" node="0>5|0" />
+        <i3dMapping id="unloadTriggerMarker" node="0>5|0|0" />
+        <i3dMapping id="unloadTriggerAINode" node="0>5|0|1" />
+        <i3dMapping id="palletTrigger" node="0>5|1" />
+        <i3dMapping id="playerTrigger" node="0>6|0" />
+        <i3dMapping id="playerTriggerMarker" node="0>6|0|0" />
+        <i3dMapping id="palletSpawner" node="0>7" />
+        <i3dMapping id="palletAreaStart01" node="0>7|0" />
+        <i3dMapping id="palletAreaEnd01" node="0>7|0|0" />
+        <i3dMapping id="palletAreaStart02" node="0>7|1" />
+        <i3dMapping id="palletAreaEnd02" node="0>7|1|0" />
+        <i3dMapping id="warningStripes01" node="0>7|2" />
+        <i3dMapping id="palletAreaStart03" node="0>7|3" />
+        <i3dMapping id="palletAreaEnd03" node="0>7|3|0" />
+        <!--LoadedParts-->
+        <i3dMapping id="props" node="0>8|2" />
+        <i3dMapping id="smoke01" node="0>8|0" />
+        <i3dMapping id="smoke02" node="0>8|1" />
+    </i3dMappings>
+</placeable>

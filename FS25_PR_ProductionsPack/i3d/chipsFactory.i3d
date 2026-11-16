@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="chipsFactory.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="35" filename="$data/maps/mapAS/textures/buildings/shared/houseRoofModules_diffuse.dds"/>
+    <File fileId="38" filename="$data/maps/mapAS/textures/buildings/shared/houseRoofModules_height.dds"/>
+    <File fileId="36" filename="$data/maps/mapAS/textures/buildings/shared/houseRoofModules_normal.dds"/>
+    <File fileId="37" filename="$data/maps/mapAS/textures/buildings/shared/houseRoofModules_specular.dds"/>
+    <File fileId="15" filename="$data/maps/mapAS/textures/woodPlanksDecal_diffuse.png"/>
+    <File fileId="16" filename="$data/maps/mapAS/textures/woodPlanksDecal_normal.png"/>
+    <File fileId="46" filename="$data/maps/textures/shared/decalSet_normal.dds"/>
+    <File fileId="24" filename="$data/maps/textures/shared/rainGutters_diffuse.png"/>
+    <File fileId="25" filename="$data/maps/textures/shared/rainGutters_normal.png"/>
+    <File fileId="26" filename="$data/maps/textures/shared/rainGutters_specular.png"/>
+    <File fileId="21" filename="$data/maps/textures/shared/signageUSDecals_diffuse.dds"/>
+    <File fileId="22" filename="$data/maps/textures/shared/signageUSDecals_specular.dds"/>
+    <File fileId="10" filename="$data/maps/textures/shared/snow_diffuse.dds"/>
+    <File fileId="11" filename="$data/maps/textures/shared/snow_normal.dds"/>
+    <File fileId="12" filename="$data/maps/textures/shared/snow_specular.png"/>
+    <File fileId="5" filename="$data/maps/textures/shared/windowsRoomInteriorsIndustrialDay_diffuse.dds"/>
+    <File fileId="9" filename="$data/placeables/mapAS/carpenterAS/carpenterASWindows_diffuse.dds"/>
+    <File fileId="27" filename="$data/placeables/mapAS/carpenterAS/carpenterAS_diffuse.dds"/>
+    <File fileId="20" filename="$data/placeables/mapAS/carpenterAS/carpenterAS_height.dds"/>
+    <File fileId="28" filename="$data/placeables/mapAS/carpenterAS/carpenterAS_normal.dds"/>
+    <File fileId="29" filename="$data/placeables/mapAS/carpenterAS/carpenterAS_specular.dds"/>
+    <File fileId="39" filename="$data/placeables/mapUS/shared/detailSetUSDoors_diffuse.dds"/>
+    <File fileId="40" filename="$data/placeables/mapUS/shared/detailSetUSDoors_normal.dds"/>
+    <File fileId="41" filename="$data/placeables/mapUS/shared/detailSetUSDoors_specular.dds"/>
+    <File fileId="42" filename="$data/placeables/mapUS/shared/detailSetUSFrames_diffuse.dds"/>
+    <File fileId="43" filename="$data/placeables/mapUS/shared/detailSetUSFrames_normal.dds"/>
+    <File fileId="44" filename="$data/placeables/mapUS/shared/detailSetUSFrames_specular.dds"/>
+    <File fileId="30" filename="$data/shaders/buildingShader.xml"/>
+    <File fileId="23" filename="$data/shaders/decalShader.xml"/>
+    <File fileId="8" filename="$data/shaders/glowShader.xml"/>
+    <File fileId="13" filename="$data/shaders/snowHeapShader.xml"/>
+    <File fileId="17" filename="$data/shaders/vertexPaintShader.xml"/>
+    <File fileId="6" filename="$data/shared/default_normal.dds"/>
+    <File fileId="7" filename="$data/shared/default_specular.dds"/>
+    <File fileId="2" filename="$data/shared/warningStripes_diffuse.png"/>
+    <File fileId="3" filename="$data/shared/warningStripes_normal.png"/>
+    <File fileId="4" filename="$data/shared/warningStripes_specular.png"/>
+    <File fileId="45" filename="../textures/building/chipsFactory/chipsFactory_diffuse.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="carpenterAS_diffuse" materialId="5" customShaderId="30" customShaderVariation="customParallax">
+      <Texture fileId="27"/>
+      <Normalmap fileId="28"/>
+      <Glossmap fileId="29"/>
+      <Custommap name="mParallaxMap" fileId="20"/>
+    </Material>
+    <Material name="carpenterASWindows_diffuse" materialId="6" alphaBlending="true">
+      <Texture fileId="9"/>
+      <Glossmap fileId="7"/>
+    </Material>
+    <Material name="chipsFactory_diffuse" materialId="7">
+      <Texture fileId="45"/>
+      <Normalmap fileId="46"/>
+    </Material>
+    <Material name="detailSetUSDoors_diffuse" materialId="8">
+      <Texture fileId="39"/>
+      <Normalmap fileId="40"/>
+      <Glossmap fileId="41"/>
+    </Material>
+    <Material name="detailSetUSFrames_diffuse" materialId="9">
+      <Texture fileId="42"/>
+      <Normalmap fileId="43"/>
+      <Glossmap fileId="44"/>
+    </Material>
+    <Material name="houseRoofModules_diffuse" materialId="10" customShaderId="30" customShaderVariation="customParallax">
+      <Texture fileId="35"/>
+      <Normalmap fileId="36"/>
+      <Glossmap fileId="37"/>
+      <Custommap name="mParallaxMap" fileId="38"/>
+    </Material>
+    <Material name="i3d_default_material" materialId="11" diffuseColor="0.8 0.8 0.8 1" specularColor="0.6 1 0">
+    </Material>
+    <Material name="lambert1" materialId="12" diffuseColor="0.501961 0.501961 0.501961 1">
+    </Material>
+    <Material name="Material" materialId="13" customShaderId="23">
+      <Texture fileId="21"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="22"/>
+    </Material>
+    <Material name="rainGutters_mat" materialId="14">
+      <Texture fileId="24"/>
+      <Normalmap fileId="25"/>
+      <Glossmap fileId="26"/>
+    </Material>
+    <Material name="snow_mat" materialId="15" customShaderId="13">
+      <Texture fileId="10"/>
+      <Normalmap fileId="11" bumpDepth="0.5"/>
+      <Glossmap fileId="12"/>
+    </Material>
+    <Material name="warningStripes_mat" materialId="16">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+    <Material name="windowsRoomInteriorsIndustrialDay_mat" materialId="17" customShaderId="8" customShaderVariation="alphaTestDisable_extraBaseMap">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+      <Custommap name="mExtraBaseMap" fileId="5"/>
+    </Material>
+    <Material name="woodPlanksDecal_01_mat" materialId="18" customShaderId="17" customShaderVariation="alphaNoise_customParallax_uv2">
+      <Texture fileId="15"/>
+      <Normalmap fileId="16"/>
+      <Custommap name="mBlendedNormal" fileId="6"/>
+      <Custommap name="mBlendedSpecular" fileId="7"/>
+      <Custommap name="mParallaxMap" fileId="20"/>
+      <CustomParameter name="colorTint" value="-0.05 -0.05 -0.05"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="chipsFactory.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="Factory" clipDistance="600" nodeId="36">
+      <TransformGroup name="clearAreas" nodeId="37">
+        <TransformGroup name="clearAreaStart01" translation="-0.144435 -3.08428e-06 8.20191" rotation="180 27.5876 180" nodeId="38">
+          <TransformGroup name="clearAreaWidth01" translation="1.78581e-07 1.35447e-14 17.9007" nodeId="39"/>
+          <TransformGroup name="clearAreaHeight01" translation="14.6115 1.38015e-14 7.64849e-08" nodeId="40"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="testAreas" nodeId="41">
+        <TransformGroup name="testAreaStart01" translation="-10.46 0 -10.987" nodeId="42">
+          <TransformGroup name="testAreaEnd01" translation="20.244 10 22.0418" nodeId="43"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="indoorAreas" nodeId="44">
+        <TransformGroup name="indoorAreaStart01" translation="3.50609 0.223517 -9.23612" rotation="0 -28.4509 0" nodeId="45">
+          <TransformGroup name="indoorAreaWidth01" translation="-2.5495e-08 0 16.8202" nodeId="46"/>
+          <TransformGroup name="indoorAreaHeight01" translation="5.10289 0 4.30737e-09" nodeId="47"/>
+        </TransformGroup>
+        <TransformGroup name="indoorAreaStart02" translation="-9.70056 0.0485913 -10.8605" nodeId="48">
+          <TransformGroup name="indoorAreaWidth02" translation="0 0 0.379382" nodeId="49"/>
+          <TransformGroup name="indoorAreaHeight02" translation="19.1421 0 0" nodeId="50"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="tipOcclusionUpdateAreas" nodeId="51">
+        <TransformGroup name="tipOcclusionUpdateAreaStart01" translation="-30 0 -29" nodeId="52">
+          <TransformGroup name="tipOcclusionUpdateAreaEnd01" translation="20.244 0 22.0418" nodeId="53"/>
+        </TransformGroup>
+      </TransformGroup>
+      <Shape name="infoTrigger" translation="0 2.4738 0" scale="0.401839 1 0.362875" shapeId="1" static="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x100000" nodeId="54" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="12"/>
+      <TransformGroup name="sellingStation" nodeId="55">
+        <Shape name="exactFillNode" translation="3.51084 0.15 6.37464" rotation="0 60.373 0" shapeId="2" kinematic="true" compound="true" collisionFilterGroup="0x40000000" collisionFilterMask="0x20000000" nodeId="56" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="12">
+          <TransformGroup name="unloadTriggerMarker" translation="0.31618 -0.006362 0" nodeId="57"/>
+          <TransformGroup name="unloadTriggerAINode" translation="-1 0 0" nodeId="58"/>
+        </Shape>
+        <Shape name="palletTrigger" translation="3.51084 2.00636 6.37464" rotation="0 60.373 0" shapeId="3" kinematic="true" compound="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x10000" nodeId="59" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="12"/>
+      </TransformGroup>
+      <TransformGroup name="productionPoint" nodeId="60">
+        <Shape name="playerTrigger" translation="2.67137 1.37178 -11.126" shapeId="4" static="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x110000" clipDistance="600" nodeId="61" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="12">
+          <TransformGroup name="playerTriggerMarker" nodeId="62"/>
+        </Shape>
+      </TransformGroup>
+      <TransformGroup name="palletSpawner" nodeId="63">
+        <TransformGroup name="palletAreaStart01" translation="10.7389 0.201195 -3.71512" rotation="180 -61.9365 180" nodeId="64">
+          <TransformGroup name="palletAreaEnd01" translation="7.68213 7.43849e-15 1.16415e-07" nodeId="65"/>
+        </TransformGroup>
+        <TransformGroup name="palletAreaStart02" translation="9.6657 0.201195 -4.28729" rotation="180 -61.9365 180" nodeId="66">
+          <TransformGroup name="palletAreaEnd02" translation="7.68213 7.43849e-15 1.16415e-07" nodeId="67"/>
+        </TransformGroup>
+        <Shape name="warningStripes01" translation="7.51018 0 -0.893488" rotation="180 -61.9365 180" shapeId="5" clipDistance="100" nodeId="68" castsShadows="true" receiveShadows="true" nonRenderable="true" terrainDecal="true" renderedInViewports="false" materialIds="16"/>
+        <TransformGroup name="palletAreaStart03" translation="8.30445 0.201195 -5.01301" rotation="180 -61.9365 180" nodeId="69">
+          <TransformGroup name="palletAreaEnd03" translation="7.68213 7.43849e-15 1.16415e-07" nodeId="70"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="dynamicallyLoadedParts" translation="-7.66699 0 6.49977" nodeId="71">
+        <TransformGroup name="smoke01" translation="13.8892 7.08994 -15.2336" nodeId="72"/>
+        <TransformGroup name="smoke02" translation="4.94413 7.08994 -15.0274" nodeId="73"/>
+        <TransformGroup name="props" nodeId="74"/>
+      </TransformGroup>
+      <TransformGroup name="lights" translation="-7.66699 0 6.49977" nodeId="75">
+        <TransformGroup name="realLights" translation="0.548601 3.20094 0.039211" nodeId="76">
+          <Light name="pointLight10" translation="8.49434 -1.56769 -10.6398" rotation="-180 -62.049 180" nodeId="77" type="point" color="0.08 0.08 0.045" emitDiffuse="true" emitSpecular="true" range="5" weatherRequiredMask="0x40"/>
+          <Light name="pointLight09" translation="10.2979 -1.56769 -14.0388" rotation="180 -62.049 -180" nodeId="78" type="point" color="0.08 0.08 0.045" emitDiffuse="true" emitSpecular="true" range="5" weatherRequiredMask="0x40"/>
+          <Light name="pointLight08" translation="4.89349 -1.5677 -3.85354" rotation="-180 -62.0491 180" nodeId="79" type="point" color="0.08 0.08 0.045" emitDiffuse="true" emitSpecular="true" range="5" weatherRequiredMask="0x40"/>
+          <Light name="pointLight07" translation="6.69391 -1.5677 -7.24662" rotation="-180 -62.049 180" nodeId="80" type="point" color="0.08 0.08 0.045" emitDiffuse="true" emitSpecular="true" range="5" weatherRequiredMask="0x40"/>
+          <Light name="pointLight05" translation="9.77536 -1.70973 -17.2808" rotation="0 -0.000376 0" nodeId="81" type="point" color="0.08 0.08 0.045" emitDiffuse="true" emitSpecular="true" range="5" weatherRequiredMask="0x40"/>
+          <Light name="pointLight01" translation="12.1072 -1.26208 -17.4073" rotation="-0.000437 -0.000437 0" nodeId="82" type="point" color="0.08 0.08 0.045" emitDiffuse="true" emitSpecular="true" range="5" weatherRequiredMask="0x40"/>
+        </TransformGroup>
+        <Shape name="interior" rotation="90 -0 0" shapeId="6" clipDistance="90" nodeId="83" castsShadows="true" receiveShadows="true" materialIds="17" weatherRequiredMask="0x40" renderInvisible="true"/>
+      </TransformGroup>
+      <TransformGroup name="visual_lod" translation="-7.66699 0 6.49977" static="true" clipDistance="300" nodeId="84">
+        <TransformGroup name="LOD0" nodeId="85">
+          <TransformGroup name="windows" translation="0.548601 3.20094 0.039211" nodeId="86">
+            <Shape name="glass" translation="5.398 -1.16063 -10.7371" rotation="90 -0 0" shapeId="7" clipDistance="150" nodeId="87" castsShadows="false" receiveShadows="true" materialIds="6" weatherPreventMask="0x0"/>
+          </TransformGroup>
+          <TransformGroup name="seasons" translation="0.548601 3.20094 0.039211" nodeId="88">
+            <Shape name="snow" translation="5.26454 2.13283 -8.68363" rotation="90 -0 0" shapeId="8" clipDistance="300" nodeId="89" castsShadows="true" receiveShadows="true" materialIds="15" weatherRequiredMask="0x400"/>
+          </TransformGroup>
+          <TransformGroup name="decals" translation="0.548601 3.20094 0.039211" nodeId="90">
+            <Shape name="woodDecals01" translation="6.99298 0.410398 -6.40927" shapeId="9" clipDistance="100" nodeId="91" castsShadows="false" receiveShadows="true" decalLayer="1" materialIds="18"/>
+            <Shape name="signsDecals" translation="-0.548601 -3.20094 -0.039211" rotation="90 -0 0" shapeId="10" clipDistance="150" nodeId="92" castsShadows="false" receiveShadows="true" materialIds="13"/>
+          </TransformGroup>
+          <Shape name="gutters" translation="11.6756 1.82351 -5.9381" shapeId="11" clipDistance="150" nodeId="93" castsShadows="true" receiveShadows="true" materialIds="14"/>
+          <Shape name="Walls" translation="5.82562 5.08239 -5.72341" rotation="90 -0 0" shapeId="12" clipDistance="300" nodeId="94" castsShadows="true" receiveShadows="true" materialIds="5"/>
+          <Shape name="Top" translation="7.54666 6.7049 -17.2448" rotation="90 -0 0" shapeId="13" clipDistance="300" nodeId="95" castsShadows="true" receiveShadows="true" materialIds="10"/>
+          <Shape name="frames" translation="5.72213 2.08834 -10.574" rotation="90 -0 0" shapeId="14" clipDistance="300" nodeId="96" castsShadows="true" receiveShadows="true" materialIds="8"/>
+          <Shape name="parts" rotation="90 -0 0" shapeId="15" clipDistance="300" nodeId="97" castsShadows="true" receiveShadows="true" materialIds="9,7"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="collisions" translation="-7.66699 0 6.49977" nodeId="98">
+        <Shape name="collision" rotation="90 -0 0" shapeId="16" static="true" collisionFilterGroup="0x1034" collisionFilterMask="0xfffffbff" nodeId="99" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="11"/>
+      </TransformGroup>
+      <TransformGroup name="paintAreas" nodeId="100">
+        <TransformGroup name="paintArea1Start" translation="1.87635 0.0486796 14.3182" rotation="0 -28.5363 0" nodeId="101">
+          <TransformGroup name="paintArea1Width" translation="-5.49595 0 -1.02213e-07" nodeId="102"/>
+          <TransformGroup name="paintArea1Height" translation="-4.07457e-09 0 -28.5842" nodeId="103"/>
+        </TransformGroup>
+        <TransformGroup name="paintArea2Start" translation="0.657163 0.0486796 11.2539" rotation="0 48.2461 0" nodeId="104">
+          <TransformGroup name="paintArea2Width" translation="-2.73272 0 -1.2049e-07" nodeId="105"/>
+          <TransformGroup name="paintArea2Height" translation="1.90735e-06 0 -14.6823" nodeId="106"/>
+        </TransformGroup>
+        <TransformGroup name="paintArea3Start" translation="-9.228 0.0389514 3.75467" rotation="0 -1.71482 0" nodeId="107">
+          <TransformGroup name="paintArea3Width" translation="-2.6967 0 -1.21916e-07" nodeId="108"/>
+          <TransformGroup name="paintArea3Height" translation="-1.12283e-07 0 -14.3782" nodeId="109"/>
+        </TransformGroup>
+        <TransformGroup name="paintArea4Start" translation="-11.9267 0.0389498 -6.02472" rotation="-2.5369e-10 -90 3.0962e-05" nodeId="110">
+          <TransformGroup name="paintArea4Width" translation="-6.765 0 0" rotation="-1.93889e-24 -0 -1.94124e-19" nodeId="111"/>
+          <TransformGroup name="paintArea4Height" translation="0 -1.03251e-13 -25.88" rotation="-1.93889e-24 -0 -1.94124e-19" nodeId="112"/>
+        </TransformGroup>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

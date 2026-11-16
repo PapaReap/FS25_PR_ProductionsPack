@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="olive.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="1" filename="$data/placeables/orchards/olive/olive_diffuse.png"/>
+    <File fileId="2" filename="$data/placeables/orchards/olive/olive_normal.png"/>
+    <File fileId="3" filename="$data/placeables/orchards/olive/olive_specular.png"/>
+    <File fileId="4" filename="$data/shaders/placeableShader.xml"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="olive_mat" materialId="5" customShaderId="4" customShaderVariation="wind_vertexOffset_hideUVShift_uvBasedSections">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+    </Material>
+    <Material name="olive_mat1" materialId="6" customShaderId="4" customShaderVariation="wind_vertexOffset_hideUVShift_uvBasedSections_harvestShake">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="hideArea" value="0 1 0.6107 0.9121"/>
+      <CustomParameter name="hideShiftOffset" value="-0.61"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="olive.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="olive" clipDistance="500" nodeId="11">
+      <Shape name="greenOlives" translation="0 0 -1.52514" shapeId="1" nodeId="12" castsShadows="true" receiveShadows="true" materialIds="5"/>
+      <Shape name="harvestReady" translation="0 0 -1.52514" shapeId="2" nodeId="13" castsShadows="true" receiveShadows="true" materialIds="6"/>
+      <Shape name="noOlives" translation="0 0 -1.52514" shapeId="3" nodeId="14" castsShadows="true" receiveShadows="true" materialIds="5"/>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

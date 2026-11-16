@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="props.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="15" filename="$data/maps/mapEU/textures/props/auxialiarySet_diffuse.png"/>
+    <File fileId="16" filename="$data/maps/mapEU/textures/props/auxialiarySet_normal.png"/>
+    <File fileId="17" filename="$data/maps/mapEU/textures/props/auxialiarySet_specular.png"/>
+    <File fileId="19" filename="$data/maps/mapEU/textures/props/propsDecals_diffuse.png"/>
+    <File fileId="21" filename="$data/maps/mapEU/textures/props/propsDecals_specular.png"/>
+    <File fileId="1" filename="$data/maps/textures/shared/props/airConditionUSA_a_diffuse.png"/>
+    <File fileId="2" filename="$data/maps/textures/shared/props/airConditionUSA_a_normal.png"/>
+    <File fileId="3" filename="$data/maps/textures/shared/props/airConditionUSA_a_specular.png"/>
+    <File fileId="11" filename="$data/maps/textures/shared/props/airConditionUSA_alpha_diffuse.png"/>
+    <File fileId="12" filename="$data/maps/textures/shared/props/airConditionUSA_alpha_normal.png"/>
+    <File fileId="13" filename="$data/maps/textures/shared/props/airConditionUSA_alpha_specular.png"/>
+    <File fileId="8" filename="$data/maps/textures/shared/props/airConditionUSA_b_diffuse.png"/>
+    <File fileId="9" filename="$data/maps/textures/shared/props/airConditionUSA_b_normal.png"/>
+    <File fileId="10" filename="$data/maps/textures/shared/props/airConditionUSA_b_specular.png"/>
+    <File fileId="5" filename="$data/maps/textures/shared/props/airConditionUSA_c_diffuse.png"/>
+    <File fileId="6" filename="$data/maps/textures/shared/props/airConditionUSA_c_normal.png"/>
+    <File fileId="7" filename="$data/maps/textures/shared/props/airConditionUSA_c_specular.png"/>
+    <File fileId="14" filename="$data/shaders/decalShader.xml"/>
+    <File fileId="20" filename="$data/shared/default_normal.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="airConditionUSA_a_mat" materialId="69">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+    </Material>
+    <Material name="airConditionUSA_alpha_mat" materialId="70" alphaBlending="true" customShaderId="14">
+      <Texture fileId="11"/>
+      <Normalmap fileId="12"/>
+      <Glossmap fileId="13"/>
+    </Material>
+    <Material name="airConditionUSA_b_mat" materialId="71">
+      <Texture fileId="8"/>
+      <Normalmap fileId="9"/>
+      <Glossmap fileId="10"/>
+    </Material>
+    <Material name="airConditionUSA_c_mat" materialId="72">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+    </Material>
+    <Material name="auxialiarySet_mat" materialId="73">
+      <Texture fileId="15"/>
+      <Normalmap fileId="16"/>
+      <Glossmap fileId="17"/>
+    </Material>
+    <Material name="lambert1" materialId="74" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+    <Material name="lambert1" materialId="75" diffuseColor="0.498039 0.498039 0.498039 1">
+    </Material>
+    <Material name="propsDecals_mat" materialId="76">
+      <Texture fileId="19"/>
+      <Normalmap fileId="20"/>
+      <Glossmap fileId="21"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="props.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="props" nodeId="96">
+      <Shape name="airConditionWindow" translation="9.40104 4.596 6.52847" rotation="-0 90 0" shapeId="1" clipDistance="120" nodeId="97" castsShadows="true" receiveShadows="true" materialIds="69">
+        <Shape name="col" translation="3.65498e-07 -7.82013e-07 0.310154" shapeId="2" visibility="false" static="true" nodeId="98" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="74"/>
+      </Shape>
+      <Shape name="airConditionWindow" translation="2.02988 4.596 13.8642" shapeId="1" clipDistance="120" nodeId="99" castsShadows="true" receiveShadows="true" materialIds="69">
+        <Shape name="col" translation="3.65498e-07 -7.82013e-07 0.310154" shapeId="2" visibility="false" static="true" nodeId="100" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="74"/>
+      </Shape>
+      <Shape name="airConditionRoof" translation="2.80281 6.76147 2.12834" scale="1.49097 1.49097 1.49097" shapeId="3" clipDistance="120" nodeId="101" castsShadows="true" receiveShadows="true" materialIds="72">
+        <Shape name="col" translation="0.0712576 0.846198 -0.44387" shapeId="4" visibility="false" static="true" nodeId="102" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="74"/>
+      </Shape>
+      <Shape name="airConditionRoof" translation="-0.322587 6.76147 2.12834" scale="1.49097 1.49097 1.49097" shapeId="3" clipDistance="120" nodeId="103" castsShadows="true" receiveShadows="true" materialIds="72">
+        <Shape name="col" translation="0.0712576 0.846198 -0.44387" shapeId="4" visibility="false" static="true" nodeId="104" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="74"/>
+      </Shape>
+      <Shape name="airConditionWall" translation="-7.4579 2.0132 10.2215" rotation="1.36372e-05 -90 0" shapeId="5" clipDistance="120" nodeId="105" castsShadows="true" receiveShadows="true" materialIds="71">
+        <Shape name="rotor" translation="0 0 0.203397" shapeId="6" clipDistance="120" nodeId="106" castsShadows="true" receiveShadows="true" materialIds="71"/>
+        <Shape name="alpha" translation="0 0 0.203397" shapeId="7" clipDistance="50" nodeId="107" castsShadows="true" receiveShadows="true" materialIds="70"/>
+        <Shape name="col" translation="0.172867 -0.0164132 0.128737" shapeId="8" visibility="false" static="true" nodeId="108" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="74"/>
+      </Shape>
+      <Shape name="airConditionWall" translation="-7.00829 2.59949 -4" rotation="-180 0 -180" shapeId="5" clipDistance="120" nodeId="109" castsShadows="true" receiveShadows="true" materialIds="71">
+        <Shape name="rotor" translation="0 0 0.203397" shapeId="6" clipDistance="120" nodeId="110" castsShadows="true" receiveShadows="true" materialIds="71"/>
+        <Shape name="alpha" translation="0 0 0.203397" shapeId="7" clipDistance="50" nodeId="111" castsShadows="true" receiveShadows="true" materialIds="70"/>
+        <Shape name="col" translation="0.172867 -0.0164132 0.128737" shapeId="8" visibility="false" static="true" nodeId="112" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="74"/>
+      </Shape>
+      <Shape name="airConditionWall" translation="-1.58956 3.2225 -9" rotation="-180 0 -180" shapeId="5" clipDistance="120" nodeId="113" castsShadows="true" receiveShadows="true" materialIds="71">
+        <Shape name="rotor" translation="0 0 0.203397" shapeId="6" clipDistance="120" nodeId="114" castsShadows="true" receiveShadows="true" materialIds="71"/>
+        <Shape name="alpha" translation="0 0 0.203397" shapeId="7" clipDistance="50" nodeId="115" castsShadows="true" receiveShadows="true" materialIds="70"/>
+        <Shape name="col" translation="0.172867 -0.0164132 0.128737" shapeId="8" visibility="false" static="true" nodeId="116" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="74"/>
+      </Shape>
+      <Shape name="ventGridSmall" translation="9.50004 0.795 6.46394" rotation="-0 90 0" shapeId="9" clipDistance="40" nodeId="117" castsShadows="true" receiveShadows="true" materialIds="73"/>
+      <Shape name="ventGridSmall" translation="-7.4579 0.795 8.03375" rotation="0 -90 0" shapeId="9" clipDistance="40" nodeId="118" castsShadows="true" receiveShadows="true" materialIds="73"/>
+      <Shape name="ventGridSmall" translation="0.509495 0.795 14" shapeId="9" clipDistance="40" nodeId="119" castsShadows="true" receiveShadows="true" materialIds="73"/>
+      <Shape name="ventGridSmall" translation="3 0.735 -6.43356" rotation="-0 90 0" shapeId="9" clipDistance="40" nodeId="120" castsShadows="true" receiveShadows="true" materialIds="73"/>
+      <Shape name="wallVent03" translation="-4.27728 3.6811 13.9724" shapeId="10" clipDistance="40" nodeId="121" castsShadows="true" receiveShadows="true" materialIds="73"/>
+      <Shape name="wallVent03" translation="8.48549 3.67573 -3.99089" rotation="-180 -0 -180" shapeId="10" clipDistance="40" nodeId="122" castsShadows="true" receiveShadows="true" materialIds="73"/>
+      <Shape name="wallVent02" translation="9.50005 5.03396 4.45261" rotation="-0 90 0" shapeId="11" clipDistance="40" nodeId="123" castsShadows="true" receiveShadows="true" materialIds="73"/>
+      <Shape name="chimneyMetal" translation="-2.78251 4.39981 14" rotation="0 -90 0" shapeId="12" clipDistance="65" nodeId="124" castsShadows="true" receiveShadows="true" materialIds="73">
+        <Shape name="col" translation="0.462254 -1.48314 -0.00473938" shapeId="13" visibility="false" static="true" density="0.0001" nodeId="125" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="75"/>
+      </Shape>
+      <Shape name="electricPanel" translation="-7.41994 0.269916 5.40956" rotation="0 -90 0" shapeId="14" clipDistance="40" nodeId="126" castsShadows="true" receiveShadows="true" materialIds="73">
+        <Shape name="decals" shapeId="15" clipDistance="30" nodeId="127" castsShadows="true" receiveShadows="true" decalLayer="1" materialIds="76"/>
+      </Shape>
+      <Shape name="ventPipe02" translation="-5.43497 0.850036 13.9316" shapeId="16" clipDistance="40" nodeId="128" castsShadows="true" receiveShadows="true" materialIds="73"/>
+      <Shape name="ventGridMedium" translation="-7.5 3.80764 9.00067" rotation="1.72946e-05 -90 0" shapeId="17" clipDistance="40" nodeId="129" castsShadows="true" receiveShadows="true" materialIds="73">
+        <Shape name="col" translation="-0.35 -0.35 -1.3e-07" shapeId="18" visibility="false" static="true" density="0.0001" nodeId="130" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="75"/>
+      </Shape>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

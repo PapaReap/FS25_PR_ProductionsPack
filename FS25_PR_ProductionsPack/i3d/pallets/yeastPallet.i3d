@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="yeastPallet.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="6" filename="../../textures/food/chocolateBox_normal.png"/>
+    <File fileId="7" filename="../../textures/food/chocolateBox_specular.png"/>
+    <File fileId="2" filename="../../textures/food/euroPallet01_diffuse.png"/>
+    <File fileId="3" filename="../../textures/food/euroPallet01_normal.png"/>
+    <File fileId="4" filename="../../textures/food/euroPallet01_specular.png"/>
+    <File fileId="5" filename="../../textures/food/yeastBox_diffuse.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="euroPallet01_mat" materialId="5">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+    <Material name="lambert1" materialId="6" diffuseColor="0.498039 0.498039 0.498039 1">
+    </Material>
+    <Material name="raisinBox_mat" materialId="7">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="yeastPallet.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="butterBoxPallet_component1" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" staticFriction="1" dynamicFriction="1" density="0.0001" clipDistance="150" nodeId="16" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6">
+      <Shape name="pallet_vis" shapeId="2" nodeId="17" castsShadows="true" receiveShadows="true" materialIds="5">
+        <Shape name="dynamicMountTrigger" translation="0 0.0904753 0" shapeId="3" visibility="false" kinematic="true" trigger="true" collisionFilterGroup="0x8000000" collisionFilterMask="0x8000000" nodeId="18" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        <TransformGroup name="dischargeNode" translation="0 0.75 0" nodeId="19"/>
+        <TransformGroup name="content" nodeId="20">
+          <Shape name="butterBox01" translation="-0.303998 0.145827 -0.197137" shapeId="4" clipDistance="100" nodeId="21" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox01Tension" translation="-1.64761e-06 0.000172607 -0.00266033" shapeId="5" nodeId="22" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox02" translation="-0.302418 0.145827 0.204286" shapeId="4" clipDistance="100" nodeId="23" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox02Tension" translation="-0.00158211 0.000172607 -0.00226686" shapeId="5" nodeId="24" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox03" translation="0.297613 0.145033 -0.197137" shapeId="4" clipDistance="100" nodeId="25" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox03Tension" translation="-0.000739592 0.000966713 -0.00266033" shapeId="5" nodeId="26" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox04" translation="0.299194 0.145033 0.204286" shapeId="4" clipDistance="100" nodeId="27" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox04Tension" translation="-0.00232005 0.000966713 -0.00226686" shapeId="5" nodeId="28" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox05" translation="-0.303998 0.346826 -0.197137" rotation="0 180 0" shapeId="4" clipDistance="100" nodeId="29" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox05Tension" translation="1.64761e-06 -8.67861e-05 0.00266033" rotation="0 180 0" shapeId="5" nodeId="30" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox06" translation="-0.302418 0.346826 0.204286" rotation="0 180 0" shapeId="4" clipDistance="100" nodeId="31" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox06Tension" translation="0.00158211 -8.67861e-05 0.00226686" rotation="0 180 0" shapeId="5" nodeId="32" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox07" translation="0.297613 0.346032 -0.197137" rotation="0 180 0" shapeId="4" clipDistance="100" nodeId="33" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox07Tension" translation="0.000739592 0.00070732 0.00266033" rotation="0 180 0" shapeId="5" nodeId="34" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox08" translation="0.299194 0.346032 0.204286" rotation="0 180 0" shapeId="4" clipDistance="100" nodeId="35" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox08Tension" translation="0.00232005 0.00070732 0.00226686" rotation="0 180 0" shapeId="5" nodeId="36" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox09" translation="-0.303998 0.547071 -0.197137" shapeId="4" clipDistance="100" nodeId="37" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox09Tension" translation="-1.64761e-06 -0.000393256 -0.00266033" shapeId="5" nodeId="38" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox10" translation="-0.302418 0.547071 0.204286" shapeId="4" clipDistance="100" nodeId="39" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox10Tension" translation="-0.00158211 -0.000393256 -0.00226686" shapeId="5" nodeId="40" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox11" translation="0.297613 0.546277 -0.197137" shapeId="4" clipDistance="100" nodeId="41" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox11Tension" translation="-0.000739592 0.00040085 -0.00266033" shapeId="5" nodeId="42" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+          <Shape name="butterBox12" translation="0.299194 0.546277 0.204286" shapeId="4" clipDistance="100" nodeId="43" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="butterBox12Tension" translation="-0.00232005 0.00040085 -0.00226686" shapeId="5" nodeId="44" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          </Shape>
+        </TransformGroup>
+        <TransformGroup name="collisions" clipDistance="10" nodeId="45">
+          <Shape name="floorCollision01" translation="-0.3 0 0" shapeId="6" compoundChild="true" collisionFilterGroup="0x100110a" collisionFilterMask="0x100110a" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="46" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          <Shape name="floorCollision02" translation="0.3 0 0" shapeId="7" compoundChild="true" collisionFilterGroup="0x100110a" collisionFilterMask="0x100110a" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="47" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+      </Shape>
+    </Shape>
+  </Scene>
+
+</i3D>

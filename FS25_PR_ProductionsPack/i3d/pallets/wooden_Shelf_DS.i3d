@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="wooden_Shelf_DS.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="5" filename="$data/maps/textures/shared/props/storeInteriorProps_diffuse.png"/>
+    <File fileId="6" filename="$data/maps/textures/shared/props/storeInteriorProps_normal.png"/>
+    <File fileId="7" filename="$data/maps/textures/shared/props/storeInteriorProps_specular.png"/>
+    <File fileId="2" filename="../../textures/food/euroPallet01_diffuse.png"/>
+    <File fileId="3" filename="../../textures/food/euroPallet01_normal.png"/>
+    <File fileId="4" filename="../../textures/food/euroPallet01_specular.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="euroPallet01_mat" materialId="5">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+    <Material name="lambert1" materialId="6" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+    <Material name="storeInteriorProps_mat" materialId="7">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6" bumpDepth="0"/>
+      <Glossmap fileId="7"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="wooden_Shelf_DS.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="wooden_Shelf_DS_component1" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" clipDistance="150" nodeId="15" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6">
+      <Shape name="wooden_Shelf_DS" translation="0 0 0.00714842" shapeId="2" nodeId="16" castsShadows="true" receiveShadows="true" materialIds="5">
+        <Shape name="dynamicMountTrigger" translation="0 0.0904753 0" shapeId="3" visibility="false" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="17" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        <TransformGroup name="dischargeNode" translation="0 0.6 0" nodeId="18"/>
+        <TransformGroup name="content" nodeId="19">
+          <Shape name="woodenShelf01" lockedgroup="true" translation="-0.291897 0.141676 -0.307473" rotation="180 2.3697e-21 180" scale="0.899851 1 1" shapeId="4" clipDistance="200" nodeId="20" castsShadows="true" receiveShadows="true" materialIds="7">
+            <Shape name="Tension1" translation="-0.324384 0.00361028 -0.307473" rotation="180 2.49688e-06 180" shapeId="5" nodeId="21" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+            <Shape name="woodenShelf01" lockedgroup="true" translation="0 2.98023e-08 -0.229352" rotation="0 9.49304e-20 -3.2198e-28" shapeId="4" clipDistance="200" nodeId="22" castsShadows="true" receiveShadows="true" materialIds="7"/>
+            <Shape name="woodenShelf01" lockedgroup="true" translation="0 8.9407e-08 -0.601494" rotation="180 2.51863e-12 -180" shapeId="4" clipDistance="200" nodeId="23" castsShadows="true" receiveShadows="true" materialIds="7"/>
+            <Shape name="woodenShelf01" lockedgroup="true" translation="-0.645935 8.9407e-08 -8.40988e-09" rotation="0 9.49304e-20 -3.2198e-28" shapeId="4" clipDistance="200" nodeId="24" castsShadows="true" receiveShadows="true" materialIds="7">
+              <Shape name="woodenShelf01" lockedgroup="true" translation="0 2.98023e-08 -0.229352" rotation="0 9.49304e-20 -3.2198e-28" shapeId="4" clipDistance="200" nodeId="25" castsShadows="true" receiveShadows="true" materialIds="7"/>
+              <Shape name="woodenShelf01" lockedgroup="true" translation="0 8.9407e-08 -0.601494" rotation="180 2.51863e-12 -180" shapeId="4" clipDistance="200" nodeId="26" castsShadows="true" receiveShadows="true" materialIds="7"/>
+            </Shape>
+          </Shape>
+        </TransformGroup>
+        <TransformGroup name="collisions" clipDistance="10" nodeId="27">
+          <Shape name="floorCollision01" translation="0.3 0 0" shapeId="6" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="28" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          <Shape name="floorCollision02" translation="-0.3 0 0" shapeId="6" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="29" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+      </Shape>
+    </Shape>
+  </Scene>
+
+</i3D>

@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="PR_productionPoint_storage" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_storeItem_theCarpenterShop</name>
+        <functions>
+            <function>$l10n_function_theCarpenterShop</function>
+        </functions>
+        <image>store/store_carpenterShop.png</image>
+        <price>150000</price>
+        <dailyUpkeep>0</dailyUpkeep>
+        <showInStore>true</showInStore>
+        <canBeSold>true</canBeSold>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>PRI</brand>
+        <species>PLACEABLE</species>
+        <category>productionPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Production</tab>
+        </brush>
+        <vertexBufferMemoryUsage>2800896</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>705792</indexBufferMemoryUsage>
+        <textureMemoryUsage>53542912</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>i3d/carpenterOld_DS.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+        <canBeDeleted>true</canBeDeleted>
+        <boughtWithFarmland>true</boughtWithFarmland>
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testAreaStart01" endNode="testAreaEnd01" />
+        </testAreas>
+        <sounds>
+            <place template="smallImp"/>
+        </sounds>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="clearAreaStart01" widthNode="clearAreaWidth01" heightNode="clearAreaHeight01"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="10" maxSlope="75" maxEdgeAngle="30" >
+        <levelAreas>
+            <levelArea startNode="levelAreaStart01" widthNode="levelAreaWidth01" heightNode="levelAreaHeight01" groundType="asphalt"/>
+        </levelAreas>
+        <paintAreas>
+            <paintArea startNode="paintAreaStart01" widthNode="paintAreaWidth01" heightNode="paintAreaHeight01" groundType="asphalt"/>
+        </paintAreas>
+    </leveling>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01" />
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+        </updateAreas>
+    </ai>
+
+    <infoTrigger triggerNode="infoTrigger"/>
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker" teleportNode="playerTriggerMarker" />
+    </hotspots>
+
+    <dynamicallyLoadedParts>
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d" node="0" linkNode="smokeBig01" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5"/>
+        <dynamicallyLoadedPart node="0" linkNode="lightSwitch01" filename="$data/shared/assets/lights/rudolfHormann/powerSwitch.i3d" />
+    </dynamicallyLoadedParts>
+
+    <triggerMarkers>
+        <triggerMarker node="playerTriggerMarker"   adjustToGround="true" filename="$data/shared/assets/marker/markerIconWrench.i3d"/>
+        <triggerMarker node="unloadTriggerMarker"   adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+        <triggerMarker node="woodSellTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconExclamationMark.i3d"/>
+        <triggerMarker node="palletTriggerMarker"   adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+        <triggerMarker node="markerLoading" filename="$data/shared/assets/marker/markerIconLoad.i3d" />
+
+        <triggerMarker node="warningStripesUnload"/>
+        <triggerMarker node="warningStripesLoad"/>
+        <triggerMarker node="objectTriggerMarkerStorage" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true" />
+        <triggerMarker node="playerTriggerMarkerStorage" filename="$data/shared/assets/marker/markerIconPallet.i3d" adjustToGround="true" />
+    </triggerMarkers>
+
+    <lights>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode01" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode02" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode03" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode04" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode05" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode06" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode07" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode08" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode09" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode10" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode11" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode12" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode13" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode14" groupIndex="1"/>
+        <sharedLight filename="$data/shared/assets/lights/terraLed/fluorescentTube50W.xml" linkNode="lightNode15" groupIndex="1"/>
+        <realLights>
+            <low>
+                <light node="realLightsLow" groupIndex="1"/>
+            </low>
+            <high>
+                <light node="realLightsHigh" groupIndex="1"/>
+            </high>
+        </realLights>
+
+        <group name="$l10n_action_placeableLightShed" triggerNode="lightTrigger01">
+            <sounds>
+                <toggle template="lizardFloodLight" innerRadius="3" outerRadius="15" volumeScale="0.2"/>
+            </sounds>
+        </group>
+    </lights>
+
+    <productionPoint>
+        <productions sharedThroughputCapacity="false">
+        <!-- <productions> -->
+            <!-- FURNITURE USE BOARDS & MDF -->
+            <production id="furniture" name="$l10n_fillType_furniture" cyclesPerHour="14" costsPerActiveHour="3">
+                <inputs>
+                    <input fillType="BOARDS" amount="90" />
+                    <input fillType="MDFBOARDS" amount="50" />
+                </inputs>
+                <outputs>
+                    <output fillType="FURNITURE" amount="140" />
+                    <output fillType="WOODCHIPS" amount="30" />
+                </outputs>
+            </production>
+
+            <!-- MAKE BOARDS FROM PLANKS -->
+            <production id="boards" name="$l10n_fillType_boards" cyclesPerHour="20" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="PLANKS" amount="4100" />
+                </inputs>
+                <outputs>
+                    <output fillType="BOARDS"    amount="2050" />
+                    <output fillType="WOODCHIPS" amount="100" />
+                </outputs>
+            </production>
+
+            <production id="prefabWall" name="$l10n_fillType_prefabWall" cyclesPerHour="7" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="BOARDS" amount="200" />
+                    <input fillType="PLANKS" amount="100" />
+                    <input fillType="WOODBEAM" amount="50" />
+                    <input fillType="OSBBOARDS" amount="100" />
+                    <!-- osb, planks long, planks, beam (boards are the shorter, planks are long) -->
+                </inputs>
+                <outputs>
+                    <output fillType="PREFABWALL" amount="400" />
+                    <output fillType="WOODCHIPS" amount="50" />
+                </outputs>
+            </production>
+
+            <production id="barrel" name="$l10n_fillType_barrel" cyclesPerHour="4" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="BOARDS" amount="250" />
+                </inputs>
+                <outputs>
+                    <output fillType="BARREL"    amount="248" />
+                    <output fillType="WOODCHIPS" amount="60" />
+                </outputs>
+            </production>
+
+            <production id="bucket" name="$l10n_fillType_bucket" cyclesPerHour="6" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="BOARDS" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="BUCKET"    amount="137" />
+                    <output fillType="WOODCHIPS" amount="60" />
+                </outputs>
+            </production>
+
+            <production id="bathtub" name="$l10n_fillType_bathtub" cyclesPerHour="3" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="BOARDS" amount="50" />
+                    <input fillType="PLANKS" amount="45" />
+                </inputs>
+                <outputs>
+                    <output fillType="BATHTUB"   amount="130" />
+                    <output fillType="WOODCHIPS" amount="60" />
+                </outputs>
+            </production>
+
+            <production id="emptyPallet" name="$l10n_fillType_emptyPallet" cyclesPerHour="25" costsPerActiveHour="3">
+                <inputs>
+                    <input fillType="BOARDS" amount="250" />
+                    <input fillType="WOODBEAM" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="EMPTYPALLET" amount="8000" />
+                    <output fillType="WOODCHIPS" amount="200" />
+                </outputs>
+            </production>
+
+            <production id="emptyPalletsFillable" name="$l10n_fillType_emptyPalletsFillable" cyclesPerHour="5" costsPerActiveHour="25">
+                <inputs>
+                    <input fillType="BOARDS" amount="0.375" />
+                    <input fillType="PLANKS" amount="0.200" />
+                    <input fillType="WOODBEAM" amount="0.120" />
+                </inputs>
+                <outputs>
+                    <output fillType="EMPTYPALLETSFILLABLE" amount="12" />
+                    <output fillType="WOODCHIPS" amount="0.300" />
+                </outputs>
+            </production>
+
+            <!-- <production id="emptyPalletBox" name="$l10n_fillType_emptyPalletBox" cyclesPerHour="5" costsPerActiveHour="25">
+                <inputs>
+                    <input fillType="BOARDS" amount="4" />
+                    <input fillType="PLANKS" amount="2" />
+                    <input fillType="WOODBEAM" amount="1" />
+                </inputs>
+                <outputs>
+                    <output fillType="EMPTYPALLETBOX" amount="1" />
+                    <output fillType="WOODCHIPS" amount="0.75" />
+                </outputs>
+            </production> -->
+
+            <!-- <production id="WOODEN_BOX_A" name="$l10n_fillType_wooden_box_a" cyclesPerHour="1" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="WOOD" amount="5000" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODCHIPS" amount="300" />
+                    <output fillType="WOODEN_BOX_A" amount="16000" />
+                </outputs>
+            </production> -->
+
+            <!-- <production id="BAKERY_CASES" name="$l10n_fillType_bakery_crates" cyclesPerHour="1" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="WOOD" amount="4500" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODCHIPS" amount="300" />
+                    <output fillType="BAKERY_CASES" amount="14000" />
+                </outputs>
+            </production> -->
+
+            <!-- <production id="CHEESE_CASES" name="$l10n_fillType_cheese_cases" cyclesPerHour="1" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="WOOD" amount="4000" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODCHIPS" amount="300" />
+                    <output fillType="CHEESE_CASES" amount="12000" />
+                </outputs>
+            </production> -->
+
+            <production id="WOODEN_SHELF" name="$l10n_fillType_wooden_Shelf" cyclesPerHour="3" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="PLANKS" amount="800" />
+                    <input fillType="MDFBOARDS" amount="200" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODEN_SHELF" amount="1000" />
+                    <output fillType="WOODCHIPS" amount="300" />
+                </outputs>
+            </production>
+
+            <production id="DOGHOUSE" name="$l10n_fillType_doghouse" cyclesPerHour="2" costsPerActiveHour="1">
+                <inputs>
+                    <!-- Needs planks or boards -->
+                    <input fillType="BOARDS" amount="2500" />
+                    <input fillType="PLANKS" amount="800" />
+                </inputs>
+                <outputs>
+                    <output fillType="WOODCHIPS" amount="300" />
+                    <output fillType="DOGHOUSE" amount="1000" />
+                </outputs>
+            </production>
+
+            <production id="carvings" name="$l10n_fillType_carvings" cyclesPerHour="2" costsPerActiveHour="3">
+                <inputs>
+                    <input fillType="WOOD" amount="40" />
+                </inputs>
+                <outputs>
+                    <output fillType="CARVINGS" amount="22" />
+                    <output fillType="WOODCHIPS" amount="20" />
+                </outputs>
+            </production>
+
+            <production id="toys" name="$l10n_fillType_toys" cyclesPerHour="5" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="BOARDS" amount="10" />
+                </inputs>
+                <outputs>
+                    <output fillType="TOYS" amount="35" />
+                    <output fillType="WOODCHIPS" amount="10" />
+                </outputs>
+            </production>
+
+        </productions>
+
+        <storage isExtension="false" fillLevelSyncThreshold="50">
+            <capacity fillType="FURNITURE"      capacity="47000" />
+            <capacity fillType="WOOD"           capacity="40000" />
+            <capacity fillType="BOARDS"         capacity="100000" />
+            <capacity fillType="PLANKS"         capacity="70000" />
+            <capacity fillType="WOODBEAM"       capacity="45000" />
+            <capacity fillType="MDFBOARDS"      capacity="45000" />
+            <capacity fillType="OSBBOARDS"      capacity="45000" />
+
+            <capacity fillType="PREFABWALL"     capacity="35000" />
+            <capacity fillType="WOODCHIPS"      capacity="200000" />
+            <capacity fillType="BARREL"         capacity="60000" />
+            <capacity fillType="BUCKET"         capacity="80000" />
+            <capacity fillType="BATHTUB"        capacity="70000" />
+            <capacity fillType="EMPTYPALLET"    capacity="160000" />
+			<capacity fillType="EMPTYPALLETSFILLABLE" capacity="240000" />
+            <!-- <capacity fillType="WOODEN_BOX_A"   capacity="150000" /> -->
+            <!-- <capacity fillType="BAKERY_CASES"   capacity="150000" /> -->
+            <!-- <capacity fillType="CHEESE_CASES"   capacity="150000" /> -->
+            <capacity fillType="DOGHOUSE"       capacity="150000" />
+            <capacity fillType="WOODEN_SHELF"   capacity="150000" />
+
+            <capacity fillType="TOYS"           capacity="20000" />
+            <capacity fillType="CARVINGS"       capacity="20000" />
+        </storage>
+
+        <sellingStation node="sellingStation" supportsExtension="false">
+            <palletTrigger triggerNode="palletTrigger" fillTypes="BOARDS PLANKS WOODBEAM MDFBOARDS OSBBOARDS" aiNode="unloadTriggerAINode"/>
+            <woodTrigger   triggerNode="woodTrigger"   fillTypes="WOOD"          aiNode="unloadTriggerAINode" activationTriggerNode="woodSellTrigger" />
+            <palletTrigger triggerNode="palletWoodTrigger" fillTypes="WOOD"/>
+        </sellingStation>
+
+        <loadingStation node="loadingStation" supportsExtension="false">
+            <loadTrigger triggerNode="loadingTrigger" fillLitersPerSecond="1000" dischargeNode="dischargeNode" fillTypes="WOODCHIPS">
+                <effectNode effectClass="PipeEffect" effectNode="pipeEffect"      materialType="pipe"           fadeTime="0.5" maxBending="0" shapeScaleSpread="1 1 1 0" controlPoint="7.25 0 0 0"/>
+                <effectNode                          effectNode="pipeEffectSmoke" materialType="unloadingSmoke" fadeTime="0.5" />
+            </loadTrigger>
+        </loadingStation>
+
+        <palletSpawner>
+            <spawnPlaces>
+                <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01" fillTypes="FURNITURE WOODEN_SHELF CARVINGS TOYS"/>
+                <spawnPlace startNode="palletAreaStart02" endNode="palletAreaEnd02" fillTypes="EMPTYPALLET"/>
+                <spawnPlace startNode="palletAreaStart03" endNode="palletAreaEnd03" fillTypes="PREFABWALL EMPTYPALLETSFILLABLE"/>
+                <spawnPlace startNode="palletAreaStart04" endNode="palletAreaEnd04" fillTypes="BARREL BUCKET BATHTUB DOGHOUSE"/>
+                <!-- "WOODEN_BOX_A BAKERY_CASES CHEESE_CASES" -->
+            </spawnPlaces>
+        </palletSpawner>
+
+        <playerTrigger node="playerTrigger" />
+    </productionPoint>
+
+    <objectStorage supportsBales="false" supportsPallets="true"  maxLength="2.5" maxWidth="2.5" maxHeight="1.7" capacity="90">
+        <playerTrigger node="playerTriggerStorage" />
+        <objectTrigger node="objectTriggerStorage" />
+        <spawnAreas>
+            <spawnArea startNode="spawnArea1Start" endNode="spawnArea1End"/>
+        </spawnAreas>
+        <storageAreas>
+             <storageArea startNode="storageArea1Start" endNode="storageArea1End"/>
+             <storageArea startNode="storageArea2Start" endNode="storageArea2End"/>
+             <storageArea startNode="storageArea3Start" endNode="storageArea3End"/>
+             <storageArea startNode="storageArea4Start" endNode="storageArea4End"/>
+             <storageArea startNode="storageArea5Start" endNode="storageArea5End"/>
+             <storageArea startNode="storageArea6Start" endNode="storageArea6End"/>
+        </storageAreas>
+    </objectStorage>
+
+    <i3dMappings>
+        <i3dMapping id="carpenterOld_DS_DE" node="0>14" />
+        <i3dMapping id="carpenterOld_DS_EN" node="0>13" />
+        <i3dMapping id="markerLoading" node="0>12|4" />
+        <i3dMapping id="palletTriggerMarker" node="0>8|7" />
+        <i3dMapping id="loadingTrigger" node="0>12|3|0|0" />
+        <i3dMapping id="dischargeNode" node="0>12|3|0|1" />
+        <i3dMapping id="pipeEffect" node="0>12|3|0|2|0" />
+        <i3dMapping id="pipeEffectSmoke" node="0>12|3|0|2|1" />
+        <i3dMapping id="realLightsLow" node="0>6|0|0" />
+        <i3dMapping id="realLightsHigh" node="0>6|0|1" />
+        <i3dMapping id="lightNode01" node="0>6|3|0" />
+        <i3dMapping id="lightNode02" node="0>6|3|1" />
+        <i3dMapping id="lightNode03" node="0>6|3|2" />
+        <i3dMapping id="lightNode04" node="0>6|3|3" />
+        <i3dMapping id="lightNode05" node="0>6|3|4" />
+        <i3dMapping id="lightNode06" node="0>6|3|5" />
+        <i3dMapping id="lightNode07" node="0>6|3|6" />
+        <i3dMapping id="lightNode08" node="0>6|3|7" />
+        <i3dMapping id="lightNode09" node="0>6|3|8" />
+        <i3dMapping id="lightNode10" node="0>6|3|9" />
+        <i3dMapping id="lightNode11" node="0>6|3|10" />
+        <i3dMapping id="lightNode12" node="0>6|3|11" />
+        <i3dMapping id="lightNode13" node="0>6|3|12" />
+        <i3dMapping id="lightNode14" node="0>6|3|13" />
+        <i3dMapping id="lightNode15" node="0>6|3|14" />
+        <i3dMapping id="lightTrigger01" node="0>6|1" />
+        <i3dMapping id="lightSwitch01" node="0>6|2" />
+        <i3dMapping id="clearAreaStart01" node="0>0|0" />
+        <i3dMapping id="clearAreaWidth01" node="0>0|0|0" />
+        <i3dMapping id="clearAreaHeight01" node="0>0|0|1" />
+        <i3dMapping id="clearAreaStart02" node="0>0|1" />
+        <i3dMapping id="clearAreaWidth02" node="0>0|1|0" />
+        <i3dMapping id="clearAreaHeight02" node="0>0|1|1" />
+        <i3dMapping id="levelAreaStart01" node="0>1|0" />
+        <i3dMapping id="levelAreaWidth01" node="0>1|0|0" />
+        <i3dMapping id="levelAreaHeight01" node="0>1|0|1" />
+        <i3dMapping id="levelAreaStart02" node="0>1|1" />
+        <i3dMapping id="levelAreaWidth02" node="0>1|1|0" />
+        <i3dMapping id="levelAreaHeight02" node="0>1|1|1" />
+        <i3dMapping id="paintAreaStart01" node="0>2|0" />
+        <i3dMapping id="paintAreaWidth01" node="0>2|0|0" />
+        <i3dMapping id="paintAreaHeight01" node="0>2|0|1" />
+        <i3dMapping id="paintAreaStart02" node="0>2|1" />
+        <i3dMapping id="paintAreaWidth02" node="0>2|1|0" />
+        <i3dMapping id="paintAreaHeight02" node="0>2|1|1" />
+        <i3dMapping id="indoorAreaStart01" node="0>3|0" />
+        <i3dMapping id="indoorAreaWidth01" node="0>3|0|0" />
+        <i3dMapping id="indoorAreaHeight01" node="0>3|0|1" />
+        <i3dMapping id="indoorAreaStart02" node="0>3|1" />
+        <i3dMapping id="indoorAreaWidth02" node="0>3|1|0" />
+        <i3dMapping id="indoorAreaHeight02" node="0>3|1|1" />
+        <i3dMapping id="testAreaStart01" node="0>4|0" />
+        <i3dMapping id="testAreaEnd01" node="0>4|0|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>5|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaEnd01" node="0>5|0|0" />
+        <i3dMapping id="realLights" node="0>6|0" />
+        <i3dMapping id="interior" node="0>6|1" />
+        <i3dMapping id="infoTrigger" node="0>7" />
+        <i3dMapping id="sellingStation" node="0>8" />
+        <i3dMapping id="palletTrigger" node="0>8|0" />
+        <i3dMapping id="unloadTriggerMarker" node="0>8|1" />
+        <i3dMapping id="unloadTriggerAINode" node="0>8|2" />
+        <i3dMapping id="warningStripes01" node="0>8|3" />
+        <i3dMapping id="woodTrigger" node="0>8|4" />
+        <i3dMapping id="woodSellTrigger" node="0>8|5" />
+        <i3dMapping id="woodSellTriggerMarker" node="0>8|6" />
+        <i3dMapping id="palletWoodTrigger" node="0>8|9" />
+		
+        <i3dMapping id="playerTrigger" node="0>9|0" />
+        <i3dMapping id="playerTriggerMarker" node="0>9|1" />
+        <i3dMapping id="palletSpawner" node="0>10" />
+        <i3dMapping id="palletAreaStart01" node="0>10|0" />
+        <i3dMapping id="palletAreaEnd01" node="0>10|0|0" />
+        <i3dMapping id="palletAreaStart02" node="0>10|1" />
+        <i3dMapping id="palletAreaEnd02" node="0>10|1|0" />
+        <i3dMapping id="palletAreaStart03" node="0>10|2" />
+        <i3dMapping id="palletAreaEnd03" node="0>10|2|0" />
+        <i3dMapping id="palletAreaStart04" node="0>10|3" />
+        <i3dMapping id="palletAreaEnd04" node="0>10|3|0" />
+
+
+
+        <i3dMapping id="props" node="0>11|0" />
+        <i3dMapping id="smokeBig01" node="0>11|1" />
+
+        <i3dMapping id="CollisionBox1"      node="0>14|0|0" />
+        <i3dMapping id="CollisionBox2"      node="0>14|0|1" />
+        <i3dMapping id="CollisionBox3"      node="0>14|0|2" />
+        <i3dMapping id="CollisionBox4"      node="0>14|0|3" />
+
+        <i3dMapping id="Shelf2" node="0>14|1|0" />
+
+        <i3dMapping id="warningStripesLoad"     node="0>14|2|0" />
+        <i3dMapping id="warningStripesUnload"   node="0>14|2|1" />
+
+        <i3dMapping id="spawnArea1Start"        node="0>14|3|0|0" />
+        <i3dMapping id="spawnArea1End"          node="0>14|3|0|0|0" />
+        <i3dMapping id="storageArea1Start"      node="0>14|3|0|1" />
+        <i3dMapping id="storageArea1End"        node="0>14|3|0|1|0" />
+        <i3dMapping id="storageArea2Start"      node="0>14|3|0|2" />
+        <i3dMapping id="storageArea2End"        node="0>14|3|0|2|0" />
+        <i3dMapping id="storageArea3Start"      node="0>14|3|0|3" />
+        <i3dMapping id="storageArea3End"        node="0>14|3|0|3|0" />
+        <i3dMapping id="storageArea4Start"      node="0>14|3|0|4" />
+        <i3dMapping id="storageArea4End"        node="0>14|3|0|4|0" />
+        <i3dMapping id="storageArea5Start"      node="0>14|3|0|5" />
+        <i3dMapping id="storageArea5End"        node="0>14|3|0|5|0" />
+        <i3dMapping id="storageArea6Start"      node="0>14|3|0|6" />
+        <i3dMapping id="storageArea6End"        node="0>14|3|0|6|0" />
+        <i3dMapping id="objectTriggerStorage"   node="0>14|3|1" />
+        <i3dMapping id="objectTriggerMarkerStorage" node="0>14|3|1|0" />
+        <i3dMapping id="playerTriggerStorage"   node="0>14|3|2" />
+        <i3dMapping id="playerTriggerMarkerStorage" node="0>14|3|2|0" />
+
+    </i3dMappings>
+</placeable>

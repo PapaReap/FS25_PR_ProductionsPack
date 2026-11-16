@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="grainDryerSmall.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="5" filename="$data/placeables/brandless/productionPointsSmall/biomassHeatingPlant/biomassHeatingPlant_diffuse.png"/>
+    <File fileId="6" filename="$data/placeables/brandless/productionPointsSmall/biomassHeatingPlant/biomassHeatingPlant_normal.png"/>
+    <File fileId="7" filename="$data/placeables/brandless/productionPointsSmall/biomassHeatingPlant/biomassHeatingPlant_specular.png"/>
+    <File fileId="14" filename="$data/placeables/brandless/productionPointsSmall/grainFlourMill/grainFlourMill_diffuse.png"/>
+    <File fileId="15" filename="$data/placeables/brandless/productionPointsSmall/grainFlourMill/grainFlourMill_normal.png"/>
+    <File fileId="16" filename="$data/placeables/brandless/productionPointsSmall/grainFlourMill/grainFlourMill_specular.png"/>
+    <File fileId="8" filename="$data/placeables/brandless/productionPointsSmall/productionPointsShed_diffuse.png"/>
+    <File fileId="9" filename="$data/placeables/brandless/productionPointsSmall/productionPointsShed_normal.png"/>
+    <File fileId="10" filename="$data/placeables/brandless/productionPointsSmall/productionPointsShed_specular.png"/>
+    <File fileId="11" filename="$data/shaders/placeableShader.xml"/>
+    <File fileId="2" filename="$data/shared/warningStripes_diffuse.png"/>
+    <File fileId="3" filename="$data/shared/warningStripes_normal.png"/>
+    <File fileId="4" filename="$data/shared/warningStripes_specular.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="biomassHeatingPlant_mat" materialId="5">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+    </Material>
+    <Material name="grainFlourMill_mat" materialId="6">
+      <Texture fileId="14"/>
+      <Normalmap fileId="15"/>
+      <Glossmap fileId="16"/>
+    </Material>
+    <Material name="lambert1" materialId="7" diffuseColor="0.501961 0.501961 0.501961 1">
+    </Material>
+    <Material name="productionPointsShed_mat" materialId="8" customShaderId="11">
+      <Texture fileId="8"/>
+      <Normalmap fileId="9"/>
+      <Glossmap fileId="10"/>
+    </Material>
+    <Material name="warningStripes_mat" materialId="9">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="grainDryerSmall.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="Graindryer_small" nodeId="28">
+      <TransformGroup name="biomassHeatingPlant" lockedgroup="true" clipDistance="165" nodeId="29">
+        <TransformGroup name="sellingStation" nodeId="30">
+          <Shape name="woodTrigger" translation="-0.820431 2 3.28854" rotation="0 90 0" shapeId="1" kinematic="true" compound="true" trigger="true" collisionFilterGroup="0x40000830" collisionFilterMask="0xfffffbff" nodeId="31" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+          <TransformGroup name="unloadTriggerMarker" translation="0 0 3" nodeId="32"/>
+          <TransformGroup name="unloadTriggerAINode" translation="0 0 3" nodeId="33"/>
+          <TransformGroup name="teleportNode" translation="2 0 3" nodeId="34"/>
+          <TransformGroup name="unloadTriggerAINode" translation="4 0 3" nodeId="35"/>
+          <TransformGroup name="unloadTriggerMarker" translation="4 0 3" nodeId="36"/>
+          <Shape name="grainTrigger" translation="4 0.15 3" shapeId="2" kinematic="true" compound="true" collisionFilterGroup="0x40000000" collisionFilterMask="0x20000000" nodeId="37" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+        </TransformGroup>
+        <TransformGroup name="warningStripes" nodeId="38">
+          <Shape name="warningStripes01" translation="0 0 3" rotation="0 90 0" shapeId="3" clipDistance="200" nodeId="39" castsShadows="true" receiveShadows="true" nonRenderable="true" terrainDecal="true" materialIds="9"/>
+        </TransformGroup>
+        <TransformGroup name="visuals" nodeId="40">
+          <TransformGroup name="biomassHeatingPlant_lod" lodDistance="0 25" nodeId="41">
+            <Shape name="biomassHeatingPlant_LOD0" shapeId="4" nodeId="42" castsShadows="true" receiveShadows="true" materialIds="5">
+              <Shape name="door" translation="0.697671 0.82913 -0.457745" rotation="0 -60 0" shapeId="5" nodeId="43" castsShadows="true" receiveShadows="true" materialIds="5"/>
+            </Shape>
+            <Shape name="biomassHeatingPlant_LOD1" shapeId="6" nodeId="44" castsShadows="true" receiveShadows="true" materialIds="5"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="collisions" nodeId="45">
+          <Shape name="collision" shapeId="7" static="true" collisionFilterGroup="0x3e" collisionFilterMask="0xfffffbff" nodeId="46" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+          <Shape name="tipCollision" translation="0.758621 0 0" shapeId="8" static="true" collisionFilterGroup="0x8" collisionFilterMask="0x1" nodeId="47" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="grainFlourMillShed" lockedgroup="true" translation="4.0015 0 0" clipDistance="100" nodeId="48">
+        <TransformGroup name="clearAreas" nodeId="49">
+          <TransformGroup name="clearAreaStart01" translation="-8 0 -3" nodeId="50">
+            <TransformGroup name="clearAreaWidth01" translation="0 0 8" nodeId="51"/>
+            <TransformGroup name="clearAreaHeight01" translation="14 0 0" nodeId="52"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="levelAreas" nodeId="53">
+          <TransformGroup name="levelAreaStart01" translation="-8 0 -3" nodeId="54">
+            <TransformGroup name="levelAreaWidth01" translation="0 0 8" nodeId="55"/>
+            <TransformGroup name="levelAreaHeight01" translation="14 0 0" nodeId="56"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="paintAreas" nodeId="57">
+          <TransformGroup name="paintAreaStart01" translation="-8 0 -3" nodeId="58">
+            <TransformGroup name="paintAreaWidth01" translation="0 0 8" nodeId="59"/>
+            <TransformGroup name="paintAreaHeight01" translation="14 0 0" nodeId="60"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="indoorAreas" nodeId="61">
+          <TransformGroup name="indoorAreaStart01" translation="-8 0 -3" nodeId="62">
+            <TransformGroup name="indoorAreaWidth01" translation="0 0 8" nodeId="63"/>
+            <TransformGroup name="indoorAreaHeight01" translation="14 0 0" nodeId="64"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="testAreas" nodeId="65">
+          <TransformGroup name="testAreaStart01" translation="-8 0 -3" nodeId="66">
+            <TransformGroup name="testAreaEnd01" translation="12 5 5" nodeId="67"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="tipOcclusionUpdateAreas" nodeId="68">
+          <TransformGroup name="tipOcclusionUpdateAreaStart01" translation="-8 0 -3.5" nodeId="69">
+            <TransformGroup name="tipOcclusionUpdateAreaEnd01" translation="12 0 7" nodeId="70"/>
+          </TransformGroup>
+        </TransformGroup>
+        <Shape name="infoTrigger" translation="-2 0 2.9997" shapeId="9" static="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x100000" nodeId="71" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+        <TransformGroup name="loadingStation" translation="0.0765981 3.64368 -7.17121" nodeId="72">
+          <TransformGroup name="loadingTriggers" translation="-2.22045e-18 -0.215055 -4.54747e-15" nodeId="73">
+            <Shape name="loadingTrigger" translation="5 -0.78 7" shapeId="9" static="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x40000000" nodeId="74" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+            <TransformGroup name="dischargeNode" translation="3.5 -2.5 7.25" nodeId="75"/>
+            <TransformGroup name="aiLoadingNode" translation="2.39808e-16 -3.70297 0.537158" rotation="0 -90 0" nodeId="76"/>
+          </TransformGroup>
+          <TransformGroup name="markerLoading" translation="3.5 -2.5 7.25" rotation="0 -90 0" nodeId="77"/>
+        </TransformGroup>
+        <TransformGroup name="productionPoint" translation="1 0 5" nodeId="78">
+          <Shape name="playerTrigger" translation="1.75 1 -2.5" shapeId="10" static="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x100000" nodeId="79" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+          <TransformGroup name="playerTriggerMarker" translation="1.75 1 -2.5" nodeId="80"/>
+        </TransformGroup>
+        <TransformGroup name="warningStripes" nodeId="81">
+          <Shape name="warningStripes01" translation="0 0 3" shapeId="11" clipDistance="200" nodeId="82" castsShadows="true" receiveShadows="true" nonRenderable="true" terrainDecal="true" materialIds="9"/>
+          <Shape name="warningStripes02" translation="3.04979 0.01 -7.1e-05" shapeId="12" clipDistance="200" nodeId="83" castsShadows="true" receiveShadows="true" nonRenderable="true" terrainDecal="true" materialIds="9"/>
+        </TransformGroup>
+        <TransformGroup name="visuals" nodeId="84">
+          <Shape name="grainFlourMillShed" shapeId="13" nodeId="85" castsShadows="true" receiveShadows="true" materialIds="8"/>
+          <TransformGroup name="grainFlourMillShed_lod" lockedgroup="true" lodDistance="0 20" lodBlending="false" clipDistance="75" nodeId="86">
+            <Shape name="grainFlourMillShed_lod0" translation="0 0.064052 0" shapeId="14" nodeId="87" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="grainFlourMillShed_lod1" translation="0 0.064052 0" shapeId="15" nodeId="88" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          </TransformGroup>
+          <Shape name="grainFlourMillShed" translation="-4.15 0 0" shapeId="13" nodeId="89" castsShadows="true" receiveShadows="true" materialIds="8"/>
+        </TransformGroup>
+        <TransformGroup name="collisions" nodeId="90">
+          <Shape name="collision" shapeId="16" static="true" collisionFilterGroup="0x3e" collisionFilterMask="0xfffffbff" density="0.0001" nodeId="91" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+          <Shape name="tipCollision" translation="0.888305 0 -1.1193" shapeId="17" static="true" collisionFilterGroup="0x8" collisionFilterMask="0x1" nodeId="92" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+        </TransformGroup>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

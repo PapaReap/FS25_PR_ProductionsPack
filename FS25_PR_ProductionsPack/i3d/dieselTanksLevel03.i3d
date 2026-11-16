@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="dieselTanksLevel03.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.3"/>
+  </Asset>
+
+  <Files>
+    <File fileId="2" filename="$data/placeables/brandless/dieselTanks/level03/dieselTanksLevel03_diffuse.png"/>
+    <File fileId="3" filename="$data/placeables/brandless/dieselTanks/level03/dieselTanksLevel03_normal.png"/>
+    <File fileId="4" filename="$data/placeables/brandless/dieselTanks/level03/dieselTanksLevel03_specular.png"/>
+    <File fileId="5" filename="$data/shaders/placeableShader.xml"/>
+    <File fileId="9" filename="$data/shared/default_normal.png"/>
+    <File fileId="8" filename="$data/shared/window_diffuse.png"/>
+    <File fileId="10" filename="$data/shared/window_specular.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="dieselTanksLevel03_mat" materialId="5" customShaderId="5">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+    <Material name="lambert1" materialId="6" diffuseColor="0.501961 0.501961 0.501961 1">
+    </Material>
+    <Material name="window_mat" materialId="7" alphaBlending="true">
+      <Texture fileId="8"/>
+      <Normalmap fileId="9"/>
+      <Glossmap fileId="10"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="dieselTanksLevel03.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="dieselTanks03" clipDistance="300" nodeId="14">
+      <TransformGroup name="clearAreas" nodeId="15">
+        <TransformGroup name="clearAreaStart01" translation="-1 0 -4.5" nodeId="16">
+          <TransformGroup name="clearAreaWidth01" translation="0 0 8.5" nodeId="17"/>
+          <TransformGroup name="clearAreaHeight01" translation="2 0 0" nodeId="18"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="levelingAreas" nodeId="19">
+        <TransformGroup name="levelAreaStart01" translation="-1.5 0 -5" nodeId="20">
+          <TransformGroup name="levelAreaWidth01" translation="0 0 9.5" nodeId="21"/>
+          <TransformGroup name="levelAreaHeight01" translation="3 0 0" nodeId="22"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="testAreas" nodeId="23">
+        <TransformGroup name="testAreaStart01" translation="-1 0 -4.5" nodeId="24">
+          <TransformGroup name="testAreaEnd01" translation="2 3 9" nodeId="25"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="tipOcclusionUpdateAreas" nodeId="26">
+        <TransformGroup name="tipOcclusionUpdateAreaStart01" translation="-4 0 -7" nodeId="27">
+          <TransformGroup name="tipOcclusionUpdateAreaEnd01" translation="8 0 14" nodeId="28"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="silo" nodeId="29">
+        <TransformGroup name="loadingStation" nodeId="30">
+          <Shape name="loadingTrigger" translation="0 5 0" shapeId="1" static="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x40000000" nodeId="31" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+          <TransformGroup name="dischargeNode" nodeId="32"/>
+          <TransformGroup name="loadingMarker" translation="-1.51775 0 -0.243502" nodeId="33"/>
+          <TransformGroup name="aiNodeLoading" translation="-3 0 -8.37163e-08" rotation="0 -90 0" nodeId="101"/>
+        </TransformGroup>
+        <TransformGroup name="storage" nodeId="34"/>
+        <TransformGroup name="hotspotNode" nodeId="35"/>
+        <Shape name="infoTrigger" translation="0 5 0" shapeId="1" static="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x100000" nodeId="36" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+      </TransformGroup>
+      <TransformGroup name="visuals" nodeId="37">
+        <Shape name="dieselTanksLevel03Vis" translation="0.015716 0 -0.761184" rotation="0 -90 0" shapeId="2" clipDistance="200" nodeId="38" castsShadows="true" receiveShadows="true" materialIds="5"/>
+        <Shape name="glass" translation="-0.130634 1.4885 3.09771" rotation="0 -90 0" shapeId="3" clipDistance="30" nodeId="39" castsShadows="true" receiveShadows="true" materialIds="7"/>
+      </TransformGroup>
+      <TransformGroup name="collisions" nodeId="40">
+        <Shape name="collision" shapeId="4" static="true" collisionFilterGroup="0x3e" collisionFilterMask="0xfffffbff" clipDistance="300" nodeId="41" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        <Shape name="tipCollision" translation="0 0 -0.097442" shapeId="5" static="true" collisionFilterGroup="0x8" collisionFilterMask="0x1" nodeId="42" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

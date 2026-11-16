@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<vehicle type="pallet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/vehicle.xsd">
+    <annotation>Copyright (C) GIANTS Software GmbH, All Rights Reserved.</annotation>
+
+    <storeData>
+        <name>$l10n_fillType_emptyPallet</name>
+        <category>pallets</category>
+        <brand>PRI</brand>
+        <showInStore>false</showInStore>
+        <canBeSold>false</canBeSold>
+        <financeCategory>OTHER</financeCategory>
+        <vertexBufferMemoryUsage>35840</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>7680</indexBufferMemoryUsage>
+        <textureMemoryUsage>786432</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <typeDesc>$l10n_typeDesc_pallet</typeDesc>
+        <filename>i3d/pallets/emptyPallet_DS.i3d</filename>
+        <size width="1.4" length="1" height="1.1" />
+        <canBeReset>false</canBeReset>
+        <components>
+            <component centerOfMass="0 0.1 0" solverIterationCount="10" mass="160"/>
+        </components>
+        <showInVehicleMenu>false</showInVehicleMenu>
+        <mapHotspot available="false" />
+        <input allowed="false"/>
+        <supportsPickUp>true</supportsPickUp>
+    </base>
+
+    <fillUnit>
+        <fillUnitConfigurations>
+            <fillUnitConfiguration>
+                <fillUnits removeVehicleIfEmpty="true">
+                    <fillUnit unitTextOverride="$l10n_unit_literShort" fillTypes="EMPTYPALLET" capacity="8000" updateMass="false"/>
+                </fillUnits>
+            </fillUnitConfiguration>
+        </fillUnitConfigurations>
+    </fillUnit>
+
+    <dischargeable requiresTipOcclusionArea="false">
+        <dischargeNode node="dischargeNode" emptySpeed="200" fillUnitIndex="1" maxDistance="6" canStartDischargeAutomatically="true" playSound="false"/>
+    </dischargeable>
+
+    <pallet fillUnitIndex="1" node="pallet_vis">
+        <content>
+            <object node="emptyPallet1" tensionBeltNode="Tension1"/>
+            <object node="emptyPallet2" tensionBeltNode="Tension2"/>
+            <object node="emptyPallet3" tensionBeltNode="Tension3"/>
+            <object node="emptyPallet4" tensionBeltNode="Tension4"/>
+            <object node="emptyPallet5" tensionBeltNode="Tension5"/>
+            <object node="emptyPallet6" tensionBeltNode="Tension6"/>
+            <object node="emptyPallet7" tensionBeltNode="Tension7"/>
+        </content>
+
+        <sounds>
+            <unload template="palletsFillPaper" pitchScale="0.8" />
+        </sounds>
+    </pallet>
+
+    <dynamicMount triggerNode="dynamicMountTrigger" triggerForceAcceleration="4" additionalMountDistance="0.75" jointTransY="0.11" jointLimitToRotY="true"/>
+
+    <i3dMappings>
+        <i3dMapping id="chocolateBoxPallet_component1" node="0>" />
+        <i3dMapping id="pallet_vis" node="0>0" />
+        <i3dMapping id="dynamicMountTrigger" node="0>0|0" />
+        <i3dMapping id="dischargeNode" node="0>0|1" />
+        <i3dMapping id="emptyPallet1" node="0>0|2|0" />
+        <i3dMapping id="emptyPallet2" node="0>0|2|1" />
+        <i3dMapping id="emptyPallet3" node="0>0|2|2" />
+        <i3dMapping id="emptyPallet4" node="0>0|2|3" />
+        <i3dMapping id="emptyPallet5" node="0>0|2|4" />
+        <i3dMapping id="emptyPallet6" node="0>0|2|5" />
+        <i3dMapping id="emptyPallet7" node="0>0|2|6" />
+        <i3dMapping id="Tension1" node="0>0|2|0|0" />
+        <i3dMapping id="Tension2" node="0>0|2|1|0" />
+        <i3dMapping id="Tension3" node="0>0|2|2|0" />
+        <i3dMapping id="Tension4" node="0>0|2|3|0" />
+        <i3dMapping id="Tension5" node="0>0|2|4|0" />
+        <i3dMapping id="Tension6" node="0>0|2|5|0" />
+        <i3dMapping id="Tension7" node="0>0|2|6|0" />
+    </i3dMappings>
+</vehicle>

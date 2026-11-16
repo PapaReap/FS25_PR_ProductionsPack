@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="sugarBeetCuttingFactory.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="5" filename="$data/placeables/brandless/sellingStationGeneric/debrisCrusher/debrisCrusherDecals_diffuse.png"/>
+    <File fileId="1" filename="$data/placeables/brandless/sellingStationGeneric/debrisCrusher/debrisCrusher_diffuse.png"/>
+    <File fileId="2" filename="$data/placeables/brandless/sellingStationGeneric/debrisCrusher/debrisCrusher_normal.png"/>
+    <File fileId="3" filename="$data/placeables/brandless/sellingStationGeneric/debrisCrusher/debrisCrusher_specular.png"/>
+    <File fileId="19" filename="$data/placeables/unia/shared/uniaSilos_diffuse.png"/>
+    <File fileId="23" filename="$data/placeables/unia/shared/uniaSilos_mask.png"/>
+    <File fileId="20" filename="$data/placeables/unia/shared/uniaSilos_normal.png"/>
+    <File fileId="21" filename="$data/placeables/unia/shared/uniaSilos_specular.png"/>
+    <File fileId="22" filename="$data/shaders/buildingShader.xml"/>
+    <File fileId="8" filename="$data/shaders/decalShader.xml"/>
+    <File fileId="16" filename="$data/shaders/placeableShader.xml"/>
+    <File fileId="12" filename="$data/shared/assets/assetLibraryDecals_diffuse.png"/>
+    <File fileId="13" filename="$data/shared/assets/assetLibraryDecals_normal.png"/>
+    <File fileId="15" filename="$data/shared/assets/assetLibraryStickers_diffuse.png"/>
+    <File fileId="6" filename="$data/shared/default_normal.png"/>
+    <File fileId="7" filename="$data/shared/default_specular.png"/>
+    <File fileId="9" filename="$data/shared/warningStripes_diffuse.png"/>
+    <File fileId="10" filename="$data/shared/warningStripes_normal.png"/>
+    <File fileId="11" filename="$data/shared/warningStripes_specular.png"/>
+    <File fileId="26" filename="../textures/building/sugarBeetCuttingFactory/railroadBuildings_diffuse1.png"/>
+    <File fileId="27" filename="../textures/building/sugarBeetCuttingFactory/railroadBuildings_normal.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="assetLibraryDecals_mat" materialId="529" specularColor="0.439216 1 1" alphaBlending="true" customShaderId="8">
+      <Texture fileId="12"/>
+      <Normalmap fileId="13"/>
+    </Material>
+    <Material name="assetLibraryStickers_mat" materialId="530" customShaderId="16">
+      <Texture fileId="15"/>
+      <Normalmap fileId="6"/>
+    </Material>
+    <Material name="debrisCrusher_mat" materialId="531">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+    </Material>
+    <Material name="debrisCrusherDecals_mat" materialId="532" customShaderId="8">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+    </Material>
+    <Material name="default_mat" materialId="533" diffuseColor="0.494118 0.494118 0.494118 1">
+      <Normalmap fileId="6"/>
+    </Material>
+    <Material name="lambert1" materialId="534" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+    <Material name="railroadBuildings_mat" materialId="535" customShaderId="22">
+      <Texture fileId="26"/>
+      <Normalmap fileId="27"/>
+    </Material>
+    <Material name="uniaSilos_mat" materialId="536" customShaderId="22">
+      <Texture fileId="19"/>
+      <Normalmap fileId="20"/>
+      <Glossmap fileId="21"/>
+      <Custommap name="mMaskMap" fileId="23"/>
+      <CustomParameter name="dirtMossSmoothness" value="0.12 0.82"/>
+    </Material>
+    <Material name="warningStripes_mat" materialId="537">
+      <Texture fileId="9"/>
+      <Normalmap fileId="10"/>
+      <Glossmap fileId="11"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="sugarBeetCuttingFactory.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="sugarBeetCuttingFactory" lodDistance="0 60" nodeId="562">
+      <Shape name="LOD0" shapeId="1" clipDistance="300" nodeId="563" castsShadows="true" receiveShadows="true" materialIds="531">
+        <TransformGroup name="clearAreas" nodeId="564">
+          <TransformGroup name="clearArea1Start" translation="-9.94382 -2.27374e-15 -6.04436" nodeId="565">
+            <TransformGroup name="clearArea1Width" translation="0 0 10.5723" nodeId="566"/>
+            <TransformGroup name="clearArea1Height" translation="20.9296 0 0" nodeId="567"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="levelAreas" nodeId="568">
+          <TransformGroup name="levelArea1Start" translation="-10.042 0 -7.02113" nodeId="569">
+            <TransformGroup name="levelArea1Width" translation="0 0 11.8734" nodeId="570"/>
+            <TransformGroup name="levelArea1Height" translation="21.073 0 0" nodeId="571"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="indoorAreas" nodeId="572">
+          <TransformGroup name="indoorArea1Start" translation="-5.20269 0 -2.06778" nodeId="573">
+            <TransformGroup name="indoorArea1Width" translation="0 0 6.40514" nodeId="574"/>
+            <TransformGroup name="indoorArea1Height" translation="11.2672 0 0" nodeId="575"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="testAreas" nodeId="576">
+          <TransformGroup name="testArea1Start" translation="-5.77945 0 -2.43086" nodeId="577">
+            <TransformGroup name="testArea1End" translation="12.2717 7.63904 7.097" nodeId="578"/>
+          </TransformGroup>
+          <TransformGroup name="testArea2Start" translation="5.9724 0 -3.28966" nodeId="579">
+            <TransformGroup name="testArea2End" translation="4.24242 2.42554 6.31865" nodeId="580"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="tipOcclusionUpdateAreas" nodeId="581">
+          <TransformGroup name="tipOcclusionUpdateArea1Start" translation="-7.1351 0 -4.4494" nodeId="582">
+            <TransformGroup name="tipOcclusionUpdateArea1End" translation="18.687 0 8.61616" nodeId="583"/>
+          </TransformGroup>
+        </TransformGroup>
+        <Shape name="infoTrigger" shapeId="2" visibility="false" static="true" trigger="true" collisionFilterGroup="0x100000" collisionFilterMask="0x100000" nodeId="584" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="534"/>
+        <TransformGroup name="collisions" nodeId="585">
+          <Shape name="collision" translation="-1.66886 1.03542 0" shapeId="3" visibility="false" static="true" nodeId="586" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="534"/>
+          <Shape name="tipCollision" shapeId="4" visibility="false" static="true" collisionFilterGroup="0x80000" collisionFilterMask="0x80000" nodeId="587" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="534"/>
+        </TransformGroup>
+        <TransformGroup name="sellingStation" nodeId="588">
+          <Shape name="unloadTriggerUpper" translation="3.80689 2.06204 0.0280737" shapeId="5" visibility="false" kinematic="true" compound="true" trigger="true" collisionFilterGroup="0x40000000" collisionFilterMask="0x40000000" nodeId="589" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="534"/>
+          <TransformGroup name="unloadTriggerUpperMarker" translation="3.84088 2.67498 0" nodeId="590"/>
+          <Shape name="unloadTriggerLower" translation="8.78047 -0.4 0.0572442" shapeId="6" kinematic="true" compound="true" trigger="true" collisionFilterGroup="0x40000000" collisionFilterMask="0x40000000" nodeId="591" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="534"/>
+          <TransformGroup name="unloadTriggerLowerAINode" translation="9.27667 0 1.34454e-16" rotation="0 180 0" nodeId="592"/>
+          <TransformGroup name="unloadTriggerLowerMarker" translation="7.9547 -0.205237 0" nodeId="593"/>
+        </TransformGroup>
+        <TransformGroup name="teleportNode" translation="1.22635 0 3.61166" nodeId="594"/>
+        <TransformGroup name="visuals" nodeId="595">
+          <Shape name="door2" translation="1.04708 1.60295 -1.89448" shapeId="7" clipDistance="300" nodeId="596" castsShadows="true" receiveShadows="true" materialIds="531"/>
+          <Shape name="door1" translation="1.0467 1.60576 1.96476" shapeId="8" clipDistance="300" nodeId="597" castsShadows="true" receiveShadows="true" materialIds="531"/>
+          <Shape name="decals" translation="0 -1.48451 0" shapeId="9" clipDistance="100" nodeId="598" castsShadows="true" receiveShadows="true" decalLayer="1" materialIds="532"/>
+          <TransformGroup name="backPSNode" translation="-4.65901 1.33201 0.085139" clipDistance="300" nodeId="599"/>
+          <TransformGroup name="psNode" translation="3.80742 1.87364 0.0348387" clipDistance="300" nodeId="600"/>
+          <Shape name="roll" translation="3.74188 1.51398 0.0374289" shapeId="10" clipDistance="300" nodeId="601" castsShadows="true" receiveShadows="true" materialIds="531"/>
+        </TransformGroup>
+        <TransformGroup name="effects" nodeId="602">
+          <Shape name="effectSmoke" translation="3.88442 2.0854 0.127264" rotation="-2.36171e-06 90 0" shapeId="11" clipDistance="100" nodeId="603" castsShadows="true" receiveShadows="true" materialIds="533"/>
+        </TransformGroup>
+      </Shape>
+      <Shape name="LOD1" rotation="90 -0 0" shapeId="12" static="true" clipDistance="300" nodeId="604" castsShadows="true" receiveShadows="true" materialIds="531"/>
+      <TransformGroup name="palletSpawner" translation="0 -0.0299942 0" visibility="false" nodeId="605">
+        <TransformGroup name="spawnPlace1Start" translation="5.78166 0 -3.98668" nodeId="606">
+          <TransformGroup name="spawnPlace1End" translation="-15.5873 0 0" nodeId="607"/>
+        </TransformGroup>
+        <TransformGroup name="warningStripes" translation="-1.85279 9.78393e-10 1.5608" rotation="180 89.5874 180" nodeId="608">
+          <Shape name="warningStripes_palletSpawnArea" translation="6.11273 0.0321225 -0.1" rotation="0 90 0" shapeId="13" clipDistance="100" nodeId="609" castsShadows="true" receiveShadows="true" materialIds="537"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="uniaKarma16" translation="-7.69067 0 0" clipDistance="500" nodeId="610">
+        <TransformGroup name="visuals" lodDistance="0 80" nodeId="611">
+          <TransformGroup name="LOD0" nodeId="612">
+            <Shape name="screws" translation="3.66211e-06 1.82232 0.0736374" shapeId="14" clipDistance="30" nodeId="613" castsShadows="true" receiveShadows="true" materialIds="529"/>
+            <Shape name="stickers" translation="-0.214866 1.8939 0.111416" shapeId="15" clipDistance="30" nodeId="614" castsShadows="true" receiveShadows="true" materialIds="530"/>
+            <Shape name="uniaKarma16_vis" shapeId="16" clipDistance="300" nodeId="615" castsShadows="true" receiveShadows="true" materialIds="536"/>
+          </TransformGroup>
+          <TransformGroup name="LOD1" nodeId="616">
+            <Shape name="karmaLOD" shapeId="17" clipDistance="500" nodeId="617" castsShadows="true" receiveShadows="true" materialIds="536"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="collisions" nodeId="618">
+          <Shape name="collision" translation="0 1.18018 0" shapeId="18" visibility="false" static="true" nodeId="619" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="534"/>
+        </TransformGroup>
+        <Shape name="occluder" shapeId="19" clipDistance="220" nodeId="620" castsShadows="true" receiveShadows="true" nonRenderable="true" occluder="true" materialIds="534"/>
+      </TransformGroup>
+      <Shape name="playerTrigger" translation="2.16543 1.07768 3.01734" shapeId="20" static="true" trigger="true" collisionFilterGroup="0x100000" collisionFilterMask="0x100000" nodeId="621" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="534"/>
+      <TransformGroup name="playerTriggerMarker" translation="2.16543 1.07768 2.50872" nodeId="622"/>
+      <TransformGroup name="infoTrigger" translation="-1.24286 0 2.91634" static="true" trigger="true" collisionFilterGroup="0x100000" collisionFilterMask="0x100000" nodeId="623"/>
+      <TransformGroup name="loading" translation="0 2 -3.719" nodeId="624">
+        <Shape name="loadingTrigger" rotation="0 90 0" scale="1 1 1.30907" shapeId="21" static="true" trigger="true" collisionFilterGroup="0x40000000" collisionFilterMask="0x40000000" nodeId="625" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="534"/>
+        <TransformGroup name="aiLoadingNode" nodeId="626"/>
+        <TransformGroup name="loadingTriggerMarker" nodeId="627"/>
+        <TransformGroup name="storage" translation="-7.60128 0 3.67587" nodeId="628"/>
+        <TransformGroup name="loadingTriggerAINode" nodeId="629"/>
+      </TransformGroup>
+      <Shape name="shelterSmall" translation="0.125 0.6 1.29641" rotation="180 0 180" scale="1.5 1.1 1" shapeId="22" static="true" clipDistance="500" nodeId="630" castsShadows="true" receiveShadows="true" materialIds="535">
+        <Shape name="roof" shapeId="23" clipDistance="500" nodeId="631" castsShadows="true" receiveShadows="true" materialIds="535"/>
+      </Shape>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<vehicle type="pallet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/vehicle.xsd">
+    <annotation>Copyright (C) GIANTS Software GmbH, All Rights Reserved.</annotation>
+
+    <storeData>
+        <name>$l10n_fillType_carvings</name>
+        <image>store/store_carvingPallet.png</image>
+        <price>1</price>
+        <category>pallets</category>
+        <brand>PRI</brand>
+        <showInStore>false</showInStore>
+        <canBeSold>false</canBeSold>
+        <financeCategory>OTHER</financeCategory>
+        <storeIconRendering>
+            <settings centerIcon="true" cameraXRot="-15" cameraYRot="35"/>
+        </storeIconRendering>
+        <vertexBufferMemoryUsage>261376</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>116992</indexBufferMemoryUsage>
+        <textureMemoryUsage>458752</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <typeDesc>$l10n_typeDesc_pallet</typeDesc>
+        <filename>i3d/carvingsPallet.i3d</filename>
+        <size width="1.3" length="0.9" height="0.8" />
+        <canBeReset>false</canBeReset>
+        <components maxMass="400">
+            <component centerOfMass="0 0.1 0" solverIterationCount="10" mass="60" />
+        </components>
+        <showInVehicleMenu>false</showInVehicleMenu>
+        <mapHotspot available="false" />
+        <input allowed="false"/>
+    </base>
+
+    <fillUnit>
+        <fillUnitConfigurations>
+            <fillUnitConfiguration>
+                <fillUnits>
+                    <fillUnit unitTextOverride="$l10n_unit_literShort" fillTypes="CARVINGS" startFillType="CARVINGS" capacity="1000" startFillLevel="1" ignoreFillLimit="true"/>
+                </fillUnits>
+            </fillUnitConfiguration>
+        </fillUnitConfigurations>
+    </fillUnit>
+
+    <pallet fillUnitIndex="1" linkNode="CarvingsPallet_main_component1">
+        <texture diffuse="$data/objects/pallets/shared/euroPallet/euroPalletNew_diffuse.dds"/>
+        <texture diffuse="$data/objects/pallets/shared/euroPallet/euroPalletMiddle_diffuse.dds"/>
+
+        <content>
+            <object node="woodenCrate01" tensionBeltNode="col01"/>
+            <object node="woodenCrate02" tensionBeltNode="col02"/>
+            <object node="woodenCrate03" tensionBeltNode="col03"/>
+            <object node="woodenCrate04" tensionBeltNode="col04"/>
+        </content>
+
+        <sounds>
+            <unload template="palletsFillWood" pitchScale="0.9" />
+        </sounds>
+    </pallet>
+
+    <dynamicMount triggerNode="dynamicMountTrigger" triggerForceAcceleration="4" additionalMountDistance="0.747" jointTransY="0.106" jointLimitToRotY="true"/>
+
+    <i3dMappings>
+        <i3dMapping id="CarvingsPallet_main_component1" node="0>" />
+        <i3dMapping id="dynamicMountTrigger" node="0>0" />
+        <i3dMapping id="dischargeNode" node="0>1" />
+        <i3dMapping id="woodenCrate01" node="0>2|0" />
+        <i3dMapping id="col01" node="0>2|0|2" />
+        <i3dMapping id="woodenCrate02" node="0>2|1" />
+        <i3dMapping id="col02" node="0>2|1|2" />
+        <i3dMapping id="woodenCrate03" node="0>2|2" />
+        <i3dMapping id="col03" node="0>2|2|2" />
+        <i3dMapping id="woodenCrate04" node="0>2|3" />
+        <i3dMapping id="col04" node="0>2|3|2" />
+    </i3dMappings>
+</vehicle>

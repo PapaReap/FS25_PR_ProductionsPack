@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<vehicle type="pallet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/vehicle.xsd">
+    <annotation>Copyright (C) GIANTS Software GmbH, All Rights Reserved.</annotation>
+
+    <storeData>
+        <name>$l10n_fillType_spaghettiPasta</name>
+        <image>$data/store/store_empty.png</image>
+        <category>pallets</category>
+        <brand>PRI</brand>
+        <showInStore>false</showInStore>
+        <canBeSold>false</canBeSold>
+        <financeCategory>OTHER</financeCategory>
+
+        <storeIconRendering>
+            <settings centerIcon="true" cameraXRot="-15" cameraYRot="35"/>
+        </storeIconRendering>
+        <vertexBufferMemoryUsage>36608</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>6912</indexBufferMemoryUsage>
+        <textureMemoryUsage>983040</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <typeDesc>$l10n_typeDesc_pallet</typeDesc>
+        <filename>i3d/pallets/spaghettiPastaPallet.i3d</filename>
+        <size width="1.3" length="0.9" height="0.8" />
+        <canBeReset>false</canBeReset>
+        <components maxMass="400">
+            <component centerOfMass="0 0.1 0" solverIterationCount="10" mass="60"/>
+        </components>
+        <showInVehicleMenu>false</showInVehicleMenu>
+        <mapHotspot available="false" />
+        <input allowed="false"/>
+    </base>
+
+    <fillUnit>
+        <fillUnitConfigurations>
+            <fillUnitConfiguration>
+                <fillUnits>
+                    <fillUnit unitTextOverride="$l10n_unit_literShort" fillTypes="SPAGHETTIPASTA" capacity="1000" ignoreFillLimit="true"/>
+                </fillUnits>
+            </fillUnitConfiguration>
+        </fillUnitConfigurations>
+    </fillUnit>
+
+    <pallet fillUnitIndex="1" linkNode="spaghettiPasta_component1">
+        <texture diffuse="$data/objects/pallets/shared/euroPallet/euroPalletNew_diffuse.dds"/>
+        <texture diffuse="$data/objects/pallets/shared/euroPallet/euroPalletMiddle_diffuse.dds"/>
+        <texture diffuse="$data/objects/pallets/shared/euroPallet/euroPalletOld_diffuse.dds"/>
+        <content>
+            <object node="spaghettiPastaBox01" tensionBeltNode="spaghettiPastaBox_Tension01"/>
+            <object node="spaghettiPastaBox02" tensionBeltNode="spaghettiPastaBox_Tension02"/>
+            <object node="spaghettiPastaBox03" tensionBeltNode="spaghettiPastaBox_Tension03"/>
+            <object node="spaghettiPastaBox04" tensionBeltNode="spaghettiPastaBox_Tension04"/>
+            <object node="spaghettiPastaBox05" tensionBeltNode="spaghettiPastaBox_Tension05"/>
+            <object node="spaghettiPastaBox06" tensionBeltNode="spaghettiPastaBox_Tension06"/>
+            <object node="spaghettiPastaBox07" tensionBeltNode="spaghettiPastaBox_Tension07"/>
+            <object node="spaghettiPastaBox08" tensionBeltNode="spaghettiPastaBox_Tension08"/>
+            <object node="spaghettiPastaBox09" tensionBeltNode="spaghettiPastaBox_Tension09"/>
+            <object node="spaghettiPastaBox10" tensionBeltNode="spaghettiPastaBox_Tension10"/>
+            <object node="spaghettiPastaBox11" tensionBeltNode="spaghettiPastaBox_Tension11"/>
+            <object node="spaghettiPastaBox12" tensionBeltNode="spaghettiPastaBox_Tension12"/>
+        </content>
+
+        <sounds>
+            <unload template="palletsFillPaper" pitchScale="0.8" />
+        </sounds>
+    </pallet>
+
+    <dynamicMount triggerNode="dynamicMountTrigger" triggerForceAcceleration="4" additionalMountDistance="0.75" jointTransY="0.11" jointLimitToRotY="true"/>
+
+    <i3dMappings>
+        <i3dMapping id="spaghettiPasta_component1" node="0>" />
+        <i3dMapping id="dynamicMountTrigger" node="0>0" />
+        <i3dMapping id="spaghettiPastaBox01" node="0>1|0" />
+        <i3dMapping id="spaghettiPastaBox_Tension01" node="0>1|0|0" />
+        <i3dMapping id="spaghettiPastaBox02" node="0>1|1" />
+        <i3dMapping id="spaghettiPastaBox_Tension02" node="0>1|1|0" />
+        <i3dMapping id="spaghettiPastaBox03" node="0>1|2" />
+        <i3dMapping id="spaghettiPastaBox_Tension03" node="0>1|2|0" />
+        <i3dMapping id="spaghettiPastaBox04" node="0>1|3" />
+        <i3dMapping id="spaghettiPastaBox_Tension04" node="0>1|3|0" />
+        <i3dMapping id="spaghettiPastaBox05" node="0>1|4" />
+        <i3dMapping id="spaghettiPastaBox_Tension05" node="0>1|4|0" />
+        <i3dMapping id="spaghettiPastaBox06" node="0>1|5" />
+        <i3dMapping id="spaghettiPastaBox_Tension06" node="0>1|5|0" />
+        <i3dMapping id="spaghettiPastaBox07" node="0>1|6" />
+        <i3dMapping id="spaghettiPastaBox_Tension07" node="0>1|6|0" />
+        <i3dMapping id="spaghettiPastaBox08" node="0>1|7" />
+        <i3dMapping id="spaghettiPastaBox_Tension08" node="0>1|7|0" />
+        <i3dMapping id="spaghettiPastaBox09" node="0>1|8" />
+        <i3dMapping id="spaghettiPastaBox_Tension09" node="0>1|8|0" />
+        <i3dMapping id="spaghettiPastaBox10" node="0>1|9" />
+        <i3dMapping id="spaghettiPastaBox_Tension10" node="0>1|9|0" />
+        <i3dMapping id="spaghettiPastaBox11" node="0>1|10" />
+        <i3dMapping id="spaghettiPastaBox_Tension11" node="0>1|10|0" />
+        <i3dMapping id="spaghettiPastaBox12" node="0>1|11" />
+        <i3dMapping id="spaghettiPastaBox_Tension12" node="0>1|11|0" />
+    </i3dMappings>
+</vehicle>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="productionPoint" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>Sugarbeet Cutting Factory</name>
+        <functions>
+            <function>Produces cut sugarbeet from sugar beets.</function>
+        </functions>
+        <image>store/store_sugarBeetCuttingFactory.png</image>
+        <price>10000</price>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>PRI</brand>
+        <species>placeable</species>
+        <category>productionPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>PapaReap_Production</tab>
+        </brush>
+        <vertexBufferMemoryUsage>815104</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>110080</indexBufferMemoryUsage>
+        <textureMemoryUsage>4325376</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>i3d/sugarBeetCuttingFactory.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+    </base>
+
+    <placement useRandomYRotation="false" useManualYRotation="true" >
+        <testAreas>
+            <testArea startNode="testArea1Start" endNode="testArea1End" />
+        </testAreas>
+    </placement>
+
+    <clearAreas>
+        <clearArea startNode="clearArea1Start" widthNode="clearArea1Width" heightNode="clearArea1Height"/>
+    </clearAreas>
+
+    <leveling requireLeveling="true" maxSmoothDistance="10" maxSlope="75" maxEdgeAngle="30" >
+        <levelAreas>
+            <levelArea startNode="levelArea1Start" widthNode="levelArea1Width" heightNode="levelArea1Height" />
+        </levelAreas>
+    </leveling>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorArea1Start" widthNode="indoorArea1Width" heightNode="indoorArea1Height" />
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateArea1Start" endNode="tipOcclusionUpdateArea1End" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateArea1Start" endNode="tipOcclusionUpdateArea1End" />
+        </updateAreas>
+    </ai>
+
+    <infoTrigger triggerNode="infoTrigger"/>
+
+    <triggerMarkers>
+        <triggerMarker node="unloadTriggerUpperMarker" filename="$data/shared/assets/marker/markerIconUnload.i3d" />
+        <triggerMarker node="unloadTriggerLowerMarker" filename="$data/shared/assets/marker/markerIconUnload.i3d" adjustToGround="true" />
+        <triggerMarker node="playerTriggerMarker" filename="$data/shared/assets/marker/markerIconWrench.i3d" adjustToGround="true" />
+        <triggerMarker node="loadingTriggerMarker" filename="$data/shared/assets/marker/markerIconLoad.i3d" adjustToGround="true" />
+    </triggerMarkers>
+
+    <hotspots>
+        <hotspot type="UNLOADING" linkNode="unloadTriggerUpperMarker" teleportNode="teleportNode" />
+    </hotspots>
+
+    <productionPoint>
+        <productions sharedThroughputCapacity="false">
+            <production id="sugarbeet_cut" name="$l10n_fillType_sugarBeetCut" cyclesPerHour="15" costsPerActiveHour="10">
+                <inputs>
+                    <input fillType="SUGARBEET" amount="4000" />
+                </inputs>
+                <outputs>
+                    <output fillType="SUGARBEET_CUT" amount="4000" />
+                </outputs>
+            </production>
+        </productions>
+
+        <sellingStation node="sellingStation" appearsOnStats="true" supportsExtension="true" hideFromPricesMenu="true">
+            <unloadTrigger exactFillRootNode="unloadTriggerUpper" fillTypes="SUGARBEET"  />  <!-- give players a bonus for using upper trigger -->
+            <unloadTrigger exactFillRootNode="unloadTriggerLower" fillTypes="SUGARBEET" aiNode="unloadTriggerLowerAINode"/>
+
+            <sounds>
+                <active template="debrisCrusherWork" linkNode="roll" />
+            </sounds>
+
+            <effectNodes>
+                <effectNode effectNode="effectSmoke" materialType="unloadingSmoke" />
+            </effectNodes>
+
+            <animationNodes>
+                <animationNode node="roll" rotSpeed="-40" rotAxis="1" />
+        </animationNodes>
+        </sellingStation>
+
+        <loadingStation>
+            <loadTrigger triggerNode="loadingTrigger" fillTypes="SUGARBEET_CUT" fillLitersPerSecond="2500"  aiNode="aiNodeLoading" />
+        </loadingStation>
+
+        <!-- <palletSpawner node="palletSpawner">
+            <spawnPlaces>
+                <spawnPlace startNode="spawnPlace1Start" />
+            </spawnPlaces>
+        </palletSpawner> -->
+
+        <storage isExtension="false" fillLevelSyncThreshold="100">
+            <capacity fillType="SUGARBEET"      capacity="1000000" />
+            <capacity fillType="SUGARBEET_CUT"    capacity="1000000" />
+        </storage>
+
+        <playerTrigger node="playerTrigger" />
+    </productionPoint>
+
+    <i3dMappings>
+        <i3dMapping id="clearArea1Start" node="0>0|0|0" />
+        <i3dMapping id="clearArea1Width" node="0>0|0|0|0" />
+        <i3dMapping id="clearArea1Height" node="0>0|0|0|1" />
+        <i3dMapping id="levelArea1Start" node="0>0|1|0" />
+        <i3dMapping id="levelArea1Width" node="0>0|1|0|0" />
+        <i3dMapping id="levelArea1Height" node="0>0|1|0|1" />
+        <i3dMapping id="testArea1Start" node="0>0|3|0" />
+        <i3dMapping id="testArea1End" node="0>0|3|0|0" />
+        <i3dMapping id="tipOcclusionUpdateArea1Start" node="0>0|4|0" />
+        <i3dMapping id="tipOcclusionUpdateArea1End" node="0>0|4|0|0" />
+        <i3dMapping id="unloadTriggerUpper" node="0>0|7|0" />
+        <i3dMapping id="unloadTriggerUpperMarker" node="0>0|7|1" />
+        <i3dMapping id="unloadTriggerLower" node="0>0|7|2" />
+        <i3dMapping id="unloadTriggerLowerAINode" node="0>0|7|3" />
+        <i3dMapping id="unloadTriggerLowerMarker" node="0>0|7|4" />
+        <i3dMapping id="teleportNode" node="0>0|8" />
+        <i3dMapping id="roll" node="0>0|9|5" />
+        <i3dMapping id="effectSmoke" node="0>0|10|0" />
+
+        <i3dMapping id="playerTrigger" node="0>4" />
+        <i3dMapping id="playerTriggerMarker" node="0>5" />
+        <i3dMapping id="palletSpawner" node="0>2" />
+        <i3dMapping id="spawnPlace1Start" node="0>2|0" />
+        <i3dMapping id="spawnPlace1End" node="0>2|0|0" />
+        <i3dMapping id="infoTrigger" node="0>6" />
+
+        <i3dMapping id="loadingTriggerMarker"   node="0>7|2" />
+        <i3dMapping id="loadingTrigger"         node="0>7|0" />
+        <i3dMapping id="aiNodeLoading"          node="0>7|1" />
+
+        <i3dMapping id="indoorArea1Start" node="0>0|2|0" />
+        <i3dMapping id="indoorArea1Width" node="0>0|2|0|0" />
+        <i3dMapping id="indoorArea1Height" node="0>0|2|0|1" />
+    </i3dMappings>
+</placeable>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<placeable type="productionPoint" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/placeable.xsd">
+    <storeData>
+        <name>$l10n_shopItem_preservedFoodFactory</name>
+        <functions>
+            <function>$l10n_function_productionPoint</function>
+        </functions>
+        <image>$data/placeables/mapEU/preservedFoodFactory/mapIcon_preservedFoodFactory.png</image>
+        <price>330000</price>
+        <showInStore>false</showInStore>
+        <canBeSold>true</canBeSold>
+        <lifetime>1000</lifetime>
+        <rotation>0</rotation>
+        <brand>NONE</brand>
+        <species>PLACEABLE</species>
+        <category>productionPoints</category>
+        <brush>
+            <type>placeable</type>
+            <category>production</category>
+            <tab>factories</tab>
+        </brush>
+        <vertexBufferMemoryUsage>0</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>0</indexBufferMemoryUsage>
+        <textureMemoryUsage>0</textureMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <filename>$data/placeables/mapEU/preservedFoodFactory/preservedFoodFactory.i3d</filename>
+        <canBeRenamed>true</canBeRenamed>
+        <canBeDeleted>false</canBeDeleted>
+    </base>
+
+    <clearAreas/>
+    <leveling/>
+
+    <indoorAreas>
+        <indoorArea startNode="indoorAreaStart01" widthNode="indoorAreaWidth01" heightNode="indoorAreaHeight01" />
+        <indoorArea startNode="indoorAreaStart02" widthNode="indoorAreaWidth02" heightNode="indoorAreaHeight02" />
+    </indoorAreas>
+
+    <tipOcclusionUpdateAreas>
+        <tipOcclusionUpdateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+    </tipOcclusionUpdateAreas>
+
+    <ai>
+        <updateAreas>
+            <updateArea startNode="tipOcclusionUpdateAreaStart01" endNode="tipOcclusionUpdateAreaEnd01" />
+        </updateAreas>
+    </ai>
+
+    <infoTrigger triggerNode="infoTrigger" />
+
+    <dynamicallyLoadedParts>
+        <dynamicallyLoadedPart filename="$data/placeables/shared/sellingStationGeneric/sellingStationGenericNoCoverWideGrid.i3d" node="0" linkNode="unloadTrigger" rotation="0 90 0" />
+        <dynamicallyLoadedPart filename="$data/placeables/mapEU/preservedFoodFactory/props.i3d"                                  node="0" linkNode="preservedFoodFactoryPreplaced" />
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d"                                         node="1" linkNode="smokeSmall01" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5" position="0 -0.2 0"/>
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d"                                         node="1" linkNode="smokeSmall02" shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5" position="0 -0.2 0"/>
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d"                                         node="0" linkNode="smokeBig01"   shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5" position="0 -0.2 0"/>
+        <dynamicallyLoadedPart filename="$data/effects/chimneySmoke/smokeTrailSubUV.i3d"                                         node="0" linkNode="smokeBig02"   shaderParameterName="colorAlpha" shaderParameter="0.5 0.5 0.5 0.5" position="0 -0.2 0"/>
+    </dynamicallyLoadedParts>
+
+    <productionPoint>
+        <productions sharedThroughputCapacity="false">
+            <production id="preservedFoodCarrots" name="$l10n_fillType_preservedFoodCarrots" cyclesPerHour="10" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="CARROT" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="PRESERVEDCARROTS" amount="45" />
+                </outputs>
+            </production>
+
+            <production id="preservedFoodParsnip" name="$l10n_fillType_preservedFoodParsnip" cyclesPerHour="10" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="PARSNIP" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="PRESERVEDPARSNIP" amount="45" />
+                </outputs>
+            </production>
+
+            <production id="preservedFoodBeetRoot" name="$l10n_fillType_preservedFoodBeetRoot" cyclesPerHour="10" costsPerActiveHour="4">
+                <inputs>
+                    <input fillType="BEETROOT" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="PRESERVEDBEETROOT" amount="45" />
+                </outputs>
+            </production>
+
+            <production id="preservedFoodCannedPea" name="$l10n_fillType_cannedPea" cyclesPerHour="10" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="PEA" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="CANNED_PEAS" amount="45" />
+                </outputs>
+            </production>
+
+            <production id="preservedFoodSpinachBags" name="$l10n_fillType_spinachBag" cyclesPerHour="10" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="SPINACH" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="SPINACH_BAGS" amount="45" />
+                </outputs>
+            </production>
+
+            <production id="preservedFoodRiceBags" name="%s (%s)" params="$l10n_fillType_riceBag|$l10n_fillType_riceLongGrain" cyclesPerHour="10" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="RICELONGGRAIN" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="RICE_BAGS" amount="45" />
+                </outputs>
+            </production>
+
+            <production id="preservedFoodRiceBoxes" name="%s (%s)" params="$l10n_fillType_riceBox|$l10n_fillType_rice" cyclesPerHour="10" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="RICE" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="RICE_BOXES" amount="45" />
+                </outputs>
+            </production>
+
+            <production id="preservedFoodjarredGreenbean" name="$l10n_fillType_jarredGreenBean" cyclesPerHour="10" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="GREENBEAN" amount="100" />
+                </inputs>
+                <outputs>
+                    <output fillType="JARRED_GREENBEAN" amount="45" />
+                </outputs>
+            </production>
+
+            <production id="preservedFoodFermentedNapaCabbage" name="$l10n_fillType_fermentedNapaCabbage" cyclesPerHour="10" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="NAPACABBAGE"  amount="20" />
+                    <input fillType="GARLIC"       amount="2" />
+                    <input fillType="SPRING_ONION" amount="2" />
+                    <input fillType="CHILLI"       amount="2" />
+                </inputs>
+                <outputs>
+                    <output fillType="FERMENTEDNAPACABBAGE" amount="42" />
+                </outputs>
+            </production>
+
+            <production id="noodleSoupFlour" name="%s (%s)" params="$l10n_fillType_noodleSoup|$l10n_fillType_flour" cyclesPerHour="10" costsPerActiveHour="2">
+                <inputs>
+                    <input fillType="FLOUR" amount="55" />
+                    <input fillType="EGG"   amount="10" />
+                </inputs>
+                <outputs>
+                    <output fillType="NOODLESOUP" amount="40" />
+                </outputs>
+            </production>
+            <production id="noodleSoupRiceFlour" name="%s (%s)" params="$l10n_fillType_noodleSoup|$l10n_fillType_riceFlour" cyclesPerHour="10" costsPerActiveHour="1">
+                <inputs>
+                    <input fillType="RICEFLOUR" amount="42" />
+                    <input fillType="EGG"       amount="10" />
+                </inputs>
+                <outputs>
+                    <output fillType="NOODLESOUP" amount="40" />
+                </outputs>
+            </production>
+
+            <production id="riceRollsRiceLongGrain" name="%s (%s)" params="$l10n_fillType_riceRolls|$l10n_fillType_riceLongGrain" cyclesPerHour="10" costsPerActiveHour="5">
+                <inputs>
+                    <input fillType="RICELONGGRAIN" amount="60" />
+                </inputs>
+                <outputs>
+                    <output fillType="RICEROLLS" amount="30" />
+                </outputs>
+            </production>
+            <production id="riceRollsRice" name="%s (%s)" params="$l10n_fillType_riceRolls|$l10n_fillType_rice" cyclesPerHour="10" costsPerActiveHour="7">
+                <inputs>
+                    <input fillType="RICE" amount="56" />
+                </inputs>
+                <outputs>
+                    <output fillType="RICEROLLS" amount="50" />
+                </outputs>
+            </production>
+        </productions>
+
+        <storage isExtension="false" fillLevelSyncThreshold="50">
+            <capacity fillType="CARROT"               capacity="240000" />
+            <capacity fillType="PARSNIP"              capacity="240000" />
+            <capacity fillType="BEETROOT"             capacity="240000" />
+            <capacity fillType="PEA"                  capacity="240000" />
+            <capacity fillType="SPINACH"              capacity="240000" />
+            <capacity fillType="RICELONGGRAIN"        capacity="240000" />
+            <capacity fillType="RICE"                 capacity="240000" />
+            <capacity fillType="GREENBEAN"            capacity="240000" />
+            <capacity fillType="NAPACABBAGE"          capacity="48000" />
+            <capacity fillType="GARLIC"               capacity="4800" />
+            <capacity fillType="SPRING_ONION"         capacity="4800" />
+            <capacity fillType="CHILLI"               capacity="4800" />
+            <capacity fillType="FLOUR"                capacity="140000" />
+            <capacity fillType="RICEFLOUR"            capacity="110000" />
+            <capacity fillType="EGG"                  capacity="24000" />
+            <capacity fillType="PRESERVEDCARROTS"     capacity="110000" />
+            <capacity fillType="PRESERVEDPARSNIP"     capacity="110000" />
+            <capacity fillType="PRESERVEDBEETROOT"    capacity="110000" />
+            <capacity fillType="CANNED_PEAS"          capacity="110000" />
+            <capacity fillType="SPINACH_BAGS"         capacity="110000" />
+            <capacity fillType="RICE_BAGS"            capacity="110000" />
+            <capacity fillType="RICE_BOXES"           capacity="110000" />
+            <capacity fillType="JARRED_GREENBEAN"     capacity="110000" />
+            <capacity fillType="FERMENTEDNAPACABBAGE" capacity="110000" />
+            <capacity fillType="NOODLESOUP"           capacity="96000" />
+            <capacity fillType="RICEROLLS"            capacity="120000" />
+        </storage>
+
+        <sellingStation node="sellingStation" supportsExtension="false">
+            <unloadTrigger exactFillRootNode="unloadTrigger" aiNode="unloadTriggerAINode" fillTypes="CARROT PARSNIP BEETROOT RICE PEA GREENBEAN SPINACH RICELONGGRAIN"/>
+            <palletTrigger triggerNode="palletTrigger" fillTypes="CARROT PARSNIP BEETROOT NAPACABBAGE GARLIC SPRING_ONION CHILLI FLOUR RICEFLOUR EGG"/>
+        </sellingStation>
+
+        <palletSpawner>
+            <spawnPlaces>
+                <spawnPlace startNode="palletAreaStart01" endNode="palletAreaEnd01"/>
+                <spawnPlace startNode="palletAreaStart02" endNode="palletAreaEnd02"/>
+            </spawnPlaces>
+        </palletSpawner>
+
+        <playerTrigger node="playerTrigger" />
+        <sounds>
+            <idle   template="preservedFoodIdle" linkNode="0>" outerRadius="50"/>
+            <active template="preservedFoodWork" linkNode="0>" outerRadius="50"/>
+        </sounds>
+    </productionPoint>
+
+    <triggerMarkers>
+        <triggerMarker node="warningStripes01"/>
+        <triggerMarker node="playerTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconWrench.i3d"/>
+        <triggerMarker node="unloadTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+    </triggerMarkers>
+
+    <hotspots>
+        <hotspot type="PRODUCTION_POINT" linkNode="unloadTriggerMarker" teleportNode="playerTriggerMarker" />
+    </hotspots>
+
+    <i3dMappings>
+        <i3dMapping id="preservedFoodFactoryPreplaced" node="0>" />
+        <i3dMapping id="indoorAreaStart01" node="0>0|0" />
+        <i3dMapping id="indoorAreaWidth01" node="0>0|0|0" />
+        <i3dMapping id="indoorAreaHeight01" node="0>0|0|1" />
+        <i3dMapping id="indoorAreaStart02" node="0>0|1" />
+        <i3dMapping id="indoorAreaWidth02" node="0>0|1|0" />
+        <i3dMapping id="indoorAreaHeight02" node="0>0|1|1" />
+        <i3dMapping id="tipOcclusionUpdateAreaStart01" node="0>1|0" />
+        <i3dMapping id="tipOcclusionUpdateAreaEnd01" node="0>1|0|0" />
+        <i3dMapping id="infoTrigger" node="0>2" />
+        <i3dMapping id="sellingStation" node="0>3" />
+        <i3dMapping id="unloadTrigger" node="0>3|0" />
+        <i3dMapping id="unloadTriggerMarker" node="0>3|0|0" />
+        <i3dMapping id="unloadTriggerAINode" node="0>3|0|1" />
+        <i3dMapping id="palletTrigger" node="0>3|1" />
+        <i3dMapping id="playerTrigger" node="0>4|0" />
+        <i3dMapping id="playerTriggerMarker" node="0>4|0|0" />
+        <i3dMapping id="palletSpawner" node="0>5" />
+        <i3dMapping id="palletAreaStart01" node="0>5|0" />
+        <i3dMapping id="palletAreaEnd01" node="0>5|0|0" />
+        <i3dMapping id="palletAreaStart02" node="0>5|1" />
+        <i3dMapping id="palletAreaEnd02" node="0>5|1|0" />
+        <i3dMapping id="warningStripes01" node="0>5|2" />
+        <i3dMapping id="smokeSmall01" node="0>6|0" />
+        <i3dMapping id="smokeSmall02" node="0>6|1" />
+        <i3dMapping id="smokeBig01" node="0>6|2" />
+        <i3dMapping id="smokeBig02" node="0>6|3" />
+    </i3dMappings>
+</placeable>

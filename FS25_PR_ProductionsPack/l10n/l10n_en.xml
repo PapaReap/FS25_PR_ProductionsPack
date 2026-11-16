@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <texts>
+        <!-- CEMENT FACTORY US -->
+        <text name="storeItem_cementFactoryUS" text="Cement Factory US" />
+        <text name="function_cementFactoryUS" text="A production facility where cement bags, roof plates, cement bricks and lime (bulk) are produced." />
+        <!-- CEMENT FACTORY US END -->
+
+        <!-- CHEMICAL PRODUCTION -->
+        <text name="storeItem_chemicalProduction" text="Chemical Production" />
+        <text name="function_chemicalProduction" text="A production facility where Fertilizer, Herbicide, Liquid Fertilizer, Liquid Lime, Mineral Feed, Seeds, Silage Additive, Herbicide Pure & Soluble Fertilizer are produced." />
+        <text name="fillType_herbicidePure" text="Herbicide Pure" />
+        <text name="fillType_solubleFertilizer" text="Soluble Fertilizer" />
+        <text name="fillType_solubleLime" text="Soluble Lime" />
+        <text name="fillType_silageAdditivePR" text="Silage Additive" />
+
+        <text name="fillType_yeast" text="Yeast" />
+        <!-- CHEMICAL PRODUCTION END -->
+
+        <!-- SUGAR MILL ENHANCED -->
+        <text name="shopItem_sugarMillEnhanced" text="Sugar Mill Enhanced" />
+        <text name="function_sugarMillEnhanced" text="Sugar Mill items plus Molasses." />
+        <text name="fillType_molasses" text="Molasses" />
+        <text name="function_molasses" text="Molasses for your productions." />
+
+        <!-- DESSERT FACTORY -->
+        <text name="shopItem_dessertFactory" text="Dessert Factory" />
+        <text name="function_dessertFactory" text="A production facility where Creme Caramel, Strawberry Sorbet, Chocolate Mousse, Chocolate Fondant, Chocolate Brownie, Grape Jam & Strawberry Jam are produced." />
+        <text name="shopItem_dessertFactorySellpoint" text="Desserts Sellpoint" />
+        <text name="function_dessertFactorySellpoint" text="Sell all your desserts here." />
+        <text name="fillType_creme_caramel" text="Creme caramel" />
+        <text name="fillType_strawberry_sorbet" text="Strawberry Sorbet" />
+        <text name="fillType_chocolate_mousse" text="Chocolate Mousse" />
+        <text name="fillType_chocolate_fondant" text="Chocolate Fondant" />
+        <text name="fillType_chocolate_brownie" text="Chocolate Brownie" />
+        <text name="fillType_grape_jam" text="Grape Jam" />
+        <text name="fillType_strawberry_jam" text="Strawberry Jam" />
+        <!-- DESSERT FACTORY END -->
+
+        <!-- WOODCHIP PRODUCTION -->
+        <text name="storeItem_woodChipProduction" text="Woodchip Production" />
+        <text name="function_woodChipProduction" text="A production facility where Fire Logs, MDF Boards, OSB Boards, Smoker Pellets & 3 types of wood mulch - Natural, Dark Brown, and Red are produced." />
+        <text name="fillType_mdfBoards" text="MDF Boards" />
+        <text name="fillType_osbBoards" text="OSB Boards" />
+        <text name="fillType_woodMulchDarkBrown" text="Dark Brown Wood Mulch" />
+        <text name="fillType_woodMulchNatural" text="Natural Wood Mulch" />
+        <text name="fillType_woodMulchRed" text="Red Wood Mulch" />
+        <text name="fillType_fireLogs" text="Fire Logs" />
+        <text name="fillType_smokerPellets" text="Smoker Pellets" />
+        <text name="fillType_wood_woodchips" text="Wood To Woodchips" />
+        <text name="action_openGrainLid" text="Open Grain Lid" />
+        <text name="action_closeGrainLid" text="Close Grain Lid" />
+        <text name="action_blockPallets" text="Block Pallets" />
+        <text name="action_unblockPallets" text="Unblock Pallets" />
+        <!-- WOODCHIP PRODUCTION END -->
+
+        <!-- GRAIN DRYER PACK -->
+        <text name="graindryer" text="Graindryer" />
+        <text name="fillType_wheat_dry" text="Wheat Dry" />
+        <text name="function_graindryer_wheat" text="By adding Wheat, the dryer dries the wheat for a more profitable product." />
+        <text name="fillType_barley_dry" text="Barley Dry" />
+        <text name="function_graindryer_barley" text="By adding Barley, the dryer dries the barley for a more profitable product." />
+        <text name="fillType_oat_dry" text="Oat Dry" />
+        <text name="function_graindryer_oat" text="By adding Oat, the dryer dries the oat for a more profitable product." />
+        <text name="fillType_corn_dry" text="Corn Dry" />
+        <text name="function_graindryer_corn" text="By adding Corn, the dryer dries the corn for a more profitable product." />
+        <text name="fillType_riceLongGrain_dry" text="Rice Long Grain Dry" />
+        <text name="function_graindryer_riceLongGrain" text="By adding Rice Long Grain, the dryer dries the rice long grain for a more profitable product." />
+        <text name="fillType_rice_dry" text="Rice Dry" />
+        <text name="function_graindryer_rice" text="By adding Rice, the dryer dries the rice for a more profitable product" />
+        <text name="fillType_sorghum_dry" text="Sorghum Dry" />
+        <text name="function_graindryer_sorghum" text="By adding Sorghum, the dryer dries the sorghum for a more profitable product." />
+        <!-- METHANE -->
+        <text name="wheat_methane" text="Wheat Dry - Methane" />
+        <text name="barley_methane" text="Barley Dry - Methane" />
+        <text name="oats_methane" text="Oat Dry - Methane" />
+        <text name="corn_methane" text="Corn Dry - Methane" />
+        <text name="riceLongGrain_methane" text="Rice Long Grain Dry - Methane" />
+        <text name="rice_methane" text="Rice Dry - Methane" />
+        <text name="sorghum_methane" text="Sorghum Dry - Methane" />
+
+        <text name="storeItem_grainDryerSellpoint" text="Grain dryer sell point" />
+        <text name="function_grainDryerSellpoint" text="You can sell your dried goods at this sellpoint." />
+        <text name="storeItem_grainDryerShed" text="Grain Drying Shed" />
+        <text name="function_grainDryerShed" text="This shed you can dry wheat, barley, oat, corn, long grain rice, rice and sorghum." />
+        <text name="storeItem_grainDryerSilo" text="Grain Drying Silo" />
+        <text name="function_grainDryerSilo" text="This shed you can dry wheat, barley, oat, corn, long grain rice, rice and sorghum." />
+        <text name="storeItem_grainDryerSmall" text="Grain Drying Shed Small" />
+        <text name="function_grainDryerSmall" text="This shed you can dry wheat, barley, oat, corn, long grain rice, rice and sorghum." />
+
+        <text name="Hide_Items" text="Hide Items" />
+        <text name="Show_Items" text="Show Items" />
+        <text name="methane" text="Methane" />
+        <text name="action_lightsOff" text="Turn Lights Off" />
+        <text name="action_lightsOn" text="Turn Lights On" />
+        <!-- GRAIN DRYER PACK END -->
+
+        <!-- GRAIN MILL ENHANCED -->
+        <text name="storeItem_grainMillEnhanced" text="Grain Mill Enhanced" />
+        <text name="function_grainMillEnhanced" text="Grain Mill requires dried input products. Adds sorghum, corn, soy & pea flour." />
+        <text name="fillType_flourWheatDry" text="Flour (Wheat Dry)" />
+        <text name="fillType_flourBarleyDry" text="Flour (Barley Dry)" />
+        <text name="fillType_flourOatDry" text="Flour (Oat Dry)" />
+        <text name="fillType_flourSorghumDry" text="Flour (Sorghum Dry)" />
+        <text name="fillType_flourRiceLongGrainDry" text="Flour (Long Grain Rice Dry)" />
+        <text name="fillType_flourRiceDry" text="Flour (Rice Dry)" />
+        <text name="fillType_flourCornDry" text="Corn flour (Corn Dry)" />
+        <text name="fillType_flourCorn" text="Corn flour" />
+        <text name="fillType_soyFlour" text="Soy flour (Soybeans Dry)" /> <!-- Need these dried -->
+        <text name="fillType_peasFlour" text="Peas flour (Peas Dry)" /> <!-- Need these dried -->
+        <!-- <text name="fillType_canolaFlour" text="Canola flour" /> -->
+        <!-- <text name="fillType_sunflowerFlour" text="Sunflower flour" /> -->
+        <!-- GRAIN MILL ENHANCED END -->
+
+        <!-- PLANT BASED MILK PRODUCTION -->
+        <text name="storeItem_grainMilkProduction" text="Plant Based Milk Production" />
+        <text name="function_grainMilkProduction" text="Create alternative milk products from oat, pea, rice and soybeans. " />
+        <text name="fillType_peaMilkBottled" text="Pea milk (bottled)" />
+        <text name="fillType_soyMilkBottled" text="Soy milk (bottled)" />
+        <text name="fillType_riceMilkBottled" text="Rice milk (bottled)" />
+        <text name="fillType_oatMilkBottled" text="Oat milk (bottled)" />
+        <!-- PLANT BASED MILK PRODUCTION END -->
+
+        <!-- ENHANCED DAIRY PRODUCTION -->
+        <text name="storeItem_enhancedDairy" text="Enhanced Dairy Production" />
+        <text name="function_enhancedDairy" text="Dairy all standard items plus garlic butter, strawberry milk and yoghurt." />
+        <text name="storeItem_enhancedDairyUS" text="Enhanced Dairy Production US" />
+
+        <text name="fillType_garlicButter" text="Garlic butter" />
+        <text name="fillType_strawberryMilk_bottled" text="Strawberry milk (bottled)" />
+        <text name="fillType_yoghurt" text="Yoghurt" />
+        <!-- ENHANCED DAIRY PRODUCTION END -->
+
+        <!-- BAKERY ENHANCED -->
+        <text name="storeItem_bakeryEnhanced" text="Bakery Enhanced" />
+        <text name="function_bakeryEnhanced" text="A multi use production for making bread, cakes and other baking needs." />
+        <text name="storeItem_theLittleMarket" text="The Little Market" />
+        <text name="function_theLittleMarket" text="A sell point for your bakery items." />
+        <text name="fillType_breadGrainRiceFlour" text="Bread (Regular or Rice Flours)" />
+        <text name="fillType_cakeGrainRiceFlour" text="Cake (Regular or Rice Flours)" />
+        <text name="fillType_wholeWheatFlour" text="Flour (Whole Wheat)" />
+        <text name="fillType_wholeWheatBread" text="Bread (Whole Wheat)" />
+        <text name="fillType_cornTortilla" text="Corn Tortilla" />
+        <text name="fillType_riceCakes" text="Rice Cakes (Rice or Long Grain)" />
+        <text name="fillType_riceCakesLong" text="Rice Cakes (Long Grain)" />
+        <text name="fillType_spaghettiPasta" text="Spaghetti Pasta" />
+
+        <!-- From FarmBakery -->
+        <text name="fillType_baguetteBox"           text="Baguette Loafs (Regular or Rice Flours)" />
+        <text name="fillType_breadBox"              text="Bread Loafs (Regular or Rice Flours)" />
+        <text name="fillType_emptyBakeryBox"        text="Empty Bakery box" />
+        <text name="fillType_bakeryBoxPallet"       text="Bakery box pallet" />
+        <text name="fillType_flourSacks"            text="Flour Sacks" />
+        <text name="fillType_eggPartyBox"           text="Eggs (Colored)" />
+        <text name="fillType_donutBox"              text="Donuts (Regular or Rice Flours)" />
+        <text name="fillType_donutJellyBox"         text="Donuts Jelly (Regular or Rice Flours)" />
+        <text name="fillType_muffinBox"             text="Muffins (Regular or Rice Flours)" />
+        <text name="fillType_croissantBox"          text="Croissants (Regular or Rice Flours)" />
+        <text name="fillType_packagingMaterialsBox" text="Packaging Materials" />
+        <text name="function_packagingMaterialsBox" text="Packaging materials to build boxes." />
+        <text name="fillType_rubbish"               text="Rubbish" />
+        <text name="fillType_spiceBlendsBox"        text="Spice blends box" />
+        <text name="fillType_firewood"              text="Consumables for productions" />
+        <!-- BAKERY ENHANCED END -->
+
+        <!-- THE BUTCHER BARN -->
+        <text name="store_theButcherBarn" text="The Butcher Barn" />
+        <text name="function_theButcherBarn" text="Creates Meats from Animals. Age limit in months Cow 18-40, Pig 6-14, Sheep 14-24 and Chicken 6-24" />
+
+        <text name="message_unloadAnimalSuccess" text="Animals were successfully moved to %s!" />
+        <text name="message_unloadAnimalConfirmation" text="Do you want to move %d animals (%s) to the %s?" />
+        <text name="button_moveAnimal" text="Move to %s" />
+
+         <!-- Only required when a 'minimumAge' is set as part of the </animalInput> -->
+        <text name="message_animalTooYoung" text="This animal is too young." />
+
+        <!-- Only required when a 'maximumAge' is set as part of the </animalInput> -->
+        <text name="message_animalTooOld" text="This animal is too old." />
+        <text name="input_RLB_UNLOAD_TO_BUTCHER" text="Unload Animals To Butcher" />
+        <!-- THE BUTCHER BARN END -->
+
+        <!-- OPEN AIR GARDEN -->
+        <text name="storeItem_openAirGarden" text="Open Air Garden" />
+        <text name="function_openAirGarden" text="Standard sized open air garden, all fruits." />
+        <text name="storeItem_openAirGardenStrawberry" text="Open Air Garden Strawberry" />
+        <text name="function_openAirGardenStrawberry" text="Standard sized open air garden, strawberry." />
+        <text name="storeItem_openAirGarden4" text="Open Air Garden Medium" />
+        <text name="function_openAirGarden4" text="Medium sized open air garden, all fruits." />
+        <text name="storeItem_openAirGarden16" text="Open Air Garden Large" />
+        <text name="function_openAirGarden16" text="Large sized open air garden, all fruits." />
+        <text name="storeItem_openAirGardenDecoMinimal" text="Decorated Garden, Minimalistic" />
+        <text name="function_openAirGardenDecoMinimal" text="Decorated Garden with minimal decorations, all fruits." />
+        <text name="storeItem_openAirGardenDecorated" text="Decorated Garden" />
+        <text name="function_openAirGardenDecorated" text="Decorated Garden, all fruits." />
+        <text name="storeItem_distributer" text="Distributer" />
+        <text name="function_distributer" text="This production distributes water, fertilizer, seeds and manure to your gardens, greenhouses and productions." />
+
+        <text name="gardenConfiguration" text="Garden Configuration" />
+        <text name="NoFenceNoGardenBeds" text="No fence, no garden beds" />
+        <text name="FenceNoGardenBeds" text="With Fence, no garden beds" />
+        <text name="NoFenceGardenBeds" text="No fence, garden beds" />
+        <text name="FenceGardenBeds" text="With fence, garden beds" />
+        <text name="l10nGreenhouseUp" text="Move greenhouse up" />
+        <text name="l10nGreenhouseDown" text="Move greenhouse down" />
+        <text name="l10nColiDown" text="Move collision down" />
+        <text name="l10nColiUp" text="Move collision up" />
+        <text name="l10nWith" text="with" />
+        <text name="buildingConfiguration" text="Building Configuration" />
+        <text name="container" text="Container" />
+        <text name="woodenHut" text="Wooden Hut" />
+        <text name="BrownMedium" text="Brown Medium" />
+        <text name="BrownMedium2" text="Brown Medium 2" />
+        <text name="BrownLight" text="Brown Light" />
+        <text name="BrownDark" text="Brown Dark" />
+        <text name="Beige" text="Beige" />
+        <text name="OliveBeige" text="Olive Beige" />
+        <text name="BrownRed" text="Brown Red" />
+        <text name="RedMatte" text="Red Matte" />
+        <text name="BrightGreen" text="Bright Green" />
+        <text name="GreenMedium" text="Green Medium" />
+        <text name="GreenDark" text="Dark Medium" />
+        <text name="Petrol" text="Petrol" />
+        <text name="BrightLilac" text="Bright Lilac" />
+        <text name="Lilac" text="Lilac" />
+        <!-- OPEN AIR GARDEN END -->
+
+        <!-- BEET CHOPPER -->
+        <text name="storeItem_sugarBeetChopper" text="Sugar Beet Chopper" />
+
+        <!-- CHIPS FACTORY -->
+        <text name="storeItem_chipsFactory" text="Chips Factory" />
+        <text name="function_chipsFactory" text="Transform your products into artisanal chips." />
+        <text name="fillType_carrotChips" text="Chips - Carrot" />
+        <text name="storeItem_carrotsChipsPallet" text="Carrot Chips Pallet" />
+        <text name="fillType_beetrootChips" text="Chips - Beetroot" />
+        <text name="storeItem_beetrootChipsPallet" text="Beetroot Chips Pallet" />
+        <text name="fillType_chiliChips" text="Chips - Chilli" />
+        <text name="storeItem_chiliChipsPallet" text="Chili Chips Pallet" />
+        <text name="fillType_honeyChips" text="Chips - Honey and Goat Cheese" />
+        <text name="storeItem_honeyChipsPallet" text="Honey and Goat Cheese Chips Pallet" />
+        <text name="fillType_mozaChips" text="Chips - Tomato Mozzarella Chips" />
+        <text name="storeItem_mozaChipsPallet" text="Tomato Mozzarella Chips Pallet" />
+        <text name="fillType_tomatoChips" text="Chips - Sun-dried Tomato" />
+        <text name="storeItem_tomatoChipsPallet" text="Sun-dried Tomato Chips Pallet" />
+        <text name="fillType_parsnipChips" text="Chips - Parsnip" />
+        <text name="storeItem_parnshipChipsPallet" text="Parsnip Chips Pallet" />
+        <text name="fillType_potatoChipsNew" text="Chips - Potato" />
+        <text name="fillType_onionsChips" text="Chips - Garlic Onion" />
+        <text name="storeItem_onionsChipsPallet" text="Garlic and Onion Chips Pallet" />
+        <text name="fillType_cookingOil" text="Oil (Sunflower-Canola-Olive)" />
+
+        <!-- READY MEALS PROCESSINGS -->
+        <text name="storeItem_readyMealsProcessing" text="Ready Meals Processing" />
+        <text name="function_readyMealsProcessing" text="Processing frozen meals ready to eat." />
+        <text name="fillType_crawfishEtouffee" text="Crawfish Etouffee" />
+        <text name="fillType_spaghettiMeatballs" text="Spaghetti and Meatballs" />
+        <text name="fillType_spaghettiSausage" text="Spaghetti and Sausage" />
+
+        <!-- CRAWFISH PRODUCTION -->
+        <text name="storeItem_crawfishProduction" text="Crawfish Production" />
+        <text name="storeItem_crawfish" text="Crawfish Pallet" />
+        <text name="fillType_crawfish" text="Crawfish" />
+        <text name="storeItem_crawfishBroodstockPallet" text="Crawfish Broodstock Pallet" />
+        <text name="fillType_crawfishBroodstock" text="Crawfish Broodstock" />
+        <!-- CRAWFISH HATCHERY -->
+
+        <!-- CARPENTER SHOP -->
+        <text name="storeItem_theCarpenterShop" text="The Carpenter Shop" />
+        <text name="function_theCarpenterShop" text="One stop shop for all your carpentry needs." />
+        <text name="logo" text="logo" />
+        <text name="EN" text="Logo English" />
+        <text name="fillType_doghouse" text="Doghouse" />
+        <text name="fillType_wooden_Shelf" text="Wooden shelf" />
+        <text name="fillType_emptyPallet" text="Empty pallet" />
+		<text name="fillType_emptyPalletsFillable" text="Empty pallets - fillable" />
+        <text name="fillType_bakery_crates" text="Bakery cases" />
+        <text name="fillType_wooden_box_a" text="Wooden box" />
+        <text name="fillType_wooden_box_a16" text="Wooden box pallet" />
+        <text name="fillType_cheese_cases" text="Wooden box for cheese" />
+        <text name="fillType_WoodChippings" text="Wood Chippings +" />
+
+
+        <text name="fillType_carvings" text="Carvings" />
+        <text name="function_carvings" text="Creation of wood sculptures." />
+        <text name="fillType_toys" text="Toys" />
+        <text name="function_toys" text="Wooden Toy manufacturing." />
+		
+		<!-- WOOD STORAGE -->
+		<!--BUILDINGS-->
+        <text name="shopItem_woodStorage01" text="Wood Log Storage Large"/>
+        <text name="shopItem_woodStorage02" text="Wood Log Storage Small"/>
+        <text name="shopItem_wood8m" text="Logs 6m"/>
+        <text name="shopItem_woodChipsStorage" text="Woodchip Storage"/>
+		<!--FUNCTIONS-->
+        <text name="function_wood" text="Logs for further processing in the sawmill."/>
+        <text name="function_woodStorage" text="Storage for Logs."/>
+
+    </texts>
+</l10n>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="smokerPelletsPallet.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="3" filename="$data/objects/pallets/cementBagsPallet/cementBagsPallet_normal.png"/>
+    <File fileId="4" filename="$data/objects/pallets/cementBagsPallet/cementBagsPallet_specular.png"/>
+    <File fileId="2" filename="../../textures/product/smokerPelletsPallet02_diffuse.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="cementBagsPallet_mat" materialId="5">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+    <Material name="lambert1" materialId="6" diffuseColor="0.501961 0.501961 0.501961 1">
+    </Material>
+    <Material name="UnnamedMaterial" materialId="7" diffuseColor="1 1 1 1">
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="smokerPelletsPallet.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="cementBagsPallet_component1" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" staticFriction="1" dynamicFriction="1" clipDistance="300" nodeId="16" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6">
+      <Shape name="dynamicMountTrigger" translation="0 0.090475 0" shapeId="2" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="17" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+      <TransformGroup name="contents" nodeId="18">
+        <Shape name="cementBag01" translation="0.293497 0.213541 0.190114" shapeId="3" clipDistance="150" nodeId="19" castsShadows="true" receiveShadows="true" skinBindNodeIds="19 21 23 25 27 29 31 33 35 37 39 41 43 45 47 49" materialIds="5">
+          <Shape name="cementBag_Tension01" shapeId="4" nodeId="20" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </Shape>
+        <TransformGroup name="cementBag02" translation="-0.305644 0.213541 0.190114" clipDistance="150" nodeId="21">
+          <Shape name="cementBag_Tension02" shapeId="4" nodeId="22" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag03" translation="0.293497 0.213541 -0.206123" clipDistance="150" nodeId="23">
+          <Shape name="cementBag_Tension03" shapeId="4" nodeId="24" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag04" translation="-0.305644 0.213541 -0.206123" clipDistance="150" nodeId="25">
+          <Shape name="cementBag_Tension04" shapeId="4" nodeId="26" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag05" translation="0.293497 0.344467 0.190114" clipDistance="150" nodeId="27">
+          <Shape name="cementBag_Tension05" shapeId="4" nodeId="28" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag06" translation="-0.305644 0.344467 0.190114" clipDistance="150" nodeId="29">
+          <Shape name="cementBag_Tension06" shapeId="4" nodeId="30" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag07" translation="0.293497 0.344467 -0.206123" clipDistance="150" nodeId="31">
+          <Shape name="cementBag_Tension07" shapeId="4" nodeId="32" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag08" translation="-0.305644 0.344467 -0.206123" clipDistance="150" nodeId="33">
+          <Shape name="cementBag_Tension08" shapeId="4" nodeId="34" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag09" translation="0.293497 0.476381 0.190114" clipDistance="150" nodeId="35">
+          <Shape name="cementBag_Tension09" shapeId="4" nodeId="36" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag10" translation="-0.305644 0.476381 0.190114" clipDistance="150" nodeId="37">
+          <Shape name="cementBag_Tension10" shapeId="4" nodeId="38" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag11" translation="0.293497 0.476381 -0.206123" clipDistance="150" nodeId="39">
+          <Shape name="cementBag_Tension11" shapeId="4" nodeId="40" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag12" translation="-0.305644 0.476381 -0.206123" clipDistance="150" nodeId="41">
+          <Shape name="cementBag_Tension12" shapeId="4" nodeId="42" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag13" translation="-0.305644 0.608933 -0.206123" clipDistance="150" nodeId="43">
+          <Shape name="cementBag_Tension13" shapeId="4" nodeId="44" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag14" translation="0.293497 0.608933 -0.206123" clipDistance="150" nodeId="45">
+          <Shape name="cementBag_Tension14" shapeId="4" nodeId="46" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag15" translation="-0.305644 0.608933 0.190114" clipDistance="150" nodeId="47">
+          <Shape name="cementBag_Tension15" shapeId="4" nodeId="48" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+        <TransformGroup name="cementBag16" translation="0.293497 0.608933 0.190114" clipDistance="150" nodeId="49">
+          <Shape name="cementBag_Tension16" shapeId="4" nodeId="50" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="collisions" clipDistance="10" nodeId="51">
+        <Shape name="floorCollision01" translation="-0.299024 0.073241 0" shapeId="5" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="52" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+        <Shape name="floorCollision02" translation="0.299024 0.073241 0" shapeId="5" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="53" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="6"/>
+      </TransformGroup>
+      <TransformGroup name="raycastNode" nodeId="54"/>
+      <Shape name="fillTrigger" shapeId="6" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x40000000" nodeId="55" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+      <Shape name="dischargeActivationTrigger" translation="0 1.62384 0" shapeId="7" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x110000" nodeId="56" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="7"/>
+    </Shape>
+  </Scene>
+
+</i3D>

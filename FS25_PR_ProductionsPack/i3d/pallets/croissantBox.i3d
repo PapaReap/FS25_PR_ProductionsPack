@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="croissantBox.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="../../textures/food/bakeryBox_diffuse.png"/>
+    <File fileId="5" filename="../../textures/food/bakeryBox_normal.png"/>
+    <File fileId="6" filename="../../textures/food/bakeryBox_specular.png"/>
+    <File fileId="1" filename="../../textures/food/butterBox_diffuse.png"/>
+    <File fileId="2" filename="../../textures/food/chocolateBox_normal.png"/>
+    <File fileId="3" filename="../../textures/food/chocolateBox_specular.png"/>
+    <File fileId="8" filename="../../textures/food/viennoiseries_diffuse.png"/>
+    <File fileId="9" filename="../../textures/food/viennoiseries_normal.png"/>
+    <File fileId="10" filename="../../textures/food/viennoiseries_specular.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="bakeryBox_mat" materialId="67">
+      <Texture fileId="4"/>
+      <Normalmap fileId="5"/>
+      <Glossmap fileId="6"/>
+    </Material>
+    <Material name="lambert1" materialId="68" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+    <Material name="raisinBox_mat" materialId="69">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+    </Material>
+    <Material name="viennoiseries_mat" materialId="70">
+      <Texture fileId="8"/>
+      <Normalmap fileId="9"/>
+      <Glossmap fileId="10"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="croissantBox.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="croissantBox" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" clipDistance="150" nodeId="78" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="69">
+      <Shape name="croissantBox" translation="0 -0.000140315 0" rotation="90 -0 0" shapeId="2" clipDistance="150" nodeId="79" castsShadows="true" receiveShadows="true" materialIds="67">
+        <Shape name="dynamicMountTrigger" rotation="-90 -0 0" shapeId="3" visibility="false" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="80" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="68"/>
+        <TransformGroup name="dischargeNode" rotation="-90 -0 0" nodeId="81"/>
+        <TransformGroup name="content" rotation="-90 -0 0" nodeId="82">
+          <Shape name="Croissant_Kiste_DS" rotation="90 -0 0" shapeId="2" clipDistance="150" nodeId="83" castsShadows="true" receiveShadows="true" materialIds="67">
+            <Shape name="bakeryBox01Tension" translation="0 -5.52556e-09 -0.063205" rotation="-90 4.37897e-13 5.00896e-06" shapeId="4" nodeId="84" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="68"/>
+            <Shape name="Croissant_Kiste_DS" translation="0.155746 0.261972 -0.00911501" rotation="-90 3.38053e-07 3.86989" scale="1 1 1.0009" shapeId="5" clipDistance="30" nodeId="85" castsShadows="true" receiveShadows="true" materialIds="70">
+              <Shape name="viennoiserieCroissant" translation="-0.0159489 -5.96046e-08 -0.130977" rotation="-3.59373e-22 4.26887e-07 7.76503e-19" shapeId="5" clipDistance="30" nodeId="86" castsShadows="true" receiveShadows="true" materialIds="70"/>
+              <Shape name="viennoiserieCroissant" translation="-0.0272238 -5.96046e-08 -0.267913" rotation="-3.59373e-22 4.26887e-07 7.76503e-19" shapeId="5" clipDistance="30" nodeId="87" castsShadows="true" receiveShadows="true" materialIds="70"/>
+              <Shape name="viennoiserieCroissant" translation="-0.0397981 0 -0.390837" rotation="-3.59373e-22 4.26887e-07 7.76503e-19" shapeId="5" clipDistance="30" nodeId="88" castsShadows="true" receiveShadows="true" materialIds="70"/>
+              <Shape name="viennoiserieCroissant" translation="-0.0480191 0 -0.511243" rotation="-3.59373e-22 4.26887e-07 7.76503e-19" shapeId="5" clipDistance="30" nodeId="89" castsShadows="true" receiveShadows="true" materialIds="70"/>
+              <Shape name="viennoiserieCroissant" translation="-0.272988 -1.19209e-07 0.023091" rotation="-3.59373e-22 4.26887e-07 7.76503e-19" shapeId="5" clipDistance="30" nodeId="90" castsShadows="true" receiveShadows="true" materialIds="70"/>
+              <Shape name="viennoiserieCroissant" translation="-0.282674 -5.96046e-08 -0.101437" rotation="-3.59373e-22 4.26887e-07 7.76503e-19" shapeId="5" clipDistance="30" nodeId="91" castsShadows="true" receiveShadows="true" materialIds="70"/>
+              <Shape name="viennoiserieCroissant" translation="-0.295953 0 -0.231265" rotation="-3.59373e-22 4.26887e-07 7.76503e-19" shapeId="5" clipDistance="30" nodeId="92" castsShadows="true" receiveShadows="true" materialIds="70"/>
+              <Shape name="viennoiserieCroissant" translation="-0.304706 -5.96046e-08 -0.361454" rotation="-3.59373e-22 4.26887e-07 7.76503e-19" shapeId="5" clipDistance="30" nodeId="93" castsShadows="true" receiveShadows="true" materialIds="70"/>
+              <Shape name="viennoiserieCroissant" translation="-0.322037 0 -0.501099" rotation="-3.59373e-22 4.26887e-07 7.76503e-19" shapeId="5" clipDistance="30" nodeId="94" castsShadows="true" receiveShadows="true" materialIds="70"/>
+            </Shape>
+          </Shape>
+        </TransformGroup>
+        <TransformGroup name="collisions" rotation="-90 -0 0" clipDistance="10" nodeId="95">
+          <Shape name="floorCollision01" shapeId="6" compoundChild="true" collisionFilterGroup="0x100110a" collisionFilterMask="0x100110a" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="96" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="68"/>
+        </TransformGroup>
+      </Shape>
+    </Shape>
+  </Scene>
+
+</i3D>

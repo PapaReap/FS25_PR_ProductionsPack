@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<vehicle type="pallet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../shared/xml/schema/vehicle.xsd">
+    <annotation>Copyright (C) GIANTS Software GmbH, All Rights Reserved.</annotation>
+   <storeData>
+        <name>$l10n_fillType_wooden_box_a</name>
+        <functions>
+            <function>$l10n_fillType_wooden_box_a</function>
+        </functions>
+        <specs>
+            <capacity>1000</capacity>
+            <fillTypes>WOODEN_BOX_A</fillTypes>
+            <weight ignore="true"/>
+        </specs>
+        <image>store/pallets/store_wooden_box_a_DS.dds</image>
+        <price>50</price>
+        <allowLeasing>false</allowLeasing>
+        <brand>PRI</brand>
+        <canBeSold>false</canBeSold>
+        <category>pallets</category>
+        <financeCategory>OTHER</financeCategory>
+        <vertexBufferMemoryUsage>12544</vertexBufferMemoryUsage>
+        <indexBufferMemoryUsage>2560</indexBufferMemoryUsage>
+        <textureMemoryUsage>1638400</textureMemoryUsage>
+        <audioMemoryUsage>0</audioMemoryUsage>
+        <instanceVertexBufferMemoryUsage>0</instanceVertexBufferMemoryUsage>
+        <instanceIndexBufferMemoryUsage>0</instanceIndexBufferMemoryUsage>
+    </storeData>
+
+    <base>
+        <typeDesc>$l10n_typeDesc_pallet</typeDesc>
+        <filename>i3d/pallets/Box1_DS.i3d</filename>
+        <size width="1.4" length="1" height="1.1" />
+        <components>
+            <component centerOfMass="0 0.1 0" solverIterationCount="10" mass="10"/>
+        </components>
+        <showInVehicleMenu>true</showInVehicleMenu>
+        <mapHotspot available="false" />
+        <canBeReset>false</canBeReset>
+        <canBeSold>true</canBeSold>
+        <supportsPickUp>true</supportsPickUp>
+    </base>
+
+    <fillUnit>
+        <fillUnitConfigurations>
+            <fillUnitConfiguration>
+                <fillUnits removeVehicleIfEmpty="true">
+                    <fillUnit unitTextOverride="$l10n_unit_literShort" fillTypes="WOODEN_BOX_A" startFillType="WOODEN_BOX_A" capacity="1000" startFillLevel="1000" updateMass="false"/>
+                </fillUnits>
+            </fillUnitConfiguration>
+        </fillUnitConfigurations>
+    </fillUnit>
+
+    <dischargeable requiresTipOcclusionArea="false">
+        <dischargeNode node="dischargeNode" emptySpeed="200" fillUnitIndex="1" maxDistance="6" canStartDischargeAutomatically="true" playSound="false"/>
+    </dischargeable>
+
+    <pallet fillUnitIndex="1" node="bread01">
+        <content>
+            <object node="flourBox01" tensionBeltNode="flourBox01Tension"/>
+        </content>
+
+        <sounds>
+            <unload template="palletsFillBag" pitchScale="0.9" />
+        </sounds>
+    </pallet>
+
+    <dynamicMount triggerNode="dynamicMountTrigger" triggerForceAcceleration="4" additionalMountDistance="1.1" jointTransY="0.11" jointLimitToRotY="true"/>
+
+    <i3dMappings>
+        <i3dMapping id="flourBoxPallet_component1" node="0>" />
+        <i3dMapping id="bread01" node="0>0" />
+        <i3dMapping id="dynamicMountTrigger" node="0>0|0" />
+        <i3dMapping id="dischargeNode" node="0>0|1" />
+        <i3dMapping id="flourBox01" node="0>0|2|0" />
+        <i3dMapping id="flourBox01Tension" node="0>0|2|0|0" />
+    </i3dMappings>
+</vehicle>

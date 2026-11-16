@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="pea.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="6" filename="$data/foliage/pea/peaStage03_alpha.png"/>
+    <File fileId="1" filename="$data/foliage/pea/peaStage03_diffuse.png"/>
+    <File fileId="3" filename="$data/foliage/pea/peaStage03_fmask.png"/>
+    <File fileId="2" filename="$data/foliage/pea/peaStage03_normal.png"/>
+    <File fileId="10" filename="$data/foliage/pea/peaStage04_alpha.png"/>
+    <File fileId="7" filename="$data/foliage/pea/peaStage04_diffuse.png"/>
+    <File fileId="9" filename="$data/foliage/pea/peaStage04_fmask.png"/>
+    <File fileId="8" filename="$data/foliage/pea/peaStage04_normal.png"/>
+    <File fileId="14" filename="$data/foliage/pea/peaStage05_alpha.png"/>
+    <File fileId="11" filename="$data/foliage/pea/peaStage05_diffuse.png"/>
+    <File fileId="13" filename="$data/foliage/pea/peaStage05_fmask.png"/>
+    <File fileId="12" filename="$data/foliage/pea/peaStage05_normal.png"/>
+    <File fileId="4" filename="$data/shaders/fruitGrowthFoliageShader.xml"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="peaStage03_mat" materialId="5" customShaderId="4" customShaderVariation="PLANT_ROWS">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <Custommap name="alphaMap" fileId="6"/>
+      <CustomParameter name="snowScale" value="0.3"/>
+    </Material>
+    <Material name="peaStage04_mat" materialId="6" customShaderId="4" customShaderVariation="PLANT_ROWS">
+      <Texture fileId="7"/>
+      <Normalmap fileId="8"/>
+      <Glossmap fileId="9"/>
+      <Custommap name="alphaMap" fileId="10"/>
+      <CustomParameter name="snowScale" value="0.3"/>
+    </Material>
+    <Material name="peaStage05_mat" materialId="7" customShaderId="4" customShaderVariation="PLANT_ROWS">
+      <Texture fileId="11"/>
+      <Normalmap fileId="12"/>
+      <Glossmap fileId="13"/>
+      <Custommap name="alphaMap" fileId="14"/>
+      <CustomParameter name="snowScale" value="0.3"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="pea.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="pea" nodeId="12">
+      <TransformGroup name="greenBig" nodeId="13">
+        <Shape name="gb1" translation="0 0 0.5" shapeId="1" clipDistance="500" nodeId="14" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="gb1" translation="0 0 -1" shapeId="1" clipDistance="500" nodeId="15" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="gb1" translation="0 0 1" rotation="0 73.1791 0" shapeId="1" clipDistance="500" nodeId="16" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="gb1" rotation="180 32.9443 180" shapeId="1" clipDistance="500" nodeId="17" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+        <Shape name="gb1" translation="0 0 -0.5" rotation="0 -77.916 0" shapeId="1" clipDistance="500" nodeId="18" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="5"/>
+      </TransformGroup>
+      <TransformGroup name="harvestReady" nodeId="19">
+        <Shape name="hr1" translation="0 0 0.3" rotation="0 -47.9343 0" shapeId="2" clipDistance="500" nodeId="20" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="hr1" translation="0 0 0.9" rotation="0 35.291 0" shapeId="2" clipDistance="500" nodeId="21" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="hr1" translation="0 0 -0.9" rotation="-180 76.0634 -180" shapeId="2" clipDistance="500" nodeId="22" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+        <Shape name="hr1" translation="0 0 -0.3" shapeId="2" clipDistance="500" nodeId="23" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="6"/>
+      </TransformGroup>
+      <TransformGroup name="dead" nodeId="24">
+        <Shape name="d1" shapeId="3" clipDistance="500" nodeId="25" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="d1" translation="0 0 -0.795245" rotation="-180 -34.228 -180" shapeId="3" clipDistance="500" nodeId="26" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+        <Shape name="d1" translation="0 0 0.697812" rotation="0 -71.4495 0" shapeId="3" clipDistance="500" nodeId="27" castsShadows="true" receiveShadows="true" doubleSided="true" materialIds="7"/>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

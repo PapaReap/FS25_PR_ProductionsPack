@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="carvingsPallet.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.3"/>
+  </Asset>
+
+  <Files>
+    <File fileId="2" filename="$data/maps/mapUS/textures/props/vintageTools/woodenCrate02_diffuse.png"/>
+    <File fileId="3" filename="$data/maps/mapUS/textures/props/vintageTools/woodenCrate02_normal.png"/>
+    <File fileId="4" filename="$data/maps/mapUS/textures/props/vintageTools/woodenCrate02_specular.png"/>
+    <File fileId="5" filename="$data/shared/detailLibrary/nonMetallic/wood/wood1Cedar_diffuse.dds"/>
+    <File fileId="6" filename="$data/shared/detailLibrary/nonMetallic/wood/wood1_normal.dds"/>
+    <File fileId="7" filename="$data/shared/detailLibrary/nonMetallic/wood/wood1_specular.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="lambert1" materialId="5" diffuseColor="0.501961 0.501961 0.501961 1">
+    </Material>
+    <Material name="wood_mat" materialId="6">
+      <Texture fileId="5"/>
+      <Normalmap fileId="6"/>
+      <Glossmap fileId="7"/>
+    </Material>
+    <Material name="woodenCrate02_mat" materialId="7">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <Glossmap fileId="4"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="carvingsPallet.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="CarvingsPallet_main_component1" shapeId="1" dynamic="true" compound="true" collisionFilterGroup="0x10004" collisionFilterMask="0xfe3ffb83" staticFriction="1" dynamicFriction="1" density="0.0001" clipDistance="150" nodeId="25" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5">
+      <Shape name="dynamicMountTrigger" translation="0 0.090475 0" shapeId="2" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x20000" nodeId="26" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+      <TransformGroup name="dischargeNode" translation="0 0.5 0" nodeId="27"/>
+      <TransformGroup name="content" nodeId="28">
+        <TransformGroup name="woodenCrate01" translation="-0.298145 0.443265 -0.00294495" nodeId="29">
+          <Shape name="LOD0" translation="0.000144988 0 0" shapeId="3" nodeId="30" castsShadows="true" receiveShadows="true" materialIds="7"/>
+          <Shape name="LOD1" translation="0.000144988 0 0" shapeId="4" nodeId="31" castsShadows="true" receiveShadows="true" materialIds="7"/>
+          <Shape name="col01" translation="0.000144988 0 0" shapeId="5" nodeId="32" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+          <TransformGroup name="props" nodeId="33">
+            <Shape name="turtle" translation="0.0131688 0.00830796 0.183499" rotation="4.01673e-05 88.3789 2.65198e-05" scale="0.575943 0.575943 0.575943" shapeId="6" clipDistance="150" nodeId="34" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="turtle" translation="0.0235493 0.00830796 -0.183292" rotation="180 -84.2501 -180" scale="0.575943 0.575943 0.575943" shapeId="6" clipDistance="150" nodeId="35" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="woodenCrate02" translation="-0.298145 0.12344 -0.00294495" nodeId="36">
+          <Shape name="LOD0" translation="0.000144988 0 0" shapeId="7" nodeId="37" castsShadows="true" receiveShadows="true" materialIds="7"/>
+          <Shape name="LOD1" translation="0.000144988 0 0" shapeId="8" nodeId="38" castsShadows="true" receiveShadows="true" materialIds="7"/>
+          <Shape name="col02" translation="0.000144988 0 0" shapeId="9" nodeId="39" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+          <TransformGroup name="props" nodeId="40">
+            <Shape name="squirrel" translation="-0.124767 0.0183169 -0.250934" rotation="-180 -83.2488 -180" scale="0.623739 0.623739 0.623739" shapeId="10" clipDistance="150" nodeId="41" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="squirrel" translation="-0.118159 0.0183169 -0.0402921" rotation="-2.06032e-06 -72.6944 2.92794e-05" scale="0.623739 0.623739 0.623739" shapeId="10" clipDistance="150" nodeId="42" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="squirrel" translation="0.164407 0.018317 -0.193854" rotation="-180 -8.48336 -180" scale="0.623739 0.623739 0.623739" shapeId="10" clipDistance="150" nodeId="43" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="squirrel" translation="-0.142116 0.0183169 0.186451" rotation="-2.06032e-06 57.2242 2.92794e-05" scale="0.624 0.623739 0.623739" shapeId="10" clipDistance="150" nodeId="44" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="squirrel" translation="0.0811719 0.0183169 0.274927" rotation="-2.06032e-06 85.9369 2.92794e-05" scale="0.623739 0.623739 0.623739" shapeId="10" clipDistance="150" nodeId="45" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="squirrel" translation="0.109206 0.0183168 0.0608337" rotation="-2.06033e-06 -13.6094 2.92794e-05" scale="0.623739 0.623739 0.623739" shapeId="10" clipDistance="150" nodeId="46" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="woodenCrate03" translation="0.298159 0.443265 -0.00294495" nodeId="47">
+          <Shape name="LOD0" translation="-0.000158995 0 0" shapeId="3" nodeId="48" castsShadows="true" receiveShadows="true" materialIds="7"/>
+          <Shape name="LOD1" translation="-0.000158995 0 0" shapeId="4" nodeId="49" castsShadows="true" receiveShadows="true" materialIds="7"/>
+          <Shape name="col03" translation="-0.000158995 0 0" shapeId="5" nodeId="50" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+          <TransformGroup name="props" nodeId="51">
+            <Shape name="frog" translation="-0.0628055 0.00830814 -0.050089" rotation="0 -83.7661 0" scale="0.437892 0.437892 0.437892" shapeId="11" clipDistance="150" nodeId="52" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="eagle" translation="-0.0933947 0.00830811 -0.248416" rotation="180 -74.3742 -180" scale="0.440816 0.440816 0.440816" shapeId="12" clipDistance="150" nodeId="53" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="eagle" translation="0.144288 0.00830814 -0.183064" rotation="2.02508e-06 -7.32724 -1.67191e-07" scale="0.440816 0.440816 0.440816" shapeId="12" clipDistance="150" nodeId="54" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="boar" translation="0.133025 0.00830802 0.163265" rotation="0 2.27801 0" scale="0.301134 0.301134 0.301134" shapeId="13" clipDistance="150" nodeId="55" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="boar" translation="-0.12852 0.00830814 0.176558" rotation="0 42.2906 0" scale="0.301134 0.301134 0.301134" shapeId="13" clipDistance="150" nodeId="56" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="woodenCrate04" translation="0.298159 0.12344 -0.00294495" nodeId="57">
+          <Shape name="LOD0" translation="-0.000158995 0 0" shapeId="7" nodeId="58" castsShadows="true" receiveShadows="true" materialIds="7"/>
+          <Shape name="LOD1" translation="-0.000158995 0 0" shapeId="8" nodeId="59" castsShadows="true" receiveShadows="true" materialIds="7"/>
+          <Shape name="col04" translation="-0.000158995 0 0" shapeId="9" nodeId="60" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+          <TransformGroup name="props" translation="0 -0.308438 0" nodeId="61">
+            <Shape name="rooster" translation="-0.188054 0.328133 -0.182664" scale="0.585 0.58476 0.58476" shapeId="14" clipDistance="150" nodeId="62" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="hare" translation="0.147252 0.328133 0.309449" rotation="0 -81.4554 0" scale="0.549819 0.549819 0.549819" shapeId="15" clipDistance="150" nodeId="63" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="hare" translation="0.165709 0.328133 -0.253423" scale="0.55 0.549819 0.549819" shapeId="15" clipDistance="150" nodeId="64" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="hare" translation="0.145882 0.328133 0.124815" scale="0.549819 0.549819 0.549819" shapeId="15" clipDistance="150" nodeId="65" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="hare" translation="0.165709 0.328133 -0.0651723" rotation="0 -81.7854 0" scale="0.549819 0.549819 0.549819" shapeId="15" clipDistance="150" nodeId="66" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="rooster" translation="-0.0273454 0.328133 -0.184625" scale="0.58476 0.58476 0.58476" shapeId="14" clipDistance="150" nodeId="67" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="rooster" translation="-0.0944845 0.328133 0.272671" rotation="0 87.0617 0" scale="0.58476 0.58476 0.58476" shapeId="14" clipDistance="150" nodeId="68" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="rooster" translation="-0.183006 0.328133 0.0764188" rotation="0 337.356 0" scale="0.58476 0.58476 0.58476" shapeId="14" clipDistance="150" nodeId="69" castsShadows="true" receiveShadows="true" materialIds="6"/>
+            <Shape name="rooster" translation="-0.0241866 0.328133 0.0638172" rotation="0 4.53663 0" scale="0.58476 0.58476 0.58476" shapeId="14" clipDistance="150" nodeId="70" castsShadows="true" receiveShadows="true" materialIds="6"/>
+          </TransformGroup>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="collisions" clipDistance="10" nodeId="71">
+        <Shape name="floorCollision01" translation="0.3 0 0" shapeId="16" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="72" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+        <Shape name="floorCollision02" translation="-0.3 0 0" shapeId="16" compoundChild="true" collisionFilterGroup="0x10000" collisionFilterMask="0xfe3dfb83" staticFriction="1" dynamicFriction="1" density="0.0001" nodeId="73" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+      </TransformGroup>
+    </Shape>
+  </Scene>
+
+</i3D>
