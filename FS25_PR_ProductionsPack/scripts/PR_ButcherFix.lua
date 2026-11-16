@@ -953,6 +953,22 @@ function PRBFix:deliverAnimals(trailer, data, amount)
 
     st:setFillLevel(newFill, ftIdx)
 
+	-- Force the production point to re-stream its storage to clients
+	local pp = spec.productionPoint
+	if pp ~= nil then
+		if pp.raiseDirtyFlags ~= nil then
+			pp:raiseDirtyFlags(pp.dirtyFlag or 1)
+		end
+		if pp.setIsDirty ~= nil then
+			pp:setIsDirty()
+		end
+		if pp.raiseActive ~= nil then
+			pp:raiseActive()
+		end
+	end
+	
+	PR_DeliverAnimalsEvent.send(self.barn, trailer, used, true, newFill)
+
     print(string.format(
         "[%s] ➕ Added %.2f L %s from %d animals (quality+breed-weighted weight=%.1f kg, baseline=%.1f kg, old=%.2f, new=%.2f)",
         self.modName, liters, typeName, used, totalWeight, baseline, oldFill, newFill
