@@ -967,7 +967,9 @@ function PRBFix:deliverAnimals(trailer, data, amount)
 		end
 	end
 	
-	PR_DeliverAnimalsEvent.send(self.barn, trailer, used, true, newFill)
+	-- PR_DeliverAnimalsEvent.send(self.barn, trailer, used, true, newFill)
+	-- PR_DeliverAnimalsEvent.send(self.barn, trailer, used, true, newFill, data.type)
+	PR_DeliverAnimalsEvent.send(self.barn, trailer, used, true, newFill, typeName)
 
     print(string.format(
         "[%s] ➕ Added %.2f L %s from %d animals (quality+breed-weighted weight=%.1f kg, baseline=%.1f kg, old=%.2f, new=%.2f)",
@@ -1013,15 +1015,15 @@ function PRBFix:deliverAnimals(trailer, data, amount)
 
     print(string.format("[%s] ✅ Removed %d animals via filtered clusters", self.modName, used))
 
-    if g_server ~= nil and PR_DeliverAnimalsEvent ~= nil then
-        local farmId = 1
-        if g_currentMission ~= nil and g_currentMission.getFarmId ~= nil then
-            farmId = g_currentMission:getFarmId()
-        end
+    -- if g_server ~= nil and PR_DeliverAnimalsEvent ~= nil then
+        -- local farmId = 1
+        -- if g_currentMission ~= nil and g_currentMission.getFarmId ~= nil then
+            -- farmId = g_currentMission:getFarmId()
+        -- end
 
-        PR_DeliverAnimalsEvent.send(farmId, barn, trailer, used, true)
-        print(string.format("[%s] 📡 Broadcast delivery result to clients (used=%d)", self.modName, used))
-    end
+        -- PR_DeliverAnimalsEvent.send(farmId, barn, trailer, used, true)
+        -- print(string.format("[%s] 📡 Broadcast delivery result to clients (used=%d)", self.modName, used))
+    -- end
 end
 
 

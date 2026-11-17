@@ -3,18 +3,17 @@
 <GUIProfiles>
 
     <!-- Base dialog background -->
-    <Profile name="prb_dialogBg" extends="baseReference" with="pivotMiddleCenter">
-        <!-- <size value="831px 353px" /> -->
-		<size value="831px 393px" />
-        <color value="$preset_colorBlack80" />
+	<Profile name="prb_dialogBg" extends="baseReference" with="pivotMiddleCenter">
+		<size value="831px 520px" />
+		<color value="$preset_colorBlack80" />
 
-        <Variant name="mobile">
-            <size value="1400px 450px" />
-            <position value="0px 54px" />
-            <hasFrame value="false" />
-            <color value="$preset_colorBlack80" />
-        </Variant>
-    </Profile>
+		<Variant name="mobile">
+			<size value="1400px 560px" />
+			<position value="0px 54px" />
+			<hasFrame value="false" />
+			<color value="$preset_colorBlack80" />
+		</Variant>
+	</Profile>
 
     <!-- Butcher dialog background (shorter) -->
     <Profile name="prb_infoDialogBg" extends="prb_dialogBg">

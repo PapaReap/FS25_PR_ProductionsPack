@@ -2,107 +2,67 @@
 
 <GUI onCreate="onCreate" onOpen="onOpen" onClose="onClose">
 
-    <!-- Fullscreen dim background -->
     <GuiElement profile="newLayer" />
     <Bitmap profile="dialogFullscreenBg" id="dialogBg" />
 
-    <!-- Main dialog box -->
-    <!-- <GuiElement profile="rvb_dialogBg" id="dialogElement"> -->
-	<GuiElement profile="prb_dialogBg" id="dialogElement">
+    <GuiElement profile="prb_dialogBg" id="dialogElement">
         <ThreePartBitmap profile="fs25_dialogBgMiddleSmall"/>
         <ThreePartBitmap profile="fs25_dialogBgTopSmall"/>
         <ThreePartBitmap profile="fs25_dialogBgBottom"/>
 
-        <!-- Content area -->
         <GuiElement profile="fs25_dialogContentContainer" id="contentArea">
 
-            <!-- TITLE – moved to very top, centered -->
             <Text id="titleText"
                   profile="fs25_dialogTitle"
                   text="THE BUTCHER BARN"
-                  position="0px -20px" />
+                  position="0px -8px" />
 
-            <!-- Helper instructions (two lines in one block) -->
             <Text name="prbHelperText"
                   profile="prb_helperText"
-                  position="0px -180px"
-                  text="Use ←/→ arrows, number keys or numpad to&#10;change animal count. Default: Max Allowed.&#10;Hold SHIFT with arrows to adjust by ×10." />
+                  position="0px -32px"
+                  text="Use ←/→ arrows, number keys or numpad to change animal count. Default: Max Allowed.&#10;Hold SHIFT with arrows to adjust by ×10." />
 
-            <!-- LEFT COLUMN TITLE -->
-            <Text id="barnInfoTitle"
-                  profile="rvb_dialogText"
-                  text="BARN INFO"
-                  position="-20px -30px" />
+            <Text id="barnInfoTitle"    profile="rvb_dialogText" text="BARN INFO"    position="-320px -70px" />
+            <Text id="trailerInfoTitle" profile="rvb_dialogText" text="TRAILER INFO" position="40px -70px" />
 
-            <!-- RIGHT COLUMN TITLE -->
-            <Text id="trailerInfoTitle"
-                  profile="rvb_dialogText"
-                  text="TRAILER INFO"
-                  position="535px -30px" />
+            <Text id="capacityLabel"   profile="rvb_dialogText" text="Barn Capacity:"   position="-320px -98px" />
+            <Text id="capacityValue"   profile="rvb_dialogText" text="0"                position="-150px -98px" />
 
-            <!-- LEFT COLUMN -->
+            <Text id="storedLabel"     profile="rvb_dialogText" text="Stored in Barn:"  position="-320px -122px" />
+            <Text id="storedValue"     profile="rvb_dialogText" text="0"                position="-150px -122px" />
 
-            <!-- 1) BUTCHER CAPACITY -->
-            <Text id="capacityLabel"      profile="rvb_dialogText" text="Barn Capacity:" position="-20px -60px" />
-            <Text id="capacityValue"      profile="rvb_dialogText" text="0" position="140px -60px" />
+            <Text id="availableLabel"  profile="rvb_dialogText" text="Available Space:" position="-320px -146px" />
+            <Text id="availableValue"  profile="rvb_dialogText" text="0"                position="-150px -146px" />
 
-            <!-- 2) STORED IN BARN -->
-            <Text id="storedLabel"        profile="rvb_dialogText" text="Stored in Barn:" position="-20px -90px" />
-            <Text id="storedValue"        profile="rvb_dialogText" text="0" position="140px -90px" />
+            <Text id="trailerLabel"    profile="rvb_dialogText" text="Animals in Trailer:" position="40px -98px" />
+            <Text id="trailerValue"    profile="rvb_dialogText" text="0"                   position="260px -98px" />
 
-            <!-- 3) AVAILABLE SPACE -->
-            <Text id="availableLabel"     profile="rvb_dialogText" text="Available Space:" position="-20px -120px" />
-            <Text id="availableValue"     profile="rvb_dialogText" text="0" position="140px -120px" />
+            <Text id="animalTypeLabel" profile="rvb_dialogText" text="Animal Type:"        position="40px -122px" />
+            <Text id="animalTypeValue" profile="rvb_dialogText" text="COW"                 position="260px -122px" />
 
-            <!-- RIGHT COLUMN -->
+            <Text id="invalidAgeLabel" profile="rvb_dialogText" text="Invalid Age Count:"  position="40px -146px" />
+            <Text id="invalidAgeValue" profile="rvb_dialogText" text="0"                   position="260px -146px" />
 
-            <!-- 4) ANIMALS IN TRAILER -->
-            <Text id="trailerLabel"       profile="rvb_dialogText" text="Animals in Trailer:" position="535px -60px" />
-            <Text id="trailerValue"       profile="rvb_dialogText" text="0" position="695px -60px" />
+            <Text id="amountLabel"     profile="rvb_dialogText" text="Animal count:"       position="40px -180px" />
+            <Text id="amountLeft"      profile="rvb_dialogText" text="←"                   position="200px -180px" />
+            <Text id="amountValue"     profile="rvb_dialogText" text="0"                   position="225px -180px" />
+            <Text id="amountRight"     profile="rvb_dialogText" text="→"                   position="260px -180px" />
 
-            <!-- 5) ANIMAL TYPE -->
-            <Text id="animalTypeLabel"    profile="rvb_dialogText" text="Animal Type:" position="535px -90px" />
-            <Text id="animalTypeValue"    profile="rvb_dialogText" text="COW" position="695px -90px" />
+            <Text id="deliveredWeightLabel" profile="rvb_dialogText" text="Delivered Weight:" position="40px -204px" />
+            <Text id="deliveredWeightValue" profile="rvb_dialogText" text="0 kg"              position="220px -204px" />
 
-            <!-- 5b) INVALID AGE COUNT -->
-            <Text id="invalidAgeLabel"    profile="rvb_dialogText" text="Invalid Age Count:" position="535px -120px" />
-            <Text id="invalidAgeValue"    profile="rvb_dialogText" text="0" position="695px -120px" />
+            <Text id="meatQualityLabel"     profile="rvb_dialogText" text="Meat Quality:"     position="40px -228px" />
+            <Text id="meatQualityValue"     profile="rvb_dialogText" text="0 %"               position="220px -228px" />
 
-            <!-- 6) DELIVERY AMOUNT -->
-            <Text id="amountLabel"        profile="rvb_dialogText" text="Animal count:" position="535px -180px" />
-
-            <!-- left arrow icon (visual only, keyboard controlled) -->
-            <Text id="amountLeft"         profile="rvb_dialogText" text="←" position="675px -180px" />
-
-            <!-- value (centered between arrows by position) -->
-            <Text id="amountValue"        profile="rvb_dialogText" text="0" position="700px -180px" />
-
-            <!-- right arrow icon -->
-            <Text id="amountRight"        profile="rvb_dialogText" text="→" position="725px -180px" />
-
-            <!-- 7) DELIVERED WEIGHT PREVIEW -->
-            <Text id="deliveredWeightLabel" profile="rvb_dialogText" text="Delivered Weight:" position="535px -210px" />
-            <Text id="deliveredWeightValue" profile="rvb_dialogText" text="0 kg" position="685px -210px" />
-
-			<Text id="meatQualityLabel" profile="rvb_dialogText" text="Meat Quality:" position="535px -240px" />
-			<Text id="meatQualityValue" profile="rvb_dialogText" text="0 %" position="685px -240px" />
-
-			<Text id="breedBonusLabel"  profile="rvb_dialogText" text="Breed Bonus:" position="535px -270px"/>
-			<Text id="breedBonusValue"  profile="rvb_dialogText" text="+0%" position="685px -270px"/>
+            <Text id="breedBonusLabel"      profile="rvb_dialogText" text="Breed Bonus:"      position="40px -252px" />
+            <Text id="breedBonusValue"      profile="rvb_dialogText" text="+0%"               position="220px -252px" />
 
         </GuiElement>
 
-        <!-- Buttons row -->
         <BoxLayout profile="fs25_dialogButtonBox">
-            <Button id="okButton"
-                    profile="buttonOK"
-                    text="$l10n_button_ok"
-                    onClick="onClickOk" />
+            <Button id="okButton"  profile="buttonOK"  text="$l10n_button_ok"  onClick="onClickOk" />
             <Bitmap profile="fs25_dialogButtonBoxSeparator" />
-            <Button id="backButton"
-                    profile="buttonBack"
-                    text="$l10n_button_back"
-                    onClick="onClickBack" />
+            <Button id="backButton" profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" />
         </BoxLayout>
 
     </GuiElement>
