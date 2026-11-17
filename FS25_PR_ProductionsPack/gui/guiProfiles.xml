@@ -2,63 +2,39 @@
 
 <GUIProfiles>
 
-    <!-- Base dialog background -->
-	<Profile name="prb_dialogBg" extends="baseReference" with="pivotMiddleCenter">
-		<size value="831px 520px" />
-		<color value="$preset_colorBlack80" />
-
-		<Variant name="mobile">
-			<size value="1400px 560px" />
-			<position value="0px 54px" />
-			<hasFrame value="false" />
-			<color value="$preset_colorBlack80" />
-		</Variant>
-	</Profile>
-
-    <!-- Butcher dialog background (shorter) -->
-    <Profile name="prb_infoDialogBg" extends="prb_dialogBg">
-        <height value="270px" />
-
+    <Profile name="prb_dialogBg" extends="baseReference" with="pivotMiddleCenter">
+        <size value="900px 540px" />
+        <color value="$preset_colorBlack80" />
         <Variant name="mobile">
-            <size value="1400px 300px" />
+            <size value="1400px 580px" />
+            <position value="0px 54px" />
+            <hasFrame value="false" />
+            <color value="$preset_colorBlack80" />
         </Variant>
     </Profile>
 
-    <!-- Base text for dialog -->
+    <!-- Smaller text profile for the dialog columns -->
     <Profile name="prb_dialogText" extends="fs25_textDefault" with="anchorTopCenter">
-        <size value="720px 20px" />
-        <position value="0px -145px" />
-        <textSize value="16px" />
-        <textMaxNumLines value="20" />
+        <size value="380px 18px" />
+        <textSize value="14px" />
+        <textMaxNumLines value="2" />
         <textAlignment value="left" />
-        <textLineHeightScale value="1.5" />
+        <textLineHeightScale value="1.2" />
         <textVerticalAlignment value="top" />
-
         <Variant name="mobile">
-            <textSize value="40px" />
-            <size value="1200px 20px" />
-            <position value="0px -180px" />
+            <textSize value="32px" />
+            <size value="600px 24px" />
         </Variant>
     </Profile>
 
-    <!-- Slight variant for multi-line text -->
-    <Profile name="prb_infoDialogText" extends="prb_dialogText">
-        <Variant name="mobile">
-            <textSize value="40px" />
-            <position value="0px -210px" />
-            <textMaxNumLines value="7" />
-        </Variant>
-    </Profile>
-
-
-    <!-- NEW: helper text profile -->
+    <!-- Helper text (yellow, centered) -->
     <Profile name="prb_helperText" extends="prb_dialogText">
         <size value="700px 16px" />
         <textSize value="12px" />
         <textAlignment value="center" />
         <textVerticalAlignment value="top" />
         <textLineHeightScale value="1.1" />
-        <textMaxNumLines value="10" />
+        <textMaxNumLines value="3" />
         <textColor value="1 0.85 0 1"/>
     </Profile>
 

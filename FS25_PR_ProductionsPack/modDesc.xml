@@ -714,7 +714,7 @@ Wood Storage: Kastor [D-S-Agrarservice]
 
     <inputBindings>
         <action name="RLB_UNLOAD_TO_BUTCHER" category="VEHICLE">
-            <binding device="KB_MOUSE_DEFAULT" input="KEY_r"/>
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_u"/>
         </action>
     </inputBindings>
 

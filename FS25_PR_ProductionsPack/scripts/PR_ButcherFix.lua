@@ -118,6 +118,37 @@ function PRBFix:getBreedMultiplier(animalType, cluster)
     return byType[subName] or default
 end
 
+
+function PRBFix:getUnloadKeyName()
+    local action = InputAction and InputAction.RLB_UNLOAD_TO_BUTCHER
+    if not action or not g_inputBinding then
+        return "U"
+    end
+
+    -- Try the direct binding lookup first
+    if g_inputBinding.getBinding then
+        local binding = g_inputBinding:getBinding(action)
+        if binding and binding.input then
+            -- strip the KEY_ prefix and uppercase
+            return binding.input:gsub("KEY_", ""):upper()
+        end
+    end
+
+    -- Fallback: scan the bindings table
+    local bindings = g_inputBinding.bindings
+    if type(bindings) == "table" then
+        for _, b in pairs(bindings) do
+            if b and (b.action == action or b.actionName == action) and b.input then
+                return b.input:gsub("KEY_", ""):upper()
+            end
+        end
+    end
+
+    return "U"
+end
+
+
+
 ----------------------------------------------------------------
 -- Register console command
 ----------------------------------------------------------------
@@ -280,7 +311,9 @@ function PRBFix:update(dt)
                     local num = trailer:getNumOfAnimals() or 0
                     local speed = root:getLastSpeed() or 0
                     if num > 0 and speed < 0.05 then
-                        mission:addExtraPrintText("Unload Animals To Butcher (Press R)")
+                        -- mission:addExtraPrintText("Unload Animals To Butcher (Press R)")
+						local keyName = self:getUnloadKeyName()
+						mission:addExtraPrintText("Unload Animals To Butcher (Press " .. keyName .. ")")
                     end
                 end
             end
@@ -407,7 +440,9 @@ function PRBFix:onTriggerCallback(triggerId, otherId, onEnter, onLeave)
                 self.butcherActionEventId = id
 
                 if id then
-                    g_inputBinding:setActionEventText(id, "Unload Animals To Butcher (Press R)")
+                    -- g_inputBinding:setActionEventText(id, "Unload Animals To Butcher (Press R)")
+					local keyName = self:getUnloadKeyName()
+					g_inputBinding:setActionEventText(id, "Unload Animals To Butcher (Press " .. keyName .. ")")
                     g_inputBinding:setActionEventTextVisibility(id, true)
                     print("["..self.modName.."] Registered R for butcher trigger")
                 end
