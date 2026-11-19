@@ -1,13 +1,11 @@
 -- PR_ButcherDialog.lua
 -- Author: PapaReap
--- Contributers: ChatGPT 5
+-- Contributers: Grok, Gemini, ChatGPT 5
 
 --------------------------
 -- CLASS TABLE
 --------------------------
 PRBDialog = {}
---PRBDialog.VERSION = PRBFix.VERSION
---PRBDialog.modName = "PR Butcher Dialog"
 PRBDialog.INSTANCE = nil
 
 ------------------------------------------------------------
@@ -16,20 +14,19 @@ PRBDialog.INSTANCE = nil
 local function createDialogInstance()
     local self = ScreenElement.new(nil)
 
-    ----------------------------------------------------
-    -- Bind all instance methods
-    ----------------------------------------------------
-    self.setDialogData  = PRBDialog.setDialogData
-    self.updateDisplay  = PRBDialog.updateDisplay
-    self.onOpen         = PRBDialog.onOpen
-    self.onClose        = PRBDialog.onClose
-    self.onClickOk      = PRBDialog.onClickOk
-    self.onClickBack    = PRBDialog.onClickBack
-    self.onClickMinus   = PRBDialog.onClickMinus
-    self.onClickPlus    = PRBDialog.onClickPlus
-
-    -- Arrow key support
-    self.keyEvent       = PRBDialog.keyEvent
+    self.setDialogData   = PRBDialog.setDialogData
+    self.updateDisplay   = PRBDialog.updateDisplay
+    self.onOpen          = PRBDialog.onOpen
+    self.onClose         = PRBDialog.onClose
+    self.onClickOk       = PRBDialog.onClickOk
+    self.onClickBack     = PRBDialog.onClickBack
+    self.onClickMinus    = PRBDialog.onClickMinus
+    self.onClickPlus     = PRBDialog.onClickPlus
+    self.onClickNextFarm = PRBDialog.onClickNextFarm
+    self.onClickPrevFarm = PRBDialog.onClickPrevFarm
+    self.cycleFarm       = PRBDialog.cycleFarm
+    self.keyEvent        = PRBDialog.keyEvent
+    self.update          = PRBDialog.update
 
     return self
 end
@@ -49,8 +46,7 @@ function PRBDialog:onCreate()
         "amountValue",
         "deliveredWeightValue",
         "meatQualityValue",
-        "amountMinus",
-        "amountPlus",
+        "farmValue",
         "okButton",
         "backButton"
     })
@@ -64,7 +60,6 @@ local function fmt2(v)
     return string.format("%.2f", v)
 end
 
--- helper: compute total delivered weight for current amount
 local function computeDeliveredWeight(info, amount)
     local stats = info.validClusterStats
     if not stats or not amount or amount <= 0 then
@@ -90,9 +85,14 @@ end
 ------------------------------------------------------------
 function PRBDialog:setDialogData(data)
     self.data = data
+    self.selectedFarmId = data.farmId or (g_currentMission and g_currentMission:getFarmId()) or 1
 
     local cap  = data.cap or {}
     local info = data.data or {}
+
+	if self.titleText ~= nil and self.data.barnName ~= nil then
+		self.titleText:setText(self.data.barnName)
+	end
 
     if self.capacityValue ~= nil then
         self.capacityValue:setText(tostring(cap.cap or 0))
@@ -115,7 +115,6 @@ function PRBDialog:setDialogData(data)
         self.animalTypeValue:setText(string.upper(t))
     end
 
-    -- invalid age count (total in trailer - valid)
     if self.invalidAgeValue ~= nil then
         local totalInTrailer = info.num or 0
         local validCount     = info.validCount or 0
@@ -123,21 +122,16 @@ function PRBDialog:setDialogData(data)
         self.invalidAgeValue:setText(tostring(invalidCount))
     end
 
-    -- Default selected amount = maximum possible
     self.amount = data.max or 0
     if self.amountValue ~= nil then
         self.amountValue:setText(tostring(self.amount))
     end
 
-    -- Delivered weight preview (QUALITY-BASED, via validClusterStats.weight)
     if self.deliveredWeightValue ~= nil then
         local totalWeight = computeDeliveredWeight(info, self.amount)
         self.deliveredWeightValue:setText(string.format("%.1f kg", totalWeight))
     end
 
-    --------------------------------------------------------
-    -- Meat Quality (initial display setup)
-    --------------------------------------------------------
     if self.meatQualityValue ~= nil then
         local avgQ    = info.avgQuality or 1.0
         local percent = math.floor(avgQ * 100 + 0.5)
@@ -152,8 +146,22 @@ function PRBDialog:setDialogData(data)
         else                     category = "Extremely Low"
         end
 
-        local txt = string.format("%d%%  %s", percent, category)
-        self.meatQualityValue:setText(txt)
+        self.meatQualityValue:setText(string.format("%d%%  %s", percent, category))
+    end
+
+    -- Delay the farm name resolve by one frame
+    self.pendingFarmUpdate = true
+	    -- Resolve farm name immediately
+    self:updateDisplay()
+end
+
+------------------------------------------------------------
+-- UPDATE (delayed farm name resolve)
+------------------------------------------------------------
+function PRBDialog:update(dt)
+    if self.pendingFarmUpdate then
+        self.pendingFarmUpdate = false
+        self:updateDisplay()
     end
 end
 
@@ -161,11 +169,6 @@ end
 -- OPEN EVENT
 ------------------------------------------------------------
 function PRBDialog:onOpen()
-	-- if PRBFix.disabled then 
-		-- g_gui:closeDialogByName("PRBDialog")
-		-- return 
-	-- end
-
     print("["..PRBFix.modNameDialog.."] Dialog opened")
 
     if not self.data then
@@ -173,9 +176,18 @@ function PRBDialog:onOpen()
         return
     end
 
-    -- reset amount each time we open, based on current max
     self.amount = self.data.max or 0
+    -- Force farm name resolve on open
     self:updateDisplay()
+
+    -- Debug
+    print(string.format("[PRBDialog] onOpen selectedFarmId=%s", tostring(self.selectedFarmId)))
+    if g_farmManager and g_farmManager.farms then
+        local farm = g_farmManager.farms[self.selectedFarmId]
+        print(string.format("[PRBDialog] farm object=%s name=%s", tostring(farm), farm and tostring(farm.name) or "nil"))
+    else
+        print("[PRBDialog] g_farmManager.farms is nil")
+    end
 end
 
 ------------------------------------------------------------
@@ -186,29 +198,70 @@ function PRBDialog:onClose()
 end
 
 ------------------------------------------------------------
--- UPDATE DISPLAY — refresh all visible values
+-- UPDATE DISPLAY
 ------------------------------------------------------------
 function PRBDialog:updateDisplay()
-	-- if PRBFix.disabled then 
-		-- g_gui:closeDialogByName("PRBDialog")
-		-- return 
-	-- end
-
     if not self.data then
         print("["..PRBFix.modNameDialog.."] ❌ updateDisplay called with no data")
         return
     end
 
+    -- Farm name
+if self.farmValue ~= nil then
+    local farmName = "Farm " .. tostring(self.selectedFarmId)
+    local targetId = self.selectedFarmId
+
+    if g_farmManager ~= nil and g_farmManager.farms ~= nil then
+        local farm = nil
+
+        -- Search for the farm whose id or farmId matches
+        for _, f in pairs(g_farmManager.farms) do
+            if f ~= nil then
+                if f.id == targetId or f.farmId == targetId then
+                    farm = f
+                    break
+                end
+            end
+        end
+
+        -- Fallback
+        if farm == nil and g_farmManager.getFarmById ~= nil then
+            farm = g_farmManager:getFarmById(targetId)
+        end
+
+        -- DEBUG
+        if farm ~= nil then
+            print("[PRBDialog] farm fields:")
+            for k, v in pairs(farm) do
+                if type(v) == "string" or type(v) == "number" then
+                    print(string.format("  %s = %s", tostring(k), tostring(v)))
+                end
+            end
+        else
+            print(string.format("[PRBDialog] no farm found for id=%s", tostring(targetId)))
+        end
+
+        if farm ~= nil then
+            if farm.name ~= nil and farm.name ~= "" then
+                farmName = farm.name
+            elseif farm.farmName ~= nil and farm.farmName ~= "" then
+                farmName = farm.farmName
+            end
+        end
+    end
+
+    self.farmValue:setText(farmName)
+end
+
+
+
     local cap  = self.data.cap or {}
     local info = self.data.data or {}
 
-    -- clamp amount inside [0, max]
     local max = self.data.max or 0
     local amt = self.amount or max
     if amt < 0 then amt = 0 end
     if amt > max then amt = max end
-
-    -- force whole integer
     amt = math.floor(amt)
     self.amount = amt
 
@@ -249,9 +302,7 @@ function PRBDialog:updateDisplay()
         self.deliveredWeightValue:setText(string.format("%.1f kg", totalWeight))
     end
 
-    --------------------------------------------------------
-    -- Meat Quality (dynamic based on selected amount)
-    --------------------------------------------------------
+    -- Meat Quality
     if self.meatQualityValue ~= nil then
         local stats = info.validClusterStats or {}
         local amt   = self.amount or 0
@@ -259,7 +310,6 @@ function PRBDialog:updateDisplay()
         local totalQ = 0
         local totalAnimals = 0
 
-        -- accumulate quality for FIRST amt animals
         for i = 1, #stats do
             local cs = stats[i]
             if cs and cs.quality and cs.num then
@@ -272,7 +322,6 @@ function PRBDialog:updateDisplay()
             if totalAnimals >= amt then break end
         end
 
-        -- default 1.0 if 0 animals selected
         local avgQ = (totalAnimals > 0) and (totalQ / totalAnimals) or 1.0
         local percent = math.floor(avgQ * 100 + 0.5)
 
@@ -289,48 +338,88 @@ function PRBDialog:updateDisplay()
         self.meatQualityValue:setText(string.format("%d%%  %s", percent, category))
     end
 
-	--------------------------------------------------------
-	-- Breed Bonus (Average breed multiplier of selected animals)
-	--------------------------------------------------------
-	if self.breedBonusValue ~= nil then
-		local stats = info.validClusterStats or {}
-		local used  = self.amount or 0
+    -- Breed Bonus
+    if self.breedBonusValue ~= nil then
+        local stats = info.validClusterStats or {}
+        local used  = self.amount or 0
 
-		if used > 0 then
-			local breedSum = 0
-			local count = 0
+        if used > 0 then
+            local breedSum = 0
+            local count = 0
 
-			for i = 1, #stats do
-				local s = stats[i]
-				if s and s.breedMul then
-					for j = 1, (s.num or 0) do
-						breedSum = breedSum + s.breedMul
-						count = count + 1
-						if count >= used then break end
-					end
-				end
-				if count >= used then break end
-			end
+            for i = 1, #stats do
+                local s = stats[i]
+                if s and s.breedMul then
+                    for j = 1, (s.num or 0) do
+                        breedSum = breedSum + s.breedMul
+                        count = count + 1
+                        if count >= used then break end
+                    end
+                end
+                if count >= used then break end
+            end
 
-			local avgBreed = breedSum / used
-			local pct = math.floor(((avgBreed - 1) * 100) + 0.5)
-
-			self.breedBonusValue:setText(string.format("+%d%%", pct))
-		else
-			self.breedBonusValue:setText("+0%")
-		end
-	end
-
-
-
+            local avgBreed = breedSum / used
+            local pct = math.floor(((avgBreed - 1) * 100) + 0.5)
+            self.breedBonusValue:setText(string.format("+%d%%", pct))
+        else
+            self.breedBonusValue:setText("+0%")
+        end
+    end
 end
 
+------------------------------------------------------------
+-- Farm cycling
+------------------------------------------------------------
+function PRBDialog:onClickNextFarm()
+    self:cycleFarm(1)
+end
+
+function PRBDialog:onClickPrevFarm()
+    self:cycleFarm(-1)
+end
+
+function PRBDialog:cycleFarm(direction)
+    local farms = {}
+    if g_farmManager and g_farmManager.farms then
+        for _, farm in pairs(g_farmManager.farms) do
+            if farm and not farm.isSpectator then
+                local fid = farm.farmId or farm.id
+                local name = farm.name or farm.farmName or ""
+
+                -- Only include farms that have a real name
+                if fid ~= nil and fid > 0 and name ~= "" then
+                    table.insert(farms, fid)
+                    print(string.format("[PRBDialog] cycleFarm adding id=%s name=%s", tostring(fid), name))
+                end
+            end
+        end
+        table.sort(farms)
+    end
+
+    print(string.format("[PRBDialog] cycleFarm list size=%d", #farms))
+
+    if #farms == 0 then return end
+
+    local currentIndex = 1
+    for i, id in ipairs(farms) do
+        if id == self.selectedFarmId then
+            currentIndex = i
+            break
+        end
+    end
+
+    local newIndex = currentIndex + direction
+    if newIndex < 1 then newIndex = #farms end
+    if newIndex > #farms then newIndex = 1 end
+
+    self.selectedFarmId = farms[newIndex]
+    print(string.format("[PRBDialog] cycleFarm new selectedFarmId=%s", tostring(self.selectedFarmId)))
+    self:updateDisplay()
+end
 
 ------------------------------------------------------------
--- Spinner controls: MOUSE +/- (kept for safety)
-------------------------------------------------------------
-------------------------------------------------------------
--- MOUSE: MINUS BUTTON (wrap-around)
+-- Spinner controls
 ------------------------------------------------------------
 function PRBDialog:onClickMinus()
     if not self.data or not self.amountValue then return end
@@ -338,7 +427,6 @@ function PRBDialog:onClickMinus()
     local max = self.data.max or 0
     local v   = tonumber(self.amountValue:getText()) or 0
 
-    -- decrement with wrap-around
     v = v - 1
     if v < 0 then
         v = max
@@ -349,16 +437,12 @@ function PRBDialog:onClickMinus()
     self:updateDisplay()
 end
 
-------------------------------------------------------------
--- MOUSE: PLUS BUTTON (wrap-around)
-------------------------------------------------------------
 function PRBDialog:onClickPlus()
     if not self.data or not self.amountValue then return end
 
     local max = self.data.max or 0
     local v   = tonumber(self.amountValue:getText()) or 0
 
-    -- increment with wrap-around
     v = v + 1
     if v > max then
         v = 0
@@ -370,10 +454,9 @@ function PRBDialog:onClickPlus()
 end
 
 ------------------------------------------------------------
--- Keyboard input: arrows + SHIFT, digits, backspace, enter/esc
+-- Keyboard input
 ------------------------------------------------------------
 function PRBDialog:keyEvent(unicode, sym, modifier, isDown)
-    -- Only react on key down and when dialog is active
     if not isDown or not self.data or not self.amountValue then
         return
     end
@@ -382,33 +465,21 @@ function PRBDialog:keyEvent(unicode, sym, modifier, isDown)
     local text = self.amountValue:getText() or ""
     local value = tonumber(text) or 0
 
-    --------------------------------------------------------
-    -- ENTER → OK
-    --------------------------------------------------------
     if sym == Input.KEY_return or sym == Input.KEY_enter then
         self:onClickOk()
         return
     end
 
-    --------------------------------------------------------
-    -- ESC → BACK
-    --------------------------------------------------------
     if sym == Input.KEY_back or sym == Input.KEY_escape then
         self:onClickBack()
         return
     end
 
-    --------------------------------------------------------
-    -- SHIFT multiplier
-    --------------------------------------------------------
     local step = 1
     if bitAND ~= nil and bitAND(modifier, Input.MOD_SHIFT) > 0 then
         step = 10
     end
 
-    --------------------------------------------------------
-    -- LEFT ARROW = decrease (with wrap)
-    --------------------------------------------------------
     if sym == Input.KEY_left then
         value = value - step
         if value < 0 then
@@ -420,9 +491,6 @@ function PRBDialog:keyEvent(unicode, sym, modifier, isDown)
         return
     end
 
-    --------------------------------------------------------
-    -- RIGHT ARROW = increase (with wrap)
-    --------------------------------------------------------
     if sym == Input.KEY_right then
         value = value + step
         if value > max then
@@ -434,9 +502,16 @@ function PRBDialog:keyEvent(unicode, sym, modifier, isDown)
         return
     end
 
-    --------------------------------------------------------
-    -- BACKSPACE / DELETE = remove last digit
-    --------------------------------------------------------
+    if sym == Input.KEY_up then
+        self:cycleFarm(-1)
+        return
+    end
+
+    if sym == Input.KEY_down then
+        self:cycleFarm(1)
+        return
+    end
+
     if sym == Input.KEY_backspace or sym == Input.KEY_delete then
         if #text > 0 then
             text = text:sub(1, #text - 1)
@@ -458,13 +533,9 @@ function PRBDialog:keyEvent(unicode, sym, modifier, isDown)
         return
     end
 
-    --------------------------------------------------------
-    -- DIGITS via unicode (works for main row + numpad)
-    --------------------------------------------------------
     if unicode and unicode >= 48 and unicode <= 57 then
-        local digit = unicode - 48  -- '0'..'9' → 0..9
+        local digit = unicode - 48
 
-        -- Drop leading zero
         if text == "0" then
             text = ""
         end
@@ -497,31 +568,21 @@ function PRBDialog:onClickOk()
         amount = tonumber(self.amount) or 0
     end
 
-    print(string.format("[%s] OK clicked → Deliver %d animals",
-        PRBFix.modNameDialog, amount))
-
     local trailer = self.data.trailer
     local info    = self.data.data
+    local farmId  = self.selectedFarmId or 1
 
-    --------------------------------------------------------
-    -- Multiplayer-safe: always use PRBFix.butcherBarnPlaceable
-    --------------------------------------------------------
+    print(string.format("[%s] OK clicked → Deliver %d animals for farm %d",
+        PRBFix.modNameDialog, amount, farmId))
+
     local barn = PRBFix.butcherBarnPlaceable
     if barn == nil then
         print("[PRBDialog] ❌ butcherBarnPlaceable missing on client — cannot send event")
         return
     end
 
-    --------------------------------------------------------
-    -- Send event (MP) or fallback to SP logic
-    --------------------------------------------------------
     if PR_DeliverAnimalsEvent ~= nil then
-        local farmId = g_currentMission:getFarmId()
-
-        print(string.format(
-            "[PRBDialog] ▶ Sending event: farm=%d, amount=%d", farmId, amount
-        ))
-
+        print(string.format("[PRBDialog] ▶ Sending event: farm=%d, amount=%d", farmId, amount))
         PR_DeliverAnimalsEvent.send(farmId, barn, trailer, amount, info)
     else
         print("[PRBDialog] ❌ PR_DeliverAnimalsEvent missing, fallback to SP deliver")
@@ -542,16 +603,13 @@ function PRBDialog:onClickBack()
 end
 
 ------------------------------------------------------------
--- ONE-TIME REGISTRATION (unchanged, but using table class)
+-- ONE-TIME REGISTRATION
 ------------------------------------------------------------
 function PRBDialog.register()
     if PRBDialog.INSTANCE ~= nil then
         return
     end
 
-    --------------------------------------------------------
-    -- Get correct mod directory from PR_ButcherFix.lua
-    --------------------------------------------------------
     local modDir = PRBFix and PRBFix.modDirectory
     if not modDir then
         print("["..PRBFix.modNameDialog.."] ❌ PRBFix.modDirectory not set — cannot load dialog")

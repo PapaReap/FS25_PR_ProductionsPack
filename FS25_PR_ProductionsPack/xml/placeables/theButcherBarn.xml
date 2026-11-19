@@ -75,6 +75,9 @@
         <triggerMarker node="warningStripes"  adjustToGround="true" />
         <triggerMarker node="playerTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconWrench.i3d"/>
         <triggerMarker node="unloadTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconUnload.i3d"/>
+		
+        <triggerMarker node="loadingZoneTriggerMarker" adjustToGround="true" filename="$data/shared/assets/marker/markerIconShopping.i3d"/>
+		
     </triggerMarkers>
 
     <animatedObjects>
@@ -359,5 +362,9 @@
         <i3dMapping id="spawnSpace1end" node="0>10|0|0" />
 
         <i3dMapping id="warningStripes" node="0>15" />
+		
+        <i3dMapping id="loadingZoneTrigger" node="0>16" />
+		<i3dMapping id="loadingZoneTriggerMarker" node="0>16|0" />
+		
     </i3dMappings>
 </placeable>

@@ -17,48 +17,65 @@
                   text="THE BUTCHER BARN"
                   position="0px -8px" />
 
-            <Text name="prbHelperText"
-                  profile="prb_helperText"
-                  position="0px -30px"
-                  text="Use ←/→ arrows, number keys or numpad to change animal count. Default: Max Allowed.&#10;Hold SHIFT with arrows to adjust by ×10." />
+            <Text profile="prb_helperText" position="0px -38px" text="Use ↑/↓ arrows to change delivering farm." />
+            <Text profile="prb_helperText" position="0px -68px" text="Use ←/→ arrows change animal count." />
+            <Text profile="prb_helperText" position="0px -88px" text="Default: Max Allowed." />
+            <Text profile="prb_helperText" position="0px -108px" text="Hold SHIFT with arrows to adjust by ×10." />
 
             <!-- Left column -->
-            <Text id="barnInfoTitle"    profile="prb_dialogText" text="BARN INFO"    position="-160px -110px" />
+            <Text id="barnInfoTitle"    profile="prb_dialogText" text="BARN INFO"    position="-200px -155px" />
 
-            <Text id="capacityLabel"   profile="prb_dialogText" text="Barn Capacity:"   position="-160px -137px" />
-            <Text id="capacityValue"   profile="prb_dialogText" text="0"                position="20px -137px" />
+            <Text id="capacityLabel"   profile="prb_dialogText" text="Barn Capacity:"   position="-200px -182px" />
+            <Text id="capacityValue"   profile="prb_dialogText" text="0"                position="40px -182px" />
 
-            <Text id="storedLabel"     profile="prb_dialogText" text="Stored in Barn:"  position="-160px -159px" />
-            <Text id="storedValue"     profile="prb_dialogText" text="0"                position="20px -159px" />
+            <Text id="storedLabel"     profile="prb_dialogText" text="Stored in Barn:"  position="-200px -204px" />
+            <Text id="storedValue"     profile="prb_dialogText" text="0"                position="40px -204px" />
 
-            <Text id="availableLabel"  profile="prb_dialogText" text="Available Space:" position="-160px -181px" />
-            <Text id="availableValue"  profile="prb_dialogText" text="0"                position="20px -181px" />
+            <Text id="availableLabel"  profile="prb_dialogText" text="Available Space:" position="-200px -226px" />
+            <Text id="availableValue"  profile="prb_dialogText" text="0"                position="40px -226px" />
 
-            <!-- Right column -->
-            <Text id="trailerInfoTitle" profile="prb_dialogText" text="TRAILER INFO" position="150px -110px" />
+            <!-- Confirm choices section -->
+            <Text id="confirmTitle" 
+                  profile="prb_dialogText" 
+                  text="PLEASE CONFIRM CHOICES BELOW" 
+                  position="-200px -260px" 
+                  textColor="1 0.8 0.2 1" />
 
-            <Text id="trailerLabel"    profile="prb_dialogText" text="Animals in Trailer:" position="150px -137px" />
-            <Text id="trailerValue"    profile="prb_dialogText" text="0"                   position="370px -137px" />
+            <Text id="farmLabel" profile="prb_dialogText" text="Choose farm making delivery   ↑/↓ :" position="-200px -282px" />
+            <Text id="farmValue" 
+                  profile="prb_dialogText" 
+                  text="Choose Farm" 
+                  position="40px -282px" 
+                  textColor="0.4 1 0.4 1" />
 
-            <Text id="animalTypeLabel" profile="prb_dialogText" text="Animal Type:"        position="150px -159px" />
-            <Text id="animalTypeValue" profile="prb_dialogText" text="COW"                 position="370px -159px" />
+            <Text id="amountLabel" profile="prb_dialogText" text="Choose animal count                 ←/→ :" position="-200px -304px" />
+            <Text id="amountValue" 
+                  profile="prb_dialogText" 
+                  text="0" 
+                  position="40px -304px" 
+                  textColor="0.4 1 0.4 1" />
 
-            <Text id="invalidAgeLabel" profile="prb_dialogText" text="Invalid Age Count:"  position="150px -181px" />
-            <Text id="invalidAgeValue" profile="prb_dialogText" text="0"                   position="370px -181px" />
+            <!-- Right column (moved further right, closer to values) -->
+            <Text id="trailerInfoTitle" profile="prb_dialogText" text="TRAILER INFO" position="310px -155px" />
 
-            <Text id="amountLabel"     profile="prb_dialogText" text="Animal count:"       position="150px -215px" />
-            <Text id="amountLeft"      profile="prb_dialogText" text="←"                   position="310px -215px" />
-            <Text id="amountValue"     profile="prb_dialogText" text="0"                   position="335px -215px" />
-            <Text id="amountRight"     profile="prb_dialogText" text="→"                   position="370px -215px" />
+            <Text id="trailerLabel"    profile="prb_dialogText" text="Animals in Trailer:" position="310px -182px" />
+            <Text id="trailerValue"    profile="prb_dialogText" text="0"                   position="470px -182px" />
 
-            <Text id="deliveredWeightLabel" profile="prb_dialogText" text="Delivered Weight:" position="150px -237px" />
-            <Text id="deliveredWeightValue" profile="prb_dialogText" text="0 kg"              position="330px -237px" />
+            <Text id="animalTypeLabel" profile="prb_dialogText" text="Animal Type:"        position="310px -204px" />
+            <Text id="animalTypeValue" profile="prb_dialogText" text="COW"                 position="470px -204px" />
 
-            <Text id="meatQualityLabel"     profile="prb_dialogText" text="Meat Quality:"     position="150px -259px" />
-            <Text id="meatQualityValue"     profile="prb_dialogText" text="0 %"               position="330px -259px" />
+            <Text id="invalidAgeLabel" profile="prb_dialogText" text="Invalid Age Count:"  position="310px -226px" />
+            <Text id="invalidAgeValue" profile="prb_dialogText" text="0"                   position="470px -226px" />
 
-            <Text id="breedBonusLabel"      profile="prb_dialogText" text="Breed Bonus:"      position="150px -281px" />
-            <Text id="breedBonusValue"      profile="prb_dialogText" text="+0%"               position="330px -281px" />
+            <!-- Weight / Quality / Breed moved up -->
+            <Text id="deliveredWeightLabel" profile="prb_dialogText" text="Delivered Weight:" position="310px -260px" />
+            <Text id="deliveredWeightValue" profile="prb_dialogText" text="0 kg"              position="470px -260px" />
+
+            <Text id="meatQualityLabel"     profile="prb_dialogText" text="Meat Quality:"     position="310px -282px" />
+            <Text id="meatQualityValue"     profile="prb_dialogText" text="0 %"               position="470px -282px" />
+
+            <Text id="breedBonusLabel"      profile="prb_dialogText" text="Breed Bonus:"      position="310px -304px" />
+            <Text id="breedBonusValue"      profile="prb_dialogText" text="+0%"               position="470px -304px" />
 
         </GuiElement>
 

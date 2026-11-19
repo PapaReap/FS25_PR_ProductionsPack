@@ -344,8 +344,6 @@ end
 -- Scan butcher placeables (MERGED: your logic + retry behavior)
 ----------------------------------------------------------------
 function PRBFix:scanButcherPlaceables()
-    -- print("["..self.modName.."] Starting placeable scan...")
-
     local found = false
     local placeables = g_currentMission.placeableSystem.placeables
 
@@ -356,7 +354,7 @@ function PRBFix:scanButcherPlaceables()
             print("["..self.modName.."] Found butcher barn: "..p.configFileName)
             self.butcherBarnPlaceable = p
 
-            -- your original trigger removal logic preserved
+            -- Animal trigger
             if p.i3dMappings and p.i3dMappings["animalTrigger"] then
                 local n = p.i3dMappings["animalTrigger"].nodeId
                 if n and n ~= 0 then
@@ -366,18 +364,75 @@ function PRBFix:scanButcherPlaceables()
                     print("["..self.modName.."] onTriggerCallback attached new animalTrigger!")
                 end
             end
+
+            -- Spawn / loading zone trigger
+            if p.i3dMappings and p.i3dMappings["loadingZoneTrigger"] then
+                local n = p.i3dMappings["loadingZoneTrigger"].nodeId
+                if n and n ~= 0 then
+                    addTrigger(n, "onSpawnTriggerCallback", self)
+                    print("["..self.modName.."] Loading Zone trigger attached")
+                end
+            end
         end
     end
 
-    --------------------------------------------------------
-    -- Updated success/failure logic (NEW)
-    --------------------------------------------------------
     if found then
         self.placeablesScanned = true
         print("["..self.modName.."] Placeable scan successful. Barn cached.")
     else
-        self.placeablesScanned = false  -- try again next tick
-        -- print("["..self.modName.."] Barn not found yet. Will retry...")
+        self.placeablesScanned = false
+    end
+end
+
+----------------------------------------------------------------
+-- SPAWN / LOADING ZONE TRIGGER
+----------------------------------------------------------------
+function PRBFix:onSpawnTriggerCallback(triggerId, otherId, onEnter, onLeave)
+    local isPlayer = false
+
+    if g_localPlayer and g_localPlayer.rootNode == otherId then
+        isPlayer = true
+    end
+
+    if not isPlayer and g_currentMission and g_currentMission.playerSystem then
+        for _, player in pairs(g_currentMission.playerSystem.players) do
+            if player and player.rootNode == otherId then
+                isPlayer = true
+                break
+            end
+        end
+    end
+
+    if isPlayer then
+        self.playerInSpawnTrigger = onEnter
+
+        local farmId = 1
+        local farmName = "Unknown"
+        if g_currentMission and g_currentMission.getFarmId then
+            farmId = g_currentMission:getFarmId()
+        end
+
+        -- Try to get farm name
+        if g_farmManager and g_farmManager.farms then
+            for _, farm in pairs(g_farmManager.farms) do
+                if farm and (farm.farmId == farmId or farm.id == farmId) then
+                    if farm.name and farm.name ~= "" then
+                        farmName = farm.name
+                    end
+                    break
+                end
+            end
+        end
+
+        if onEnter then
+            print(string.format("[%s] Player entered loading zone | Farm %d (%s)", 
+                self.modName, farmId, farmName))
+            -- TODO: register spawn action event
+        else
+            print(string.format("[%s] Player left loading zone | Farm %d (%s)", 
+                self.modName, farmId, farmName))
+            -- TODO: unregister spawn action event
+        end
     end
 end
 
@@ -710,13 +765,31 @@ function PRBFix:onDeliverKeyPressed(actionName, value, state, isAnalog)
         ------------------------------------------------------------
         -- Prepare dialog data
         ------------------------------------------------------------
-        self.dialogData = {
-            trailer        = trailer,
-            data           = data,
-            cap            = cap,
-            max            = maxDeliverable,
-            callbackObject = self
-        }
+        local farmId = 1
+		if g_currentMission ~= nil and g_currentMission.getFarmId ~= nil then
+			farmId = g_currentMission:getFarmId()
+		end
+
+		local barnName = "THE BUTCHER BARN"
+		if self.butcherBarnPlaceable ~= nil then
+			if self.butcherBarnPlaceable.getName ~= nil then
+				barnName = self.butcherBarnPlaceable:getName()
+			elseif self.butcherBarnPlaceable.name ~= nil then
+				barnName = self.butcherBarnPlaceable.name
+			end
+		end
+
+		self.dialogData = {
+			trailer        = trailer,
+			data           = data,
+			cap            = cap,
+			max            = maxDeliverable,
+			farmId         = farmId,
+			barnName       = barnName,
+			callbackObject = self
+		}
+		
+
 
         ------------------------------------------------------------
         -- Open dialog
@@ -780,8 +853,9 @@ end
 -- In SP: runs immediately via event:run() (local server)
 -- In MP: client sends event → server runs deliverAnimals()
 ------------------------------------------------------------
-function PRBFix:deliverAnimalsFromDialog(trailer, data, amount)
-    print(string.format("[%s] deliverAnimalsFromDialog called, amount=%d", self.modName, amount or -1))
+function PRBFix:deliverAnimalsFromDialog(trailer, data, amount, farmId)
+    print(string.format("[%s] deliverAnimalsFromDialog called, amount=%d, farmId=%s", 
+        self.modName, amount or -1, tostring(farmId)))
 
     if amount == nil or amount <= 0 then
         print(string.format("[%s] ⚠️ Invalid amount from dialog, aborting", self.modName))
@@ -798,23 +872,20 @@ function PRBFix:deliverAnimalsFromDialog(trailer, data, amount)
         return
     end
 
-    if PR_DeliverAnimalsEvent ~= nil then
-        local farmId = 1
-        if g_currentMission ~= nil and g_currentMission.getFarmId ~= nil then
-            farmId = g_currentMission:getFarmId()
-        end
+    -- Use the farmId that came from the dialog (fallback only if missing)
+    farmId = farmId or 1
+    if farmId == 1 and g_currentMission ~= nil and g_currentMission.getFarmId ~= nil then
+        farmId = g_currentMission:getFarmId()
+    end
 
-        print(string.format("[%s] ▶ Sending PR_DeliverAnimalsEvent (amount=%d)", self.modName, amount))
-        -- Client request (isResult = false)
-        -- PR_DeliverAnimalsEvent.send(farmId, self.butcherBarnPlaceable, trailer, amount, data, false)
-		PR_DeliverAnimalsEvent.send(farmId, self.butcherBarnPlaceable, trailer, amount, false)
+    if PR_DeliverAnimalsEvent ~= nil then
+        print(string.format("[%s] ▶ Sending PR_DeliverAnimalsEvent (amount=%d, farmId=%d)", 
+            self.modName, amount, farmId))
+        PR_DeliverAnimalsEvent.send(farmId, self.butcherBarnPlaceable, trailer, amount, false)
     else
-        -- Fallback: no event file loaded for some reason → behave like old SP version
         print(string.format("[%s] ⚠️ PR_DeliverAnimalsEvent missing, calling deliverAnimals() locally", self.modName))
         if self.deliverAnimals ~= nil then
             self:deliverAnimals(trailer, data, amount)
-        else
-            print(string.format("[%s] ⚠️ deliverAnimals() not found, nothing done", self.modName))
         end
     end
 end
