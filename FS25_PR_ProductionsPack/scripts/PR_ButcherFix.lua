@@ -230,11 +230,8 @@ function PRBFix:loadMap()
         print("[PR Butcher Fix] ✓ Dialog script loaded OK")
     end
 
-	-- FOR SERVER LOAD OF SAVED INVENTORY
-	self:loadMeatLedger()
-	
-	-- Force shared visibility for the butcher barn
-    self:installVisibilityOverride()
+    -- FOR SERVER LOAD OF SAVED INVENTORY
+    self:loadMeatLedger()
 
     print(string.format("[%s] loadMap called (v%s)", self.modName, PRBFix.VERSION))
 end
@@ -408,6 +405,7 @@ function PRBFix:scanButcherPlaceables()
     if found then
         self.placeablesScanned = true
         print("["..self.modName.."] Placeable scan successful. Barn cached.")
+        self:installVisibilityOverride()
     else
         self.placeablesScanned = false
     end
@@ -1394,46 +1392,168 @@ FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, 
     end
 end)
 
+
 function PRBFix:installVisibilityOverride()
-    if ProductionChainManager == nil or ProductionChainManager.getIsProductionPointVisible == nil then
-        print("[PR Butcher Fix] ProductionChainManager not ready – will retry")
-        local attempts = 0
-        local function retry()
-            attempts = attempts + 1
-            if ProductionChainManager and ProductionChainManager.getIsProductionPointVisible then
-                PRBFix:installVisibilityOverride()
-                return
-            end
-            if attempts < 20 then
-                g_currentMission:addUpdateable({
-                    time = 0,
-                    update = function(self, dt)
-                        self.time = self.time + dt
-                        if self.time > 500 then
-                            g_currentMission:removeUpdateable(self)
-                            retry()
-                        end
-                    end
-                })
-            end
-        end
-        retry()
+    print("[PR Butcher Fix] installVisibilityOverride called")
+    if self.visibilityOverrideInstalled then return end
+    if self.butcherBarnPlaceable == nil then return end
+
+    local barn = self.butcherBarnPlaceable
+    local spec = barn.spec_extendedProductionPoint
+    local pp   = spec and spec.productionPoint
+    if pp == nil then
+        print("[PR Butcher Fix] productionPoint is nil")
         return
     end
 
-    local oldFunc = ProductionChainManager.getIsProductionPointVisible
-    ProductionChainManager.getIsProductionPointVisible = function(self, productionPoint)
-        if productionPoint ~= nil then
-            local placeable = productionPoint.owningPlaceable
-            if placeable ~= nil and placeable.configFileName ~= nil
-               and placeable.configFileName:find("theButcherBarn") then
-                return true
+    -- Force visibility flags
+    pp.hiddenOnUI = false
+    pp.isOwned = true
+
+    -- Keep the real owner (default to 1 if none set)
+    local ownerId = barn.ownerFarmId or pp.ownerFarmId or 1
+    if ownerId == 0 then ownerId = 1 end   -- safety
+    pp.ownerFarmId = ownerId
+
+    if barn.setOwnerFarmId then
+        barn:setOwnerFarmId(ownerId)
+        print(string.format("[PR Butcher Fix] Butcher barn real owner = farm %d", ownerId))
+    end
+
+    local mgr = g_currentMission.productionChainManager
+    if mgr == nil then
+        print("[PR Butcher Fix] productionChainManager is nil")
+        return
+    end
+
+    -- Register the production point globally once
+    local ok, err = pcall(function()
+        mgr:addProductionPoint(pp)
+    end)
+    print(string.format("[PR Butcher Fix] addProductionPoint ok=%s err=%s", tostring(ok), tostring(err)))
+
+    -- Add to every farm EXCEPT the real owner
+    if mgr.farmIds and mgr.addProductionPointToFarm then
+        for farmId = 1, 4 do
+            if farmId ~= ownerId and g_farmManager:getFarmById(farmId) then
+                if mgr.farmIds[farmId] == nil then
+                    mgr.farmIds[farmId] = {}
+                end
+                local farmTable = mgr.farmIds[farmId]
+
+                local ok2, err2 = pcall(function()
+                    mgr:addProductionPointToFarm(pp, farmTable)
+                end)
+
+                if ok2 then
+                    print(string.format("[PR Butcher Fix] addProductionPointToFarm(farm %d) SUCCESS", farmId))
+                else
+                    print(string.format("[PR Butcher Fix] addProductionPointToFarm(farm %d) FAILED: %s", farmId, tostring(err2)))
+                end
+            else
+                if farmId == ownerId then
+                    print(string.format("[PR Butcher Fix] Skipping owner farm %d (already owns it)", ownerId))
+                end
             end
         end
-        if oldFunc then
-            return oldFunc(self, productionPoint)
-        end
-        return false
     end
-    print("[PR Butcher Fix] Production visibility override installed")
+
+    self.visibilityOverrideInstalled = true
+	
+	self:installFarmBalanceOverlay()
+    print("[PR Butcher Fix] Done")
+end
+
+----------------------------------------------------------------
+-- Farm Balance Overlay for Butcher Barn
+----------------------------------------------------------------
+function PRBFix:installFarmBalanceOverlay()
+    if PRBFix.overlayInstalled then return end
+    PRBFix.overlayInstalled = true
+
+    -- Hook the production frame update
+    if InGameMenuProductionFrame and InGameMenuProductionFrame.update == nil then
+        print("[PR Butcher Fix] InGameMenuProductionFrame not ready yet")
+        return
+    end
+
+    local oldUpdate = InGameMenuProductionFrame.update
+    InGameMenuProductionFrame.update = function(frame, dt)
+        if oldUpdate then oldUpdate(frame, dt) end
+        PRBFix:drawFarmBalanceOverlay(frame)
+    end
+
+    print("[PR Butcher Fix] Farm balance overlay installed")
+end
+
+
+function PRBFix:drawFarmBalanceOverlay(frame)
+    if frame == nil or frame.getSelectedProduction == nil then return end
+
+    local production, productionPoint = frame:getSelectedProduction()
+    if productionPoint == nil then return end
+
+    -- Only show for the butcher barn
+    local placeable = productionPoint.owningPlaceable
+    if placeable == nil or placeable.configFileName == nil then return end
+    if not placeable.configFileName:find("theButcherBarn") then return end
+
+    -- Build the text lines
+    local lines = {}
+    table.insert(lines, "FARM BALANCES")
+    table.insert(lines, "----------------")
+
+    local farmIds = {}
+    for farmId, _ in pairs(PRBFix.farmMeat or {}) do
+        table.insert(farmIds, farmId)
+    end
+    table.sort(farmIds)
+
+    if #farmIds == 0 then
+        table.insert(lines, "No deliveries yet")
+    else
+        for _, farmId in ipairs(farmIds) do
+            local farm = g_farmManager:getFarmById(farmId)
+            local farmName = (farm and farm.name) or ("Farm " .. farmId)
+            table.insert(lines, farmName)
+
+            local meats = PRBFix.farmMeat[farmId] or {}
+            local hasAny = false
+            for fillType, amount in pairs(meats) do
+                if amount and amount > 0.01 then
+                    hasAny = true
+                    table.insert(lines, string.format("  %s: %.1f L", fillType, amount))
+                end
+            end
+            if not hasAny then
+                table.insert(lines, "  (empty)")
+            end
+            table.insert(lines, "")
+        end
+    end
+
+    -- Draw semi-transparent box + text (right side of the right panel)
+    local x = 0.72
+    local y = 0.78
+    local lineHeight = 0.018
+    local width = 0.26
+    local height = (#lines * lineHeight) + 0.02
+
+    -- Background box
+    drawFilledRect(x - 0.01, y - height + 0.01, width, height, 0, 0, 0, 0.75)
+
+    -- Text
+    setTextAlignment(RenderText.ALIGN_LEFT)
+    setTextBold(true)
+    setTextColor(1, 1, 1, 1)
+    setTextFontSize(0.014)
+
+    local textY = y
+    for i, line in ipairs(lines) do
+        renderText(x, textY, 0.014, line)
+        textY = textY - lineHeight
+    end
+
+    setTextBold(false)
+    setTextAlignment(RenderText.ALIGN_LEFT)
 end
