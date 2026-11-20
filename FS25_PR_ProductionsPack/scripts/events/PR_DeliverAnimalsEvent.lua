@@ -129,18 +129,34 @@ function PR_DeliverAnimalsEvent:run(connection)
             }
 
             print(string.format("[PR Butcher Fix] Server processing request: type=%s valid=%d amount=%d", typeName, validCount, self.amount))
-            PRBFix:deliverAnimals(self.trailer, data, self.amount)
+            -- PRBFix:deliverAnimals(self.trailer, data, self.amount)
+			PRBFix:deliverAnimals(self.trailer, data, self.amount, self.farmId)
         else
             print("[PR Butcher Fix] Event.run request skipped (no server, no PRBFix, or no trailer)")
         end
     end
 end
 
+-- function PR_DeliverAnimalsEvent.send(...)
+    -- local event = PR_DeliverAnimalsEvent.new(...)
+    -- if g_server ~= nil then
+        -- print("[PR Butcher Fix] Broadcasting event from server")
+        -- g_server:broadcastEvent(event)
+    -- else
+        -- print("[PR Butcher Fix] Sending event from client to server")
+        -- g_client:getServerConnection():sendEvent(event)
+    -- end
+-- end
 function PR_DeliverAnimalsEvent.send(...)
     local event = PR_DeliverAnimalsEvent.new(...)
     if g_server ~= nil then
         print("[PR Butcher Fix] Broadcasting event from server")
         g_server:broadcastEvent(event)
+
+        -- SP / host: also run the request locally
+        if not event.isResult then
+            event:run(nil)
+        end
     else
         print("[PR Butcher Fix] Sending event from client to server")
         g_client:getServerConnection():sendEvent(event)

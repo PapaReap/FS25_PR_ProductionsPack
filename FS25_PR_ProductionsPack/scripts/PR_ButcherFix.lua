@@ -4,7 +4,6 @@ PRBFix = {}
 
 -- Abort if RealisticLivestock is NOT loaded
 PRBFix.disabled = true
--- local rlMod = g_modManager:getModByName("FS25_EnhancedLivestock")
 local rlMod = g_modManager:getModByName("FS25_RealisticLivestockRM")
 if rlMod == nil then
     print("[PR Butcher Fix] RealisticLivestock not detected — disabling butcher fix and using vanilla behavior")
@@ -23,6 +22,8 @@ PRBFix.placeablesScanned = false
 PRBFix.trailersInTrigger = {}
 PRBFix.butcherBarnPlaceable = nil
 PRBFix.playerInTrigger = false
+
+PRBFix.farmMeat = PRBFix.farmMeat or {}
 
 addModEventListener(PRBFix)
 
@@ -229,6 +230,12 @@ function PRBFix:loadMap()
         print("[PR Butcher Fix] ✓ Dialog script loaded OK")
     end
 
+	-- FOR SERVER LOAD OF SAVED INVENTORY
+	self:loadMeatLedger()
+	
+	-- Force shared visibility for the butcher barn
+    self:installVisibilityOverride()
+
     print(string.format("[%s] loadMap called (v%s)", self.modName, PRBFix.VERSION))
 end
 
@@ -364,6 +371,28 @@ function PRBFix:scanButcherPlaceables()
                     print("["..self.modName.."] onTriggerCallback attached new animalTrigger!")
                 end
             end
+			
+			-- Make the butcher barn visible to all farms
+			-- if p.setOwnerFarmId then
+				-- p:setOwnerFarmId(AccessHandler.EVERYONE)
+				-- print("["..self.modName.."] Butcher barn set to shared ownership (EVERYONE)")
+			-- end
+			-- Give it a real owner so the storage UI shows
+			if p.setOwnerFarmId then
+				p:setOwnerFarmId(1)   -- or whichever farm should “own” it
+				print("["..self.modName.."] Butcher barn owner set to farm 1")
+			end
+
+            -- Pallet trigger (replace with our own)
+            if p.i3dMappings and p.i3dMappings["palletTrigger"] then
+                local n = p.i3dMappings["palletTrigger"].nodeId
+                if n and n ~= 0 then
+                    print("["..self.modName.."] Replacing original palletTrigger "..n)
+                    removeTrigger(n)
+                    addTrigger(n, "onPalletTriggerCallback", self)
+                    print("["..self.modName.."] onPalletTriggerCallback attached")
+                end
+            end
 
             -- Spawn / loading zone trigger
             if p.i3dMappings and p.i3dMappings["loadingZoneTrigger"] then
@@ -381,6 +410,60 @@ function PRBFix:scanButcherPlaceables()
         print("["..self.modName.."] Placeable scan successful. Barn cached.")
     else
         self.placeablesScanned = false
+    end
+end
+
+----------------------------------------------------------------
+-- PALLET TRIGGER CALLBACK
+----------------------------------------------------------------
+function PRBFix:onPalletTriggerCallback(triggerId, otherId, onEnter, onLeave)
+    if not onEnter then return end
+
+    local obj = g_currentMission.nodeToObject[otherId]
+    if obj == nil then return end
+
+    -- Prevent triple credit on the same pallet
+    if obj.prButcherCredited then return end
+
+    local fillTypeIndex = nil
+    local amount = 0
+
+    if obj.getFillUnitFillType then
+        fillTypeIndex = obj:getFillUnitFillType(1)
+        amount = obj:getFillUnitFillLevel(1) or 0
+    end
+
+    local fillTypeName = fillTypeIndex and g_fillTypeManager:getFillTypeNameByIndex(fillTypeIndex)
+    if fillTypeName ~= "EMPTYPALLET" or amount <= 0 then return end
+
+    local farmId = obj.ownerFarmId or obj.farmId
+    if g_server == nil or farmId == nil or farmId <= 0 then return end
+
+    -- Mark so we only process once
+    obj.prButcherCredited = true
+
+    -- Credit the ledger
+    PRBFix.farmMeat[farmId] = PRBFix.farmMeat[farmId] or {}
+    PRBFix.farmMeat[farmId]["EMPTYPALLET"] =
+        (PRBFix.farmMeat[farmId]["EMPTYPALLET"] or 0) + amount
+
+    print(string.format("[%s] Pallet trigger credited %.2f L EMPTYPALLET to farm %d",
+        self.modName, amount, farmId))
+
+    -- Add the fill to the production storage
+    local barn = self.butcherBarnPlaceable
+    if barn and barn.spec_extendedProductionPoint and barn.spec_extendedProductionPoint.productionPoint then
+        local storage = barn.spec_extendedProductionPoint.productionPoint.storage
+        if storage and storage.setFillLevel then
+            local current = storage:getFillLevel(fillTypeIndex) or 0
+            storage:setFillLevel(current + amount, fillTypeIndex)
+            print(string.format("[%s] Added %.2f L EMPTYPALLET to production storage", self.modName, amount))
+        end
+    end
+
+    -- Delete the pallet object
+    if obj.delete then
+        obj:delete()
     end
 end
 
@@ -885,7 +968,8 @@ function PRBFix:deliverAnimalsFromDialog(trailer, data, amount, farmId)
     else
         print(string.format("[%s] ⚠️ PR_DeliverAnimalsEvent missing, calling deliverAnimals() locally", self.modName))
         if self.deliverAnimals ~= nil then
-            self:deliverAnimals(trailer, data, amount)
+            -- self:deliverAnimals(trailer, data, amount)
+			self:deliverAnimals(trailer, data, amount, farmId)
         end
     end
 end
@@ -893,7 +977,7 @@ end
 ------------------------------------------------------------
 -- DELIVER ANIMALS (age-filtered, quality-weighted + Smart-Fit)
 ------------------------------------------------------------
-function PRBFix:deliverAnimals(trailer, data, amount)
+function PRBFix:deliverAnimals(trailer, data, amount, farmId)
     if trailer == nil or data == nil then
         print(string.format("[%s] ⚠ deliverAnimals called with invalid args", self.modName))
         return
@@ -1058,6 +1142,16 @@ function PRBFix:deliverAnimals(trailer, data, amount)
     end
 
     st:setFillLevel(newFill, ftIdx)
+	
+	-- Only the server owns the ledger
+	if g_server ~= nil and liters > 0 then
+		if farmId and farmId > 0 then
+			PRBFix.farmMeat[farmId] = PRBFix.farmMeat[farmId] or {}
+			local meatName = self.ANIMAL_TO_MEAT_FILLTYPE[typeName] or typeName
+			PRBFix.farmMeat[farmId][meatName] = (PRBFix.farmMeat[farmId][meatName] or 0) + liters
+			print(string.format("[%s] Credited %.2f L %s to farm %d", self.modName, liters, meatName, farmId))
+		end
+	end
 
 	-- Force the production point to re-stream its storage to clients
 	local pp = spec.productionPoint
@@ -1120,20 +1214,7 @@ function PRBFix:deliverAnimals(trailer, data, amount)
     end
 
     print(string.format("[%s] ✅ Removed %d animals via filtered clusters", self.modName, used))
-
-    -- if g_server ~= nil and PR_DeliverAnimalsEvent ~= nil then
-        -- local farmId = 1
-        -- if g_currentMission ~= nil and g_currentMission.getFarmId ~= nil then
-            -- farmId = g_currentMission:getFarmId()
-        -- end
-
-        -- PR_DeliverAnimalsEvent.send(farmId, barn, trailer, used, true)
-        -- print(string.format("[%s] 📡 Broadcast delivery result to clients (used=%d)", self.modName, used))
-    -- end
 end
-
-
-
 
 ------------------------------------------------------------
 -- NEW: Clients apply the delivery result (mirror server changes)
@@ -1195,4 +1276,164 @@ function PRBFix:applyDeliveryResult(trailer, animalType, count)
     end
 
     print(string.format("[%s] ✅ Client applied delivery result: removed %d animals from trailer", self.modName, removed))
+end
+
+----------------------------------------------------------------
+-- Save ledger (server only)
+----------------------------------------------------------------
+function PRBFix:saveMeatLedger()
+    if g_server == nil then return end
+    if g_currentMission == nil or g_currentMission.missionInfo == nil then return end
+
+    local saveDir = g_currentMission.missionInfo.savegameDirectory
+    if saveDir == nil then return end
+
+    local xmlPath = saveDir .. "/PR_ButcherBarn.xml"
+    local xmlFile = XMLFile.create("PR_ButcherBarn", xmlPath, "butcherBarn")
+    if xmlFile == nil then
+        print("["..self.modName.."] Failed to create butcher barn XML")
+        return
+    end
+
+    local farmIndex = 0
+    for farmId, meats in pairs(PRBFix.farmMeat or {}) do
+        local farmKey = string.format("butcherBarn.farm(%d)", farmIndex)
+        xmlFile:setInt(farmKey .. "#id", farmId)
+
+        -- Look up farm name for readability
+        local farmName = "Farm " .. tostring(farmId)
+        if g_farmManager and g_farmManager.farms then
+            for _, farm in pairs(g_farmManager.farms) do
+                if farm and (farm.farmId == farmId or farm.id == farmId) then
+                    if farm.name and farm.name ~= "" then
+                        farmName = farm.name
+                    elseif farm.farmName and farm.farmName ~= "" then
+                        farmName = farm.farmName
+                    end
+                    break
+                end
+            end
+        end
+        xmlFile:setString(farmKey .. ".name", farmName)
+
+        local meatIndex = 0
+        for meatName, amount in pairs(meats) do
+            local meatKey = string.format("%s.meat(%d)", farmKey, meatIndex)
+            xmlFile:setString(meatKey .. "#type", meatName)
+            xmlFile:setFloat(meatKey .. "#amount", amount)
+            meatIndex = meatIndex + 1
+        end
+
+        farmIndex = farmIndex + 1
+    end
+
+    xmlFile:save()
+    xmlFile:delete()
+    print(string.format("[%s] Saved butcher barn ledger (%d farms) to %s", self.modName, farmIndex, xmlPath))
+end
+
+----------------------------------------------------------------
+-- Load ledger (server only)
+----------------------------------------------------------------
+function PRBFix:loadMeatLedger()
+    if g_server == nil then return end
+    if g_currentMission == nil or g_currentMission.missionInfo == nil then return end
+
+    local saveDir = g_currentMission.missionInfo.savegameDirectory
+    if saveDir == nil then return end
+
+    local xmlPath = saveDir .. "/PR_ButcherBarn.xml"
+    if not fileExists(xmlPath) then
+        print("["..self.modName.."] No butcher barn ledger file found (new save)")
+        return
+    end
+
+    local xmlFile = XMLFile.load("PR_ButcherBarn", xmlPath)
+    if xmlFile == nil then
+        print("["..self.modName.."] Failed to load butcher barn ledger XML")
+        return
+    end
+
+    PRBFix.farmMeat = {}
+
+    local farmIndex = 0
+    while true do
+        local farmKey = string.format("butcherBarn.farm(%d)", farmIndex)
+        if not xmlFile:hasProperty(farmKey) then break end
+
+        local farmId = xmlFile:getInt(farmKey .. "#id")
+        if farmId ~= nil then
+            PRBFix.farmMeat[farmId] = {}
+
+            local meatIndex = 0
+            while true do
+                local meatKey = string.format("%s.meat(%d)", farmKey, meatIndex)
+                if not xmlFile:hasProperty(meatKey) then break end
+
+                local meatName = xmlFile:getString(meatKey .. "#type")
+                local amount   = xmlFile:getFloat(meatKey .. "#amount") or 0
+
+                if meatName ~= nil then
+                    PRBFix.farmMeat[farmId][meatName] = amount
+                end
+
+                meatIndex = meatIndex + 1
+            end
+        end
+
+        farmIndex = farmIndex + 1
+    end
+
+    xmlFile:delete()
+    print(string.format("[%s] Loaded butcher barn ledger (%d farms)", self.modName, farmIndex))
+end
+
+FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, function()
+    if PRBFix ~= nil and PRBFix.saveMeatLedger ~= nil then
+        PRBFix:saveMeatLedger()
+    end
+end)
+
+function PRBFix:installVisibilityOverride()
+    if ProductionChainManager == nil or ProductionChainManager.getIsProductionPointVisible == nil then
+        print("[PR Butcher Fix] ProductionChainManager not ready – will retry")
+        local attempts = 0
+        local function retry()
+            attempts = attempts + 1
+            if ProductionChainManager and ProductionChainManager.getIsProductionPointVisible then
+                PRBFix:installVisibilityOverride()
+                return
+            end
+            if attempts < 20 then
+                g_currentMission:addUpdateable({
+                    time = 0,
+                    update = function(self, dt)
+                        self.time = self.time + dt
+                        if self.time > 500 then
+                            g_currentMission:removeUpdateable(self)
+                            retry()
+                        end
+                    end
+                })
+            end
+        end
+        retry()
+        return
+    end
+
+    local oldFunc = ProductionChainManager.getIsProductionPointVisible
+    ProductionChainManager.getIsProductionPointVisible = function(self, productionPoint)
+        if productionPoint ~= nil then
+            local placeable = productionPoint.owningPlaceable
+            if placeable ~= nil and placeable.configFileName ~= nil
+               and placeable.configFileName:find("theButcherBarn") then
+                return true
+            end
+        end
+        if oldFunc then
+            return oldFunc(self, productionPoint)
+        end
+        return false
+    end
+    print("[PR Butcher Fix] Production visibility override installed")
 end
