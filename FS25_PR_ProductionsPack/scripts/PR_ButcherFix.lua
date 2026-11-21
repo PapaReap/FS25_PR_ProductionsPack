@@ -395,6 +395,21 @@ function PRBFix:update(dt)
 		end
 	end
 
+    -- One-frame spawn lock restore
+    if self.spawnLockTimer and self.spawnLockTimer > 0 then
+        self.spawnLockTimer = self.spawnLockTimer - 1
+        if self.spawnLockTimer <= 0 then
+            local barn = self.butcherBarnPlaceable
+            if barn and barn.spec_extendedProductionPoint and barn.spec_extendedProductionPoint.productionPoint then
+                barn.spec_extendedProductionPoint.productionPoint.waitingForPalletToSpawn = true
+                print("["..self.modName.."] Spawn lock restored")
+            end
+            self.spawnLockTimer = nil
+        end
+    end
+
+
+
     --------------------------------------------------------
     -- F1 context hint (your original logic 100% untouched)
     --------------------------------------------------------
@@ -452,6 +467,18 @@ function PRBFix:scanButcherPlaceables()
 
             print("["..self.modName.."] Found butcher barn: "..p.configFileName)
             self.butcherBarnPlaceable = p
+
+			-- Keep the spawner but prevent automatic spawning
+			local spec = p.spec_extendedProductionPoint
+			if spec and spec.productionPoint then
+				local pp = spec.productionPoint
+				if pp.palletSpawner then
+					self.manualPalletSpawner = pp.palletSpawner
+					-- Don't nil it; just stop the auto-check
+					pp.waitingForPalletToSpawn = true
+					print("["..self.modName.."] Auto pallet spawner paused (manual reference kept)")
+				end
+			end
 
             -- Animal trigger
             if p.i3dMappings and p.i3dMappings["animalTrigger"] then
@@ -612,36 +639,156 @@ function PRBFix:onSpawnTriggerCallback(triggerId, otherId, onEnter, onLeave)
         end
     end
 
-    if isPlayer then
-        self.playerInSpawnTrigger = onEnter
+    if not isPlayer then return end
 
-        local farmId = 1
-        local farmName = "Unknown"
-        if g_currentMission and g_currentMission.getFarmId then
-            farmId = g_currentMission:getFarmId()
-        end
+    self.playerInSpawnTrigger = onEnter
 
-        -- Try to get farm name
-        if g_farmManager and g_farmManager.farms then
-            for _, farm in pairs(g_farmManager.farms) do
-                if farm and (farm.farmId == farmId or farm.id == farmId) then
-                    if farm.name and farm.name ~= "" then
-                        farmName = farm.name
-                    end
-                    break
-                end
+    local farmId = g_currentMission and g_currentMission:getFarmId() or 1
+    local farmName = "Unknown"
+    if g_farmManager and g_farmManager.farms then
+        for _, farm in pairs(g_farmManager.farms) do
+            if farm and (farm.farmId == farmId or farm.id == farmId) and farm.name and farm.name ~= "" then
+                farmName = farm.name
+                break
             end
         end
+    end
 
-        if onEnter then
-            print(string.format("[%s] Player entered loading zone | Farm %d (%s)", 
-                self.modName, farmId, farmName))
-            -- TODO: register spawn action event
-        else
-            print(string.format("[%s] Player left loading zone | Farm %d (%s)", 
-                self.modName, farmId, farmName))
-            -- TODO: unregister spawn action event
+    if onEnter then
+        print(string.format("[%s] Player entered loading zone | Farm %d (%s)", self.modName, farmId, farmName))
+
+        -- Register spawn action
+        local _, eventId = g_inputBinding:registerActionEvent(InputAction.ACTIVATE_OBJECT, self, PRBFix.onSpawnPalletAction, false, true, false, true)
+        if eventId then
+            g_inputBinding:setActionEventText(eventId, "Spawn Pallet")
+            g_inputBinding:setActionEventActive(eventId, true)
+            self.spawnActionEventId = eventId
         end
+    else
+        print(string.format("[%s] Player left loading zone | Farm %d (%s)", self.modName, farmId, farmName))
+
+        -- Unregister spawn action
+        if self.spawnActionEventId then
+            g_inputBinding:removeActionEvent(self.spawnActionEventId)
+            self.spawnActionEventId = nil
+        end
+    end
+end
+
+function PRBFix:onSpawnPalletAction()
+    if not self.playerInSpawnTrigger then return end
+
+    local farmId = g_currentMission and g_currentMission:getFarmId() or 1
+    local meats = PRBFix.farmMeat[farmId] or {}
+
+    local PALLET_SIZE = 1000
+    local spawned = false
+
+    local productOrder = {
+        "CHICKENFILLET", "HAM", "PORK", "BACON", "SAUSAGE", "PEPPERONI",
+        "GROUNDBEEF", "STEAK", "MUTTON", "CHEVON"
+    }
+
+    for _, fillTypeName in ipairs(productOrder) do
+        local amount = meats[fillTypeName] or 0
+        if amount >= PALLET_SIZE then
+            print(string.format("[%s] Farm %d has %.0f L of %s — spawning pallet",
+                self.modName, farmId, amount, fillTypeName))
+
+            -- Deduct from farm ledger
+            meats[fillTypeName] = amount - PALLET_SIZE
+
+            if g_server ~= nil then
+                -- ========== Barn Spawn Block start ==========
+                local barn = self.butcherBarnPlaceable
+                if barn and barn.i3dMappings and barn.i3dMappings["spawnSpace1start"] then
+                    local spawnNode = barn.i3dMappings["spawnSpace1start"].nodeId
+                    if spawnNode and spawnNode ~= 0 then
+                        local x, y, z = getWorldTranslation(spawnNode)
+                        local rx, ry, rz = getWorldRotation(spawnNode)
+
+                        local palletXml = {
+                            CHICKENFILLET = "xml/pallets/chickenfilletPallet.xml",
+                            HAM           = "xml/pallets/hamPallet.xml",
+                            PORK          = "xml/pallets/porkPallet.xml",
+                            BACON         = "xml/pallets/baconPallet.xml",
+                            SAUSAGE       = "xml/pallets/sausagePallet.xml",
+                            PEPPERONI     = "xml/pallets/pepperoniPallet.xml",
+                            GROUNDBEEF    = "xml/pallets/groundbeefPallet.xml",
+                            STEAK         = "xml/pallets/steakPallet.xml",
+                            MUTTON        = "xml/pallets/muttonPallet.xml",
+                            CHEVON        = "xml/pallets/chevonPallet.xml",
+                        }
+
+                        local relPath = palletXml[fillTypeName]
+                        if relPath then
+                            local xmlFilename = (PRBFix.modDirectory or g_currentModDirectory or "") .. relPath
+                            print(string.format("[%s] Spawning %s at %.1f %.1f %.1f", self.modName, fillTypeName, x, y, z))
+
+                            local data = VehicleLoadingData.new()
+                            data:setFilename(xmlFilename)
+                            data:setPosition(x, y + 0.2, z)
+                            data:setRotation(rx, ry, rz)
+                            data:setPropertyState(VehiclePropertyState.OWNED)
+                            data:setOwnerFarmId(farmId)
+
+                            data:load(function(_, vehicles, vehicleLoadState, _)
+                                if vehicleLoadState == VehicleLoadingState.OK and vehicles and vehicles[1] then
+                                    local vehicle = vehicles[1]
+                                    vehicle:emptyAllFillUnits(true)
+                                    local ftIdx = g_fillTypeManager:getFillTypeIndexByName(fillTypeName)
+                                    if ftIdx then
+                                        vehicle:addFillUnitFillLevel(farmId, 1, PALLET_SIZE, ftIdx, ToolType.UNDEFINED, nil)
+                                    end
+                                    print(string.format("[%s] Successfully spawned %s pallet for farm %d", self.modName, fillTypeName, farmId))
+
+                                    -- Deduct from production storage
+                                    local spec = barn.spec_extendedProductionPoint
+                                    if spec and spec.productionPoint and spec.productionPoint.storage then
+                                        local st = spec.productionPoint.storage
+                                        if ftIdx then
+                                            local current = st:getFillLevel(ftIdx) or 0
+                                            st:setFillLevel(math.max(0, current - PALLET_SIZE), ftIdx)
+                                            print(string.format("[%s] Deducted %d L %s from production storage", self.modName, PALLET_SIZE, fillTypeName))
+                                        end
+
+                                        -- Deduct empty pallets from production storage
+                                        local emptyIdx = g_fillTypeManager:getFillTypeIndexByName("EMPTYPALLET")
+                                        if emptyIdx then
+                                            local currentEmpty = st:getFillLevel(emptyIdx) or 0
+                                            st:setFillLevel(math.max(0, currentEmpty - PALLET_SIZE), emptyIdx)
+                                            print(string.format("[%s] Deducted %d L EMPTYPALLET from production storage", self.modName, PALLET_SIZE))
+                                        end
+                                    end
+
+                                    -- Deduct empty pallets from the farm ledger
+                                    local emptyPallets = meats["EMPTYPALLET"] or 0
+                                    if emptyPallets >= PALLET_SIZE then
+                                        meats["EMPTYPALLET"] = emptyPallets - PALLET_SIZE
+                                        print(string.format("[%s] Deducted %d L EMPTYPALLET from farm %d ledger", self.modName, PALLET_SIZE, farmId))
+                                    end
+
+                                    if self.syncFarmMeat then
+                                        self:syncFarmMeat()
+                                    end
+                                else
+                                    print("["..self.modName.."] Vehicle load failed")
+                                end
+                            end)
+
+                            spawned = true
+                        end
+                    end
+                end
+                -- ========== Barn Spawn Block end ==========
+            else
+                print("["..self.modName.."] Spawn skipped (not server)")
+            end
+        end
+    end
+
+    if not spawned then
+        print(string.format("[%s] Farm %d does not have enough of any product for a pallet", self.modName, farmId))
     end
 end
 
