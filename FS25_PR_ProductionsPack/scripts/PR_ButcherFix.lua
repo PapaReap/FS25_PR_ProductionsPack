@@ -99,6 +99,70 @@ PRBFix.BREED_MULTIPLIER = {
     }
 }
 
+----------------------------------------------------------------
+-- Sync farmMeat ledger to clients
+----------------------------------------------------------------
+PR_ButcherSyncEvent = {}
+PR_ButcherSyncEvent_mt = Class(PR_ButcherSyncEvent, Event)
+InitEventClass(PR_ButcherSyncEvent, "PR_ButcherSyncEvent")
+
+function PR_ButcherSyncEvent.emptyNew()
+    local self = Event.new(PR_ButcherSyncEvent_mt)
+    return self
+end
+
+function PR_ButcherSyncEvent.new(farmMeat)
+    local self = PR_ButcherSyncEvent.emptyNew()
+    self.farmMeat = farmMeat
+    return self
+end
+
+function PR_ButcherSyncEvent:writeStream(streamId, connection)
+    local farmCount = 0
+    for _ in pairs(self.farmMeat or {}) do farmCount = farmCount + 1 end
+    streamWriteUInt8(streamId, farmCount)
+
+    for farmId, meats in pairs(self.farmMeat or {}) do
+        streamWriteUInt8(streamId, farmId)
+        local meatCount = 0
+        for _ in pairs(meats) do meatCount = meatCount + 1 end
+        streamWriteUInt8(streamId, meatCount)
+        for fillType, amount in pairs(meats) do
+            streamWriteString(streamId, fillType)
+            streamWriteFloat32(streamId, amount)
+        end
+    end
+end
+
+function PR_ButcherSyncEvent:readStream(streamId, connection)
+    local farmCount = streamReadUInt8(streamId)
+    local farmMeat = {}
+
+    for i = 1, farmCount do
+        local farmId = streamReadUInt8(streamId)
+        farmMeat[farmId] = {}
+        local meatCount = streamReadUInt8(streamId)
+        for j = 1, meatCount do
+            local fillType = streamReadString(streamId)
+            local amount = streamReadFloat32(streamId)
+            farmMeat[farmId][fillType] = amount
+        end
+    end
+
+    PRBFix.farmMeat = farmMeat
+    print("[PR Butcher Fix] Received farmMeat sync (" .. farmCount .. " farms)")
+end
+
+function PR_ButcherSyncEvent:run(connection)
+    -- nothing needed, data is applied in readStream
+end
+
+function PRBFix:syncFarmMeat()
+    if g_server ~= nil then
+        g_server:broadcastEvent(PR_ButcherSyncEvent.new(PRBFix.farmMeat or {}))
+    end
+end
+
 function PRBFix:getBreedMultiplier(animalType, cluster)
     local default = 1.0
     if cluster == nil then
@@ -300,6 +364,37 @@ function PRBFix:update(dt)
     -- Always keep input context refreshed
     self:updateInputContext()
 
+	-- SET BARN TO STORING ONLY
+	if not self.outputLockTimer then self.outputLockTimer = 0 end
+	self.outputLockTimer = self.outputLockTimer + dt
+
+	if self.outputLockTimer > 30000 then   -- 30 seconds
+		self.outputLockTimer = 0
+
+		local barn = self.butcherBarnPlaceable
+		if barn and barn.spec_extendedProductionPoint then
+			local pp = barn.spec_extendedProductionPoint.productionPoint
+			if pp then
+				local function moveToStorage(srcTable)
+					if srcTable then
+						for ftIdx, palletData in pairs(srcTable) do
+							if type(palletData) == "table" then
+								pp.outputFillTypeIdsToPallets[ftIdx] = palletData
+							end
+						end
+					end
+				end
+
+				moveToStorage(pp.outputFillTypeIdsDirectSell)
+				moveToStorage(pp.outputFillTypeIdsAutoDeliver)
+
+				pp.outputFillTypeIdsDirectSell = {}
+				pp.outputFillTypeIdsAutoDeliver = {}
+				pp.isOutputModeChangeAllowed = false
+			end
+		end
+	end
+
     --------------------------------------------------------
     -- F1 context hint (your original logic 100% untouched)
     --------------------------------------------------------
@@ -406,6 +501,35 @@ function PRBFix:scanButcherPlaceables()
         self.placeablesScanned = true
         print("["..self.modName.."] Placeable scan successful. Barn cached.")
         self:installVisibilityOverride()
+		
+		-- SET BARN TO STORING ONLY
+		local barn = self.butcherBarnPlaceable
+		if barn and barn.spec_extendedProductionPoint then
+			local pp = barn.spec_extendedProductionPoint.productionPoint
+			if pp then
+				-- Move everything from DirectSell and AutoDeliver into ToPallets
+				local function moveToStorage(srcTable)
+					if srcTable then
+						for ftIdx, palletData in pairs(srcTable) do
+							if type(palletData) == "table" then
+								pp.outputFillTypeIdsToPallets[ftIdx] = palletData
+							end
+						end
+					end
+				end
+
+				moveToStorage(pp.outputFillTypeIdsDirectSell)
+				moveToStorage(pp.outputFillTypeIdsAutoDeliver)
+
+				-- Clear the other modes
+				pp.outputFillTypeIdsDirectSell = {}
+				pp.outputFillTypeIdsAutoDeliver = {}
+
+				-- Lock the UI
+				pp.isOutputModeChangeAllowed = false
+			end
+		end
+
     else
         self.placeablesScanned = false
     end
@@ -447,6 +571,10 @@ function PRBFix:onPalletTriggerCallback(triggerId, otherId, onEnter, onLeave)
 
     print(string.format("[%s] Pallet trigger credited %.2f L EMPTYPALLET to farm %d",
         self.modName, amount, farmId))
+
+	if g_server ~= nil then
+		PRBFix:syncFarmMeat()
+	end
 
     -- Add the fill to the production storage
     local barn = self.butcherBarnPlaceable
@@ -1148,6 +1276,8 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
 			local meatName = self.ANIMAL_TO_MEAT_FILLTYPE[typeName] or typeName
 			PRBFix.farmMeat[farmId][meatName] = (PRBFix.farmMeat[farmId][meatName] or 0) + liters
 			print(string.format("[%s] Credited %.2f L %s to farm %d", self.modName, liters, meatName, farmId))
+
+			PRBFix:syncFarmMeat()
 		end
 	end
 
@@ -1165,8 +1295,6 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
 		end
 	end
 	
-	-- PR_DeliverAnimalsEvent.send(self.barn, trailer, used, true, newFill)
-	-- PR_DeliverAnimalsEvent.send(self.barn, trailer, used, true, newFill, data.type)
 	PR_DeliverAnimalsEvent.send(self.barn, trailer, used, true, newFill, typeName)
 
     print(string.format(
@@ -1383,6 +1511,8 @@ function PRBFix:loadMeatLedger()
     end
 
     xmlFile:delete()
+	
+	self:syncFarmMeat()
     print(string.format("[%s] Loaded butcher barn ledger (%d farms)", self.modName, farmIndex))
 end
 
@@ -1419,6 +1549,31 @@ function PRBFix:installVisibilityOverride()
         barn:setOwnerFarmId(ownerId)
         print(string.format("[PR Butcher Fix] Butcher barn real owner = farm %d", ownerId))
     end
+
+    -- Lock output mode to Storing
+    if ProductionPoint and ProductionPoint.OUTPUT_MODE_STORE then
+        pp.outputMode = ProductionPoint.OUTPUT_MODE_STORE
+        if pp.setOutputMode then
+            pp:setOutputMode(ProductionPoint.OUTPUT_MODE_STORE)
+        end
+        print("[PR Butcher Fix] Output mode locked to Storing")
+    end
+
+	-- Hard lock: block any attempt to change output mode
+	if pp.setOutputMode then
+		local originalSetOutputMode = pp.setOutputMode
+		pp.setOutputMode = function(self, mode)
+			-- Always force Storing
+			originalSetOutputMode(self, ProductionPoint.OUTPUT_MODE_STORE)
+		end
+	end
+
+	-- Also set the flag the UI checks (if it exists)
+	pp.isOutputModeChangeAllowed = false
+	if pp.setIsOutputModeChangeAllowed then
+		pp:setIsOutputModeChangeAllowed(false)
+	end
+
 
     local mgr = g_currentMission.productionChainManager
     if mgr == nil then
@@ -1459,8 +1614,12 @@ function PRBFix:installVisibilityOverride()
     end
 
     self.visibilityOverrideInstalled = true
-	
-	self:installFarmBalanceOverlay()
+
+    self:installFarmBalanceOverlay()
+
+    -- Sync ledger to any clients that are already connected
+    self:syncFarmMeat()
+
     print("[PR Butcher Fix] Done")
 end
 
@@ -1470,22 +1629,37 @@ end
 function PRBFix:installFarmBalanceOverlay()
     if PRBFix.overlayInstalled then return end
     PRBFix.overlayInstalled = true
+    PRBFix.overlayFarmIndex = 1
 
-    -- Hook the production frame update
-    if InGameMenuProductionFrame and InGameMenuProductionFrame.update == nil then
-        print("[PR Butcher Fix] InGameMenuProductionFrame not ready yet")
+    if InGameMenuProductionFrame == nil or InGameMenuProductionFrame.draw == nil then
+        print("[PR Butcher Fix] InGameMenuProductionFrame.draw not ready")
         return
     end
 
-    local oldUpdate = InGameMenuProductionFrame.update
-    InGameMenuProductionFrame.update = function(frame, dt)
-        if oldUpdate then oldUpdate(frame, dt) end
+    local oldDraw = InGameMenuProductionFrame.draw
+    InGameMenuProductionFrame.draw = function(frame)
+        if oldDraw then oldDraw(frame) end
         PRBFix:drawFarmBalanceOverlay(frame)
     end
 
-    print("[PR Butcher Fix] Farm balance overlay installed")
+    print("[PR Butcher Fix] Farm balance overlay installed (mouse click)")
 end
 
+function PRBFix:onOverlayLeft()
+    if not PRBFix.overlayFarmIds or #PRBFix.overlayFarmIds == 0 then return end
+    PRBFix.overlayFarmIndex = PRBFix.overlayFarmIndex - 1
+    if PRBFix.overlayFarmIndex < 1 then
+        PRBFix.overlayFarmIndex = #PRBFix.overlayFarmIds
+    end
+end
+
+function PRBFix:onOverlayRight()
+    if not PRBFix.overlayFarmIds or #PRBFix.overlayFarmIds == 0 then return end
+    PRBFix.overlayFarmIndex = PRBFix.overlayFarmIndex + 1
+    if PRBFix.overlayFarmIndex > #PRBFix.overlayFarmIds then
+        PRBFix.overlayFarmIndex = 1
+    end
+end
 
 function PRBFix:drawFarmBalanceOverlay(frame)
     if frame == nil or frame.getSelectedProduction == nil then return end
@@ -1493,67 +1667,68 @@ function PRBFix:drawFarmBalanceOverlay(frame)
     local production, productionPoint = frame:getSelectedProduction()
     if productionPoint == nil then return end
 
-    -- Only show for the butcher barn
     local placeable = productionPoint.owningPlaceable
     if placeable == nil or placeable.configFileName == nil then return end
     if not placeable.configFileName:find("theButcherBarn") then return end
 
-    -- Build the text lines
+    local currentFarmId = g_currentMission:getFarmId()
+    if currentFarmId == nil or currentFarmId <= 0 then return end
+
+    local farm = g_farmManager:getFarmById(currentFarmId)
+    local farmName = (farm and farm.name) or ("Farm " .. currentFarmId)
+
     local lines = {}
-    table.insert(lines, "FARM BALANCES")
-    table.insert(lines, "----------------")
+    table.insert(lines, "")
+    table.insert(lines, farmName)
+    table.insert(lines, "---------------------------")
+    table.insert(lines, "Processing Meat Storage")
+    table.insert(lines, "---------------------------")
 
-    local farmIds = {}
-    for farmId, _ in pairs(PRBFix.farmMeat or {}) do
-        table.insert(farmIds, farmId)
-    end
-    table.sort(farmIds)
+    local meatOrder = {"POULTRY", "COWMEAT", "PIGMEAT", "SHEEPMEAT"}
+    local meatNames = {
+        POULTRY   = "Chicken",
+        COWMEAT   = "Cow       ",
+        PIGMEAT   = "Pig         ",
+        SHEEPMEAT = "Sheep    "
+    }
 
-    if #farmIds == 0 then
-        table.insert(lines, "No deliveries yet")
-    else
-        for _, farmId in ipairs(farmIds) do
-            local farm = g_farmManager:getFarmById(farmId)
-            local farmName = (farm and farm.name) or ("Farm " .. farmId)
-            table.insert(lines, farmName)
-
-            local meats = PRBFix.farmMeat[farmId] or {}
-            local hasAny = false
-            for fillType, amount in pairs(meats) do
-                if amount and amount > 0.01 then
-                    hasAny = true
-                    table.insert(lines, string.format("  %s: %.1f L", fillType, amount))
-                end
-            end
-            if not hasAny then
-                table.insert(lines, "  (empty)")
-            end
-            table.insert(lines, "")
+    local meats = PRBFix.farmMeat[currentFarmId] or {}
+    for _, fillType in ipairs(meatOrder) do
+        local amount = meats[fillType] or 0
+        if amount > 0.01 then
+            local displayName = meatNames[fillType] or fillType
+            table.insert(lines, string.format("%-8s: %.1f L", displayName, amount))
         end
     end
 
-    -- Draw semi-transparent box + text (right side of the right panel)
-    local x = 0.72
-    local y = 0.78
-    local lineHeight = 0.018
-    local width = 0.26
-    local height = (#lines * lineHeight) + 0.02
+    local emptyPallets = meats["EMPTYPALLET"] or 0
+    if emptyPallets > 0.01 then
+        table.insert(lines, "")
+        table.insert(lines, string.format("Empty Pallet: %.0f L", emptyPallets))
+    end
 
-    -- Background box
-    drawFilledRect(x - 0.01, y - height + 0.01, width, height, 0, 0, 0, 0.75)
+    -- Position / size
+    local x = 0.28
+    local y = 0.72
+    local lineHeight = 0.016
+    local width = 0.08
+    local height = (#lines * lineHeight) + 0.05
 
-    -- Text
+    if height > 0.55 then
+        height = 0.55
+    end
+
+    drawFilledRect(x - 0.008, y - height + 0.01, width, height, 0, 0, 0, 0.75)
+
     setTextAlignment(RenderText.ALIGN_LEFT)
     setTextBold(true)
     setTextColor(1, 1, 1, 1)
-    setTextFontSize(0.014)
 
     local textY = y
-    for i, line in ipairs(lines) do
+    for _, line in ipairs(lines) do
         renderText(x, textY, 0.014, line)
         textY = textY - lineHeight
     end
 
     setTextBold(false)
-    setTextAlignment(RenderText.ALIGN_LEFT)
 end
