@@ -640,6 +640,98 @@ function PRBDialog.register()
 end
 
 ------------------------------------------------------------
+-- SPAWN DIALOG (Available for pickup only)
+------------------------------------------------------------
+function PRBDialog:showSpawnDialog(availableList, farmId)
+    print("[PR Butcher Dialog] showSpawnDialog called, count=" .. tostring(#availableList))
+
+    self.spawnAvailableList = availableList or {}
+    self.spawnFarmId = farmId
+    self.spawnSelectedIndex = 1
+
+    if #self.spawnAvailableList == 0 then
+        print("[PR Butcher Dialog] No available products")
+        return
+    end
+
+    -- Match the way the animal dialog is opened
+    g_gui:showDialog("PRBDialog")
+
+	print("[PR Butcher Dialog] g_gui:showDialog returned, currentDialog = " .. tostring(g_gui.currentDialogName))
+
+    self:updateSpawnDisplay()
+end
+
+function PRBDialog:updateSpawnDisplay()
+    print("[PR Butcher Dialog] updateSpawnDisplay called")
+	
+	if self.dialogTitle then
+		self.dialogTitle:setText("SPAWN PALLET")
+	end
+	
+    if not self.spawnAvailableList or #self.spawnAvailableList == 0 then return end
+
+    local item = self.spawnAvailableList[self.spawnSelectedIndex]
+    if item and self.titleText then
+        self.titleText:setText(string.format("Spawn %s  (%.0f L ready)", item.fillType, item.amount))
+    end
+
+    if self.farmValue then
+        local farm = g_farmManager and g_farmManager:getFarmById(self.spawnFarmId)
+        local farmName = (farm and farm.name) or ("Farm " .. tostring(self.spawnFarmId))
+        self.farmValue:setText(farmName)
+    end
+
+    -- Clear animal-specific fields so the dialog looks cleaner for spawn mode
+    if self.animalTypeValue then self.animalTypeValue:setText("") end
+    if self.trailerValue then self.trailerValue:setText("") end
+    if self.amountValue then self.amountValue:setText("1000") end
+end
+
+function PRBDialog:onClickSpawnOK()
+    if not self.spawnAvailableList or #self.spawnAvailableList == 0 then return end
+
+    local item = self.spawnAvailableList[self.spawnSelectedIndex]
+    local farmId = self.spawnFarmId
+
+    print(string.format("[PR Butcher Dialog] Spawn OK → %s for farm %d", item.fillType, farmId))
+
+    -- Deduct and trigger the real spawn (re-uses the existing spawn block logic)
+    local pallets = PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId]
+    if pallets and pallets[item.fillType] then
+        local entry = pallets[item.fillType]
+        if entry.amount >= 1000 then
+            entry.amount = entry.amount - 1000
+            if entry.amount < 0.01 then
+                pallets[item.fillType] = nil
+            end
+
+            -- Call the existing spawn logic
+            if PRBFix and PRBFix.spawnReadyPallet then
+                PRBFix:spawnReadyPallet(farmId, item.fillType)
+            end
+
+            if PRBFix.syncFarmMeat then
+                PRBFix:syncFarmMeat()
+            end
+        end
+    end
+
+    g_gui:closeDialogByName("PRBDialog")
+end
+
+-- Optional: cycle through available products with up/down while in spawn mode
+function PRBDialog:cycleSpawnProduct(direction)
+    if not self.spawnAvailableList or #self.spawnAvailableList == 0 then return end
+    self.spawnSelectedIndex = self.spawnSelectedIndex + direction
+    if self.spawnSelectedIndex < 1 then self.spawnSelectedIndex = #self.spawnAvailableList end
+    if self.spawnSelectedIndex > #self.spawnAvailableList then self.spawnSelectedIndex = 1 end
+    self:updateSpawnDisplay()
+end
+
+
+
+------------------------------------------------------------
 -- EXPORT
 ------------------------------------------------------------
 return PRBDialog

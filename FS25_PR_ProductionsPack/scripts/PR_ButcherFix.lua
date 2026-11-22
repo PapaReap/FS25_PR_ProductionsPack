@@ -284,6 +284,22 @@ function PRBFix:loadMap()
     local dlgPath = modDir .. "scripts/PR_ButcherDialog.lua"
     print("[PR Butcher Fix] Loading PR_ButcherDialog.lua from: " .. dlgPath)
 
+	local spawnDlgPath = modDir .. "scripts/PR_ButcherSpawnDialog.lua"
+	local ok2, err2 = pcall(function()
+		source(spawnDlgPath)
+	end)
+	if ok2 and PRBSpawnDialog and PRBSpawnDialog.register then
+		PRBSpawnDialog.register()
+	end
+
+
+	if PRBDialog and PRBDialog.register then
+		PRBDialog.register()
+		print("[PR Butcher Fix] PRBDialog.register() called")
+	else
+		print("[PR Butcher Fix] PRBDialog.register not found")
+	end
+
     local ok, err = pcall(function()
         source(dlgPath)
     end)
@@ -679,10 +695,24 @@ function PRBFix:onSpawnPalletAction()
     if not self.playerInSpawnTrigger then return end
 
     local farmId = g_currentMission and g_currentMission:getFarmId() or 1
-    local meats = PRBFix.farmMeat[farmId] or {}
+    local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId]) or {}
+
+    local now = 0
+    if g_currentMission and g_currentMission.environment then
+        now = g_currentMission.environment.currentMonotonicDay * 86400 + g_currentMission.environment.dayTime / 1000
+    end
 
     local PALLET_SIZE = 1000
-    local spawned = false
+	
+	print(string.format("[%s] DEBUG now=%.0f", self.modName, now))
+	for fillType, entry in pairs(pallets) do
+		if type(entry) == "table" then
+			print(string.format("[%s] DEBUG %s amount=%.0f readyAt=%s now>=ready=%s",
+				self.modName, fillType, entry.amount or 0, tostring(entry.readyAt), tostring(now >= (entry.readyAt or 0))))
+		end
+	end
+	
+    local available = {}
 
     local productOrder = {
         "CHICKENFILLET", "HAM", "PORK", "BACON", "SAUSAGE", "PEPPERONI",
@@ -690,106 +720,144 @@ function PRBFix:onSpawnPalletAction()
     }
 
     for _, fillTypeName in ipairs(productOrder) do
-        local amount = meats[fillTypeName] or 0
-        if amount >= PALLET_SIZE then
-            print(string.format("[%s] Farm %d has %.0f L of %s — spawning pallet",
-                self.modName, farmId, amount, fillTypeName))
+        local entry = pallets[fillTypeName]
+        local amount = (entry and entry.amount) or 0
+        local isReady = entry and entry.readyAt and now >= entry.readyAt
 
-            -- Deduct from farm ledger
-            meats[fillTypeName] = amount - PALLET_SIZE
-
-            if g_server ~= nil then
-                -- ========== Barn Spawn Block start ==========
-                local barn = self.butcherBarnPlaceable
-                if barn and barn.i3dMappings and barn.i3dMappings["spawnSpace1start"] then
-                    local spawnNode = barn.i3dMappings["spawnSpace1start"].nodeId
-                    if spawnNode and spawnNode ~= 0 then
-                        local x, y, z = getWorldTranslation(spawnNode)
-                        local rx, ry, rz = getWorldRotation(spawnNode)
-
-                        local palletXml = {
-                            CHICKENFILLET = "xml/pallets/chickenfilletPallet.xml",
-                            HAM           = "xml/pallets/hamPallet.xml",
-                            PORK          = "xml/pallets/porkPallet.xml",
-                            BACON         = "xml/pallets/baconPallet.xml",
-                            SAUSAGE       = "xml/pallets/sausagePallet.xml",
-                            PEPPERONI     = "xml/pallets/pepperoniPallet.xml",
-                            GROUNDBEEF    = "xml/pallets/groundbeefPallet.xml",
-                            STEAK         = "xml/pallets/steakPallet.xml",
-                            MUTTON        = "xml/pallets/muttonPallet.xml",
-                            CHEVON        = "xml/pallets/chevonPallet.xml",
-                        }
-
-                        local relPath = palletXml[fillTypeName]
-                        if relPath then
-                            local xmlFilename = (PRBFix.modDirectory or g_currentModDirectory or "") .. relPath
-                            print(string.format("[%s] Spawning %s at %.1f %.1f %.1f", self.modName, fillTypeName, x, y, z))
-
-                            local data = VehicleLoadingData.new()
-                            data:setFilename(xmlFilename)
-                            data:setPosition(x, y + 0.2, z)
-                            data:setRotation(rx, ry, rz)
-                            data:setPropertyState(VehiclePropertyState.OWNED)
-                            data:setOwnerFarmId(farmId)
-
-                            data:load(function(_, vehicles, vehicleLoadState, _)
-                                if vehicleLoadState == VehicleLoadingState.OK and vehicles and vehicles[1] then
-                                    local vehicle = vehicles[1]
-                                    vehicle:emptyAllFillUnits(true)
-                                    local ftIdx = g_fillTypeManager:getFillTypeIndexByName(fillTypeName)
-                                    if ftIdx then
-                                        vehicle:addFillUnitFillLevel(farmId, 1, PALLET_SIZE, ftIdx, ToolType.UNDEFINED, nil)
-                                    end
-                                    print(string.format("[%s] Successfully spawned %s pallet for farm %d", self.modName, fillTypeName, farmId))
-
-                                    -- Deduct from production storage
-                                    local spec = barn.spec_extendedProductionPoint
-                                    if spec and spec.productionPoint and spec.productionPoint.storage then
-                                        local st = spec.productionPoint.storage
-                                        if ftIdx then
-                                            local current = st:getFillLevel(ftIdx) or 0
-                                            st:setFillLevel(math.max(0, current - PALLET_SIZE), ftIdx)
-                                            print(string.format("[%s] Deducted %d L %s from production storage", self.modName, PALLET_SIZE, fillTypeName))
-                                        end
-
-                                        -- Deduct empty pallets from production storage
-                                        local emptyIdx = g_fillTypeManager:getFillTypeIndexByName("EMPTYPALLET")
-                                        if emptyIdx then
-                                            local currentEmpty = st:getFillLevel(emptyIdx) or 0
-                                            st:setFillLevel(math.max(0, currentEmpty - PALLET_SIZE), emptyIdx)
-                                            print(string.format("[%s] Deducted %d L EMPTYPALLET from production storage", self.modName, PALLET_SIZE))
-                                        end
-                                    end
-
-                                    -- Deduct empty pallets from the farm ledger
-                                    local emptyPallets = meats["EMPTYPALLET"] or 0
-                                    if emptyPallets >= PALLET_SIZE then
-                                        meats["EMPTYPALLET"] = emptyPallets - PALLET_SIZE
-                                        print(string.format("[%s] Deducted %d L EMPTYPALLET from farm %d ledger", self.modName, PALLET_SIZE, farmId))
-                                    end
-
-                                    if self.syncFarmMeat then
-                                        self:syncFarmMeat()
-                                    end
-                                else
-                                    print("["..self.modName.."] Vehicle load failed")
-                                end
-                            end)
-
-                            spawned = true
-                        end
-                    end
-                end
-                -- ========== Barn Spawn Block end ==========
-            else
-                print("["..self.modName.."] Spawn skipped (not server)")
-            end
+        if amount >= PALLET_SIZE and isReady then
+            table.insert(available, {fillType = fillTypeName, amount = amount})
         end
     end
 
-    if not spawned then
-        print(string.format("[%s] Farm %d does not have enough of any product for a pallet", self.modName, farmId))
+	print(string.format("[%s] DEBUG available count = %d", self.modName, #available))
+	print(string.format("[%s] DEBUG PRBDialog = %s  showSpawnDialog = %s",
+
+    self.modName, tostring(PRBDialog), tostring(PRBDialog and PRBDialog.showSpawnDialog)))
+
+
+    if #available == 0 then
+        print(string.format("[%s] Farm %d does not have enough of any ready product for a pallet", self.modName, farmId))
+        return
     end
+
+	if PRBSpawnDialog and PRBSpawnDialog.show then
+		PRBSpawnDialog.show(available, farmId)
+	else
+		print("[PR Butcher Fix] PRBSpawnDialog.show not available")
+	end
+end
+
+function PRBFix:spawnReadyPallet(farmId, fillTypeName)
+    local meats = PRBFix.farmMeat[farmId] or {}
+    local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId]) or {}
+    local entry = pallets[fillTypeName]
+    local amount = (entry and entry.amount) or 0
+    local PALLET_SIZE = 1000
+
+    if amount < PALLET_SIZE then
+        print(string.format("[%s] Not enough %s left to spawn", self.modName, fillTypeName))
+        return
+    end
+
+    -- Deduct from farm ledger
+    entry.amount = amount - PALLET_SIZE
+    if entry.amount < 0.01 then
+        pallets[fillTypeName] = nil
+    end
+
+    if g_server ~= nil then
+        -- ========== Barn Spawn Block start ==========
+        local barn = self.butcherBarnPlaceable
+        if barn and barn.i3dMappings and barn.i3dMappings["spawnSpace1start"] then
+            local spawnNode = barn.i3dMappings["spawnSpace1start"].nodeId
+            if spawnNode and spawnNode ~= 0 then
+                local x, y, z = getWorldTranslation(spawnNode)
+                local rx, ry, rz = getWorldRotation(spawnNode)
+
+                local palletXml = {
+                    CHICKENFILLET = "xml/pallets/chickenfilletPallet.xml",
+                    HAM           = "xml/pallets/hamPallet.xml",
+                    PORK          = "xml/pallets/porkPallet.xml",
+                    BACON         = "xml/pallets/baconPallet.xml",
+                    SAUSAGE       = "xml/pallets/sausagePallet.xml",
+                    PEPPERONI     = "xml/pallets/pepperoniPallet.xml",
+                    GROUNDBEEF    = "xml/pallets/groundbeefPallet.xml",
+                    STEAK         = "xml/pallets/steakPallet.xml",
+                    MUTTON        = "xml/pallets/muttonPallet.xml",
+                    CHEVON        = "xml/pallets/chevonPallet.xml",
+                }
+
+                local relPath = palletXml[fillTypeName]
+                if relPath then
+                    local xmlFilename = (PRBFix.modDirectory or g_currentModDirectory or "") .. relPath
+                    print(string.format("[%s] Spawning %s at %.1f %.1f %.1f", self.modName, fillTypeName, x, y, z))
+
+                    local data = VehicleLoadingData.new()
+                    data:setFilename(xmlFilename)
+                    data:setPosition(x, y + 0.2, z)
+                    data:setRotation(rx, ry, rz)
+                    data:setPropertyState(VehiclePropertyState.OWNED)
+                    data:setOwnerFarmId(farmId)
+
+                    data:load(function(_, vehicles, vehicleLoadState, _)
+                        if vehicleLoadState == VehicleLoadingState.OK and vehicles and vehicles[1] then
+                            local vehicle = vehicles[1]
+                            vehicle:emptyAllFillUnits(true)
+                            local ftIdx = g_fillTypeManager:getFillTypeIndexByName(fillTypeName)
+                            if ftIdx then
+                                vehicle:addFillUnitFillLevel(farmId, 1, PALLET_SIZE, ftIdx, ToolType.UNDEFINED, nil)
+                            end
+                            print(string.format("[%s] Successfully spawned %s pallet for farm %d", self.modName, fillTypeName, farmId))
+
+                            -- Deduct from production storage
+                            local spec = barn.spec_extendedProductionPoint
+                            if spec and spec.productionPoint and spec.productionPoint.storage then
+                                local st = spec.productionPoint.storage
+                                if ftIdx then
+                                    local current = st:getFillLevel(ftIdx) or 0
+                                    st:setFillLevel(math.max(0, current - PALLET_SIZE), ftIdx)
+                                    print(string.format("[%s] Deducted %d L %s from production storage", self.modName, PALLET_SIZE, fillTypeName))
+                                end
+
+                                -- Deduct empty pallets from production storage
+                                local emptyIdx = g_fillTypeManager:getFillTypeIndexByName("EMPTYPALLET")
+                                if emptyIdx then
+                                    local currentEmpty = st:getFillLevel(emptyIdx) or 0
+                                    st:setFillLevel(math.max(0, currentEmpty - PALLET_SIZE), emptyIdx)
+                                    print(string.format("[%s] Deducted %d L EMPTYPALLET from production storage", self.modName, PALLET_SIZE))
+                                end
+                            end
+
+                            -- Deduct empty pallets from the farm ledger
+                            local emptyPallets = meats["EMPTYPALLET"] or 0
+                            if emptyPallets >= PALLET_SIZE then
+                                meats["EMPTYPALLET"] = emptyPallets - PALLET_SIZE
+                                print(string.format("[%s] Deducted %d L EMPTYPALLET from farm %d ledger", self.modName, PALLET_SIZE, farmId))
+                            end
+
+                            if self.syncFarmMeat then
+                                self:syncFarmMeat()
+                            end
+                        else
+                            print("["..self.modName.."] Vehicle load failed")
+                        end
+                    end)
+                end
+            end
+        end
+        -- ========== Barn Spawn Block end ==========
+    else
+        print("["..self.modName.."] Spawn skipped (not server)")
+    end
+end
+
+
+function PRBFix:spawnReadyPallet(farmId, fillTypeName)
+    -- This is just a thin wrapper that re-uses the spawn block you already have.
+    -- You can copy the Barn Spawn Block into here if you want it fully separated.
+    print(string.format("[%s] spawnReadyPallet called for %s (farm %d)", self.modName, fillTypeName, farmId))
+    -- For now it will still fall through to your existing onSpawnPalletAction logic
+    -- once the dialog closes and the action is re-triggered, or you can move the spawn block here.
 end
 
 ----------------------------------------------------------------
@@ -1424,6 +1492,41 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
 			PRBFix.farmMeat[farmId][meatName] = (PRBFix.farmMeat[farmId][meatName] or 0) + liters
 			print(string.format("[%s] Credited %.2f L %s to farm %d", self.modName, liters, meatName, farmId))
 
+			-- Credit finished products (Processing) with 1-hour ready time
+			local WAIT_SECONDS = 3600   -- 1 hour for testing
+			local readyAt = g_currentMission.environment.currentMonotonicDay * 86400 + g_currentMission.environment.dayTime / 1000 + WAIT_SECONDS
+
+			PRBFix.farmMeatPallets = PRBFix.farmMeatPallets or {}
+			PRBFix.farmMeatPallets[farmId] = PRBFix.farmMeatPallets[farmId] or {}
+
+			local function addFinished(fillType, amount)
+				if amount > 0.01 then
+					local entry = PRBFix.farmMeatPallets[farmId][fillType] or {amount = 0, readyAt = readyAt}
+					entry.amount = entry.amount + amount
+					entry.readyAt = readyAt
+					PRBFix.farmMeatPallets[farmId][fillType] = entry
+					print(string.format("[%s] Credited %.1f L %s (ready in 1h) to farm %d", self.modName, amount, fillType, farmId))
+				end
+			end
+
+			local meatName = self.ANIMAL_TO_MEAT_FILLTYPE[typeName] or typeName
+			if meatName == "POULTRY" then
+				addFinished("CHICKENFILLET", liters * 35)
+			elseif meatName == "COWMEAT" then
+				addFinished("GROUNDBEEF", liters * 220)
+				addFinished("STEAK", liters * 220)
+				addFinished("SAUSAGE", liters * 105)
+				addFinished("PEPPERONI", liters * 105)
+			elseif meatName == "PIGMEAT" then
+				addFinished("HAM", liters * 220)
+				addFinished("PORK", liters * 220)
+				addFinished("BACON", liters * 105)
+				addFinished("SAUSAGE", liters * 105)
+			elseif meatName == "SHEEPMEAT" then
+				addFinished("MUTTON", liters * 220)
+				addFinished("CHEVON", liters * 220)
+			end
+
 			PRBFix:syncFarmMeat()
 		end
 	end
@@ -1597,6 +1700,19 @@ function PRBFix:saveMeatLedger()
             meatIndex = meatIndex + 1
         end
 
+        -- Finished products (Processing / Available)
+        local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId]) or {}
+        local palletIndex = 0
+        for fillType, entry in pairs(pallets) do
+            if type(entry) == "table" and entry.amount and entry.amount > 0 then
+                local palletKey = string.format("%s.pallet(%d)", farmKey, palletIndex)
+                xmlFile:setString(palletKey .. "#type", fillType)
+                xmlFile:setFloat(palletKey .. "#amount", entry.amount)
+                xmlFile:setFloat(palletKey .. "#readyAt", entry.readyAt or 0)
+                palletIndex = palletIndex + 1
+            end
+        end
+
         farmIndex = farmIndex + 1
     end
 
@@ -1628,6 +1744,7 @@ function PRBFix:loadMeatLedger()
     end
 
     PRBFix.farmMeat = {}
+    PRBFix.farmMeatPallets = {}
 
     local farmIndex = 0
     while true do
@@ -1637,6 +1754,7 @@ function PRBFix:loadMeatLedger()
         local farmId = xmlFile:getInt(farmKey .. "#id")
         if farmId ~= nil then
             PRBFix.farmMeat[farmId] = {}
+            PRBFix.farmMeatPallets[farmId] = {}
 
             local meatIndex = 0
             while true do
@@ -1651,6 +1769,22 @@ function PRBFix:loadMeatLedger()
                 end
 
                 meatIndex = meatIndex + 1
+            end
+
+            local palletIndex = 0
+            while true do
+                local palletKey = string.format("%s.pallet(%d)", farmKey, palletIndex)
+                if not xmlFile:hasProperty(palletKey) then break end
+
+                local fillType = xmlFile:getString(palletKey .. "#type")
+                local amount   = xmlFile:getFloat(palletKey .. "#amount") or 0
+                local readyAt  = xmlFile:getFloat(palletKey .. "#readyAt") or 0
+
+                if fillType ~= nil then
+                    PRBFix.farmMeatPallets[farmId][fillType] = {amount = amount, readyAt = readyAt}
+                end
+
+                palletIndex = palletIndex + 1
             end
         end
 
@@ -1825,40 +1959,95 @@ function PRBFix:drawFarmBalanceOverlay(frame)
     local farmName = (farm and farm.name) or ("Farm " .. currentFarmId)
 
     local lines = {}
-    table.insert(lines, "")
-    table.insert(lines, farmName)
-    table.insert(lines, "---------------------------")
-    table.insert(lines, "Processing Meat Storage")
-    table.insert(lines, "---------------------------")
+    table.insert(lines, {text = "", isHeader = false})
+    table.insert(lines, {text = "FARM: " .. farmName, isHeader = false})
+    table.insert(lines, {text = "--------------------", isHeader = false})
+    table.insert(lines, {text = "Processing", isHeader = true})
 
-    local meatOrder = {"POULTRY", "COWMEAT", "PIGMEAT", "SHEEPMEAT"}
-    local meatNames = {
-        POULTRY   = "Chicken",
-        COWMEAT   = "Cow       ",
-        PIGMEAT   = "Pig         ",
-        SHEEPMEAT = "Sheep    "
+    local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[currentFarmId]) or {}
+    local groups = {
+        { title = "  Chicken Meat", items = {"CHICKENFILLET"} },
+        { title = "  Cow Meat",     items = {"GROUNDBEEF", "STEAK", "SAUSAGE", "PEPPERONI"} },
+        { title = "  Pig Meat",     items = {"BACON", "HAM", "PORK", "SAUSAGE"} },
+        { title = "  Sheep Meat",   items = {"CHEVON", "MUTTON"} }
+    }
+    local productNames = {
+        CHICKENFILLET = "    Chicken Fillet",
+        GROUNDBEEF    = "    Ground Beef",
+        STEAK         = "    Steak",
+        SAUSAGE       = "    Sausage",
+        PEPPERONI     = "    Pepperoni",
+        HAM           = "    Ham",
+        PORK          = "    Pork",
+        BACON         = "    Bacon",
+        MUTTON        = "    Mutton",
+        CHEVON        = "    Chevon"
     }
 
-    local meats = PRBFix.farmMeat[currentFarmId] or {}
-    for _, fillType in ipairs(meatOrder) do
-        local amount = meats[fillType] or 0
-        if amount > 0.01 then
-            local displayName = meatNames[fillType] or fillType
-            table.insert(lines, string.format("%-8s: %.1f L", displayName, amount))
-        end
+    local now = 0
+    if g_currentMission and g_currentMission.environment then
+        now = g_currentMission.environment.currentMonotonicDay * 86400 + g_currentMission.environment.dayTime / 1000
     end
 
+    local hasProcessing = false
+    local hasAvailable = false
+    local availableLines = {}
+
+    for _, group in ipairs(groups) do
+        local groupLines = {}
+        for _, fillType in ipairs(group.items) do
+            local entry = pallets[fillType]
+            if type(entry) == "table" and entry.amount and entry.amount > 0.01 then
+                local displayName = productNames[fillType] or ("    " .. fillType)
+                if entry.readyAt and now >= entry.readyAt then
+                    table.insert(availableLines, {text = displayName, amount = string.format("%.0f L", entry.amount)})
+                    hasAvailable = true
+                else
+                    local remaining = math.max(0, (entry.readyAt or 0) - now)
+                    local hours = math.floor(remaining / 3600)
+                    local mins  = math.floor((remaining % 3600) / 60)
+                    local readyStr = string.format("%dh %02dm", hours, mins)
+                    table.insert(groupLines, {text = displayName, amount = string.format("%.0f L", entry.amount), ready = readyStr})
+                end
+            end
+        end
+        if #groupLines > 0 then
+            hasProcessing = true
+            table.insert(lines, {text = group.title, isHeader = false})
+            for _, line in ipairs(groupLines) do
+                table.insert(lines, line)
+            end
+        end
+    end
+    if not hasProcessing then
+        table.insert(lines, {text = "  (none)", isHeader = false})
+    end
+
+    table.insert(lines, {text = "--------------------", isHeader = false})
+    table.insert(lines, {text = "Empty Pallets", isHeader = false})
+    local meats = PRBFix.farmMeat[currentFarmId] or {}
     local emptyPallets = meats["EMPTYPALLET"] or 0
     if emptyPallets > 0.01 then
-        table.insert(lines, "")
-        table.insert(lines, string.format("Empty Pallet: %.0f L", emptyPallets))
+        table.insert(lines, {text = string.format("  %.0f L", emptyPallets), isHeader = false})
+    else
+        table.insert(lines, {text = "  (none)", isHeader = false})
+    end
+
+    table.insert(lines, {text = "--------------------", isHeader = false})
+    table.insert(lines, {text = "Available for pickup", isHeader = false})
+    if hasAvailable then
+        for _, line in ipairs(availableLines) do
+            table.insert(lines, line)
+        end
+    else
+        table.insert(lines, {text = "  (none)", isHeader = false})
     end
 
     -- Position / size
-    local x = 0.28
+    local x = 0.24 -- higher moves right
     local y = 0.72
     local lineHeight = 0.016
-    local width = 0.08
+    local width = 0.13
     local height = (#lines * lineHeight) + 0.05
 
     if height > 0.55 then
@@ -1872,10 +2061,30 @@ function PRBFix:drawFarmBalanceOverlay(frame)
     setTextColor(1, 1, 1, 1)
 
     local textY = y
+    local nameX   = x
+    local amountX = x + 0.060
+    local readyX  = x + 0.090
+
     for _, line in ipairs(lines) do
-        renderText(x, textY, 0.014, line)
+        if line.isHeader then
+            setTextColor(1, 1, 1, 1)   -- white for headers
+            renderText(nameX, textY, 0.014, line.text)
+            renderText(amountX, textY, 0.014, "Amount")
+            renderText(readyX, textY, 0.014, "Ready In")
+        elseif line.amount then
+            setTextColor(0.6, 0.9, 0.7, 1)   -- light green for product rows
+            renderText(nameX, textY, 0.014, line.text)
+            renderText(amountX, textY, 0.014, line.amount)
+            if line.ready then
+                renderText(readyX, textY, 0.014, line.ready)
+            end
+        else
+            setTextColor(1, 1, 1, 1)   -- white for everything else
+            renderText(nameX, textY, 0.014, line.text)
+        end
         textY = textY - lineHeight
     end
 
+    setTextColor(1, 1, 1, 1)
     setTextBold(false)
 end

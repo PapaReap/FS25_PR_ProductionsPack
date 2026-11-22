@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<GUI onOpen="onOpen" onClose="onClose">
+    <GuiElement profile="dialogBackground">
+        <GuiElement profile="dialogTitle" id="titleText" text="Spawn Pallet"/>
+        <GuiElement profile="dialogText" id="productText" text=""/>
+        <GuiElement profile="dialogText" id="amountText" text=""/>
+        <GuiElement profile="dialogButton" id="okButton" text="Spawn" onClick="onClickOk"/>
+        <GuiElement profile="dialogButton" id="cancelButton" text="Cancel" onClick="onClickCancel"/>
+    </GuiElement>
+</GUI>
