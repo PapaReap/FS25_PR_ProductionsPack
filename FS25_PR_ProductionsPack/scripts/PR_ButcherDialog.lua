@@ -188,6 +188,14 @@ function PRBDialog:onOpen()
     else
         print("[PRBDialog] g_farmManager.farms is nil")
     end
+	
+    if self.dialogElement then
+        self.dialogElement.mouseEvent = function(self, posX, posY, isDown, isUp, button)
+            if isDown and button == Input.MOUSE_BUTTON_LEFT then
+                -- optional: extra click handling if needed
+            end
+        end
+    end
 end
 
 ------------------------------------------------------------

@@ -55,22 +55,61 @@ end
 function PRBSpawnDialog:onOpen()
     PRBSpawnDialog:superClass().onOpen(self)
     self:updateDisplay()
+    if self.dialogElement then
+        self.dialogElement.mouseEvent = self.mouseEvent
+    end
 end
 
 function PRBSpawnDialog:updateDisplay()
+    local maxLines = 15
+    for i = 1, maxLines do
+        local nameEl  = self:getDescendantById("line" .. i)
+        local amtEl   = self:getDescendantById("amt" .. i)
+        local checkEl = self:getDescendantById("check" .. i)
+        if nameEl then 
+            nameEl:setText("")
+            nameEl:setTextColor(1, 1, 1, 1)
+        end
+        if amtEl then 
+            amtEl:setText("")
+            amtEl:setTextColor(1, 1, 1, 1)
+        end
+        if checkEl then checkEl:setText("") end
+    end
+
     if #self.availableList == 0 then
-        if self.productText then self.productText:setText("No pallets ready") end
-        if self.amountText then self.amountText:setText("") end
+        local el = self:getDescendantById("line1")
+        if el then el:setText("No pallets ready") end
         return
     end
 
-    local item = self.availableList[self.selectedIndex]
-    if item then
-        if self.productText then
-            self.productText:setText(string.format("%s  (%d / %d)", item.fillType, self.selectedIndex, #self.availableList))
+    for i, item in ipairs(self.availableList) do
+        if i > maxLines then break end
+        local nameEl  = self:getDescendantById("line" .. i)
+        local amtEl   = self:getDescendantById("amt" .. i)
+        local checkEl = self:getDescendantById("check" .. i)
+
+        local isSelected = (i == self.selectedIndex)
+        local r, g, b = 1, 1, 1
+        if isSelected then
+            r, g, b = 0.3, 1, 0.3   -- bright green for the selected row
         end
-        if self.amountText then
-            self.amountText:setText(string.format("%.0f L", item.amount or 0))
+
+        if nameEl then 
+            nameEl:setText(item.fillType)
+            nameEl:setTextColor(r, g, b, 1)
+        end
+        if amtEl then 
+            amtEl:setText(string.format("%.0f L", item.amount or 0))
+            amtEl:setTextColor(r, g, b, 1)
+        end
+        if checkEl then
+            checkEl:setText(item.selected and "[X]" or "[ ]")
+            if isSelected then
+                checkEl:setTextColor(0.3, 1, 0.3, 1)
+            else
+                checkEl:setTextColor(1, 1, 1, 1)
+            end
         end
     end
 end
@@ -81,18 +120,57 @@ function PRBSpawnDialog:onClickOk()
         return
     end
 
-    local item = self.availableList[self.selectedIndex]
-    if item == nil then
+    local farmId = self.farmId or (g_currentMission and g_currentMission:getFarmId()) or 1
+
+    -- Only spawn the ones the player checked
+    local selected = {}
+    for _, item in ipairs(self.availableList) do
+        if item.selected then
+            table.insert(selected, item)
+        end
+    end
+
+    if #selected == 0 then
+        print("[PR Butcher Spawn Dialog] Nothing selected")
         g_gui:closeDialogByName("PRBSpawnDialog")
         return
     end
 
-    local farmId = self.farmId or (g_currentMission and g_currentMission:getFarmId()) or 1
+    -- Cap at 10
+    local toSpawn = {}
+    for i = 1, math.min(10, #selected) do
+        table.insert(toSpawn, selected[i])
+    end
 
-    print(string.format("[PR Butcher Spawn Dialog] Spawn requested: %s for farm %d", item.fillType, farmId))
+    -- Respect empty pallet balance (1000 L per pallet)
+    local emptyPallets = (PRBFix.farmMeat and PRBFix.farmMeat[farmId] and PRBFix.farmMeat[farmId]["EMPTYPALLET"]) or 0
+    local finalList = {}
+    local remainingEmpty = emptyPallets
 
-    if PRBFix and PRBFix.doSpawnPallet then
-        PRBFix:doSpawnPallet(item.fillType, farmId)
+    for _, item in ipairs(toSpawn) do
+        if remainingEmpty < 1000 then
+            print(string.format("[PR Butcher Spawn Dialog] Out of empty pallets — stopped after %d pallets", #finalList))
+            break
+        end
+        table.insert(finalList, item)
+        remainingEmpty = remainingEmpty - 1000
+    end
+
+    if #finalList == 0 then
+        print("[PR Butcher Spawn Dialog] No empty pallets available")
+        g_gui:closeDialogByName("PRBSpawnDialog")
+        return
+    end
+
+    PRBFix._spawnBatch = finalList
+    PRBFix._spawnIndex = 0
+
+    print(string.format("[PR Butcher Spawn Dialog] Spawning %d products for farm %d", #finalList, farmId))
+
+    for _, item in ipairs(finalList) do
+        if PRBFix and PRBFix.doSpawnPallet then
+            PRBFix:doSpawnPallet(item.fillType, farmId)
+        end
     end
 
     g_gui:closeDialogByName("PRBSpawnDialog")
@@ -115,4 +193,56 @@ function PRBSpawnDialog.show(availableList, farmId)
     dialog.selectedIndex = 1
 
     g_gui:showDialog("PRBSpawnDialog")
+end
+
+function PRBSpawnDialog:keyEvent(unicode, sym, modifier, isDown)
+    if not isDown then return end
+    if #self.availableList == 0 then return end
+
+    if sym == Input.KEY_up then
+        self.selectedIndex = self.selectedIndex - 1
+        if self.selectedIndex < 1 then self.selectedIndex = #self.availableList end
+        self:updateDisplay()
+    elseif sym == Input.KEY_down then
+        self.selectedIndex = self.selectedIndex + 1
+        if self.selectedIndex > #self.availableList then self.selectedIndex = 1 end
+        self:updateDisplay()
+    elseif sym == Input.KEY_space or sym == Input.KEY_return then
+        local item = self.availableList[self.selectedIndex]
+        if item then
+            item.selected = not item.selected
+            self:updateDisplay()
+        end
+    end
+end
+
+function PRBSpawnDialog:mouseEvent(posX, posY, isDown, isUp, button)
+    if not isDown or button ~= Input.MOUSE_BUTTON_LEFT then return end
+    if #self.availableList == 0 then return end
+
+    -- Ignore clicks that are low on the screen (button bar)
+    if posY < 0.18 then return end
+
+    local lineHeight = 0.028
+    local startY = 0.68
+    local leftX  = 0.22
+    local rightX = 0.78
+
+    if posX < leftX or posX > rightX then return end
+
+    for i = 1, math.min(15, #self.availableList) do
+        local lineTop    = startY - (i - 1) * lineHeight
+        local lineBottom = lineTop - lineHeight
+
+        if posY <= lineTop and posY >= lineBottom then
+            local item = self.availableList[i]
+            if item then
+                item.selected = not item.selected
+                self.selectedIndex = i
+                self:updateDisplay()
+                print(string.format("[PR Butcher Spawn Dialog] Toggled line %d (%s)", i, item.fillType))
+            end
+            return
+        end
+    end
 end
