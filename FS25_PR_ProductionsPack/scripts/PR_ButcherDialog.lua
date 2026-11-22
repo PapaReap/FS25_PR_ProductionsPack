@@ -180,8 +180,17 @@ function PRBDialog:onOpen()
     -- Force farm name resolve on open
     self:updateDisplay()
 
-    -- Debug
     print(string.format("[PRBDialog] onOpen selectedFarmId=%s", tostring(self.selectedFarmId)))
+	
+    -- Enable mouse on the buttons without touching the dialog's own input
+    if self.okButton then
+        self.okButton.onClick = self.onClickOk
+    end
+    if self.backButton then
+        self.backButton.onClick = self.onClickBack
+    end
+	
+    -- Debug
     if g_farmManager and g_farmManager.farms then
         local farm = g_farmManager.farms[self.selectedFarmId]
         print(string.format("[PRBDialog] farm object=%s name=%s", tostring(farm), farm and tostring(farm.name) or "nil"))
@@ -189,12 +198,8 @@ function PRBDialog:onOpen()
         print("[PRBDialog] g_farmManager.farms is nil")
     end
 	
-    if self.dialogElement then
-        self.dialogElement.mouseEvent = function(self, posX, posY, isDown, isUp, button)
-            if isDown and button == Input.MOUSE_BUTTON_LEFT then
-                -- optional: extra click handling if needed
-            end
-        end
+    if g_inputBinding then
+        g_inputBinding:setShowMouseCursor(true)
     end
 end
 
@@ -202,6 +207,10 @@ end
 -- CLOSE EVENT
 ------------------------------------------------------------
 function PRBDialog:onClose()
+    if g_inputBinding then
+        g_inputBinding:setShowMouseCursor(false)
+    end
+	
     print("["..PRBFix.modNameDialog.."] Dialog closed")
 end
 
