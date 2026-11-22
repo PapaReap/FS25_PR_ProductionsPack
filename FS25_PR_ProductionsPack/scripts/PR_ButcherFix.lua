@@ -280,25 +280,9 @@ function PRBFix:loadMap()
     print("[PR Butcher Fix] Loading guiProfiles: " .. profilesPath)
     g_gui:loadProfiles(profilesPath)
 
-    -- Load dialog script
+    -- Load animal dialog script
     local dlgPath = modDir .. "scripts/PR_ButcherDialog.lua"
     print("[PR Butcher Fix] Loading PR_ButcherDialog.lua from: " .. dlgPath)
-
-	local spawnDlgPath = modDir .. "scripts/PR_ButcherSpawnDialog.lua"
-	local ok2, err2 = pcall(function()
-		source(spawnDlgPath)
-	end)
-	if ok2 and PRBSpawnDialog and PRBSpawnDialog.register then
-		PRBSpawnDialog.register()
-	end
-
-
-	if PRBDialog and PRBDialog.register then
-		PRBDialog.register()
-		print("[PR Butcher Fix] PRBDialog.register() called")
-	else
-		print("[PR Butcher Fix] PRBDialog.register not found")
-	end
 
     local ok, err = pcall(function()
         source(dlgPath)
@@ -309,6 +293,23 @@ function PRBFix:loadMap()
     else
         print("[PR Butcher Fix] ✓ Dialog script loaded OK")
     end
+
+	-- Load spawn dialog script
+	local spawnDlgPath = modDir .. "scripts/PR_ButcherSpawnDialog.lua"
+	print("[PR Butcher Fix] Loading PR_ButcherSpawnDialog.lua from: " .. spawnDlgPath)
+
+	local ok2, err2 = pcall(function()
+		source(spawnDlgPath)
+	end)
+
+	if not ok2 then
+		print("[PR Butcher Fix] ❌ Error loading spawn dialog: " .. tostring(err2))
+	else
+		print("[PR Butcher Fix] ✓ Spawn dialog script loaded OK")
+		if PRBSpawnDialog and PRBSpawnDialog.register then
+			PRBSpawnDialog.register()
+		end
+	end
 
     -- FOR SERVER LOAD OF SAVED INVENTORY
     self:loadMeatLedger()
@@ -379,6 +380,8 @@ end
 function PRBFix:update(dt)
     -- Always keep input context refreshed
     self:updateInputContext()
+	
+	self:creditProductionOutput()
 
 	-- SET BARN TO STORING ONLY
 	if not self.outputLockTimer then self.outputLockTimer = 0 end
@@ -695,56 +698,45 @@ function PRBFix:onSpawnPalletAction()
     if not self.playerInSpawnTrigger then return end
 
     local farmId = g_currentMission and g_currentMission:getFarmId() or 1
-    local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId]) or {}
-
-    local now = 0
-    if g_currentMission and g_currentMission.environment then
-        now = g_currentMission.environment.currentMonotonicDay * 86400 + g_currentMission.environment.dayTime / 1000
-    end
-
+    local meats = PRBFix.farmMeat[farmId] or {}
     local PALLET_SIZE = 1000
-	
-	print(string.format("[%s] DEBUG now=%.0f", self.modName, now))
-	for fillType, entry in pairs(pallets) do
-		if type(entry) == "table" then
-			print(string.format("[%s] DEBUG %s amount=%.0f readyAt=%s now>=ready=%s",
-				self.modName, fillType, entry.amount or 0, tostring(entry.readyAt), tostring(now >= (entry.readyAt or 0))))
-		end
-	end
-	
     local available = {}
 
     local productOrder = {
-        "CHICKENFILLET", "HAM", "PORK", "BACON", "SAUSAGE", "PEPPERONI",
-        "GROUNDBEEF", "STEAK", "MUTTON", "CHEVON"
+        "CHICKENFILLET", "HAM", "BACON", "SAUSAGE", "PEPPERONI",
+        "STEAK", "GROUNDBEEF", "PORK", "MUTTON", "CHEVON"
     }
 
+    local now = g_currentMission and g_currentMission.time or 0
+
     for _, fillTypeName in ipairs(productOrder) do
-        local entry = pallets[fillTypeName]
-        local amount = (entry and entry.amount) or 0
-        local isReady = entry and entry.readyAt and now >= entry.readyAt
+        local amount = meats[fillTypeName] or 0
+        local readyAt = meats[fillTypeName .. "_readyAt"] or 0
+        local isReady = (now >= readyAt)
+
+        print(string.format("[%s] DEBUG %s amount=%.0f readyAt=%.3f now>=ready=%s",
+            self.modName, fillTypeName, amount, readyAt, tostring(isReady)))
 
         if amount >= PALLET_SIZE and isReady then
-            table.insert(available, {fillType = fillTypeName, amount = amount})
+            table.insert(available, {
+                fillType = fillTypeName,
+                amount = amount
+            })
         end
     end
 
-	print(string.format("[%s] DEBUG available count = %d", self.modName, #available))
-	print(string.format("[%s] DEBUG PRBDialog = %s  showSpawnDialog = %s",
-
-    self.modName, tostring(PRBDialog), tostring(PRBDialog and PRBDialog.showSpawnDialog)))
-
+    print(string.format("[%s] DEBUG available count = %d", self.modName, #available))
 
     if #available == 0 then
         print(string.format("[%s] Farm %d does not have enough of any ready product for a pallet", self.modName, farmId))
         return
     end
 
-	if PRBSpawnDialog and PRBSpawnDialog.show then
-		PRBSpawnDialog.show(available, farmId)
-	else
-		print("[PR Butcher Fix] PRBSpawnDialog.show not available")
-	end
+    if PRBSpawnDialog and PRBSpawnDialog.show then
+        PRBSpawnDialog.show(available, farmId)
+    else
+        print("[PR Butcher Fix] PRBSpawnDialog.show not available")
+    end
 end
 
 function PRBFix:spawnReadyPallet(farmId, fillTypeName)
@@ -851,6 +843,42 @@ function PRBFix:spawnReadyPallet(farmId, fillTypeName)
     end
 end
 
+function PRBFix:creditProductionOutput()
+    local barn = self.butcherBarnPlaceable
+    if barn == nil then return end
+
+    local spec = barn.spec_extendedProductionPoint
+    if spec == nil or spec.productionPoint == nil or spec.productionPoint.storage == nil then return end
+
+    local storage = spec.productionPoint.storage
+    local farmId = g_currentMission and g_currentMission:getFarmId() or 1
+
+    local productOrder = {
+        "CHICKENFILLET", "HAM", "BACON", "SAUSAGE", "PEPPERONI",
+        "STEAK", "GROUNDBEEF", "PORK", "MUTTON", "CHEVON"
+    }
+
+    if PRBFix.lastOutputLevels == nil then
+        PRBFix.lastOutputLevels = {}
+    end
+
+    for _, fillTypeName in ipairs(productOrder) do
+        local ftIdx = g_fillTypeManager:getFillTypeIndexByName(fillTypeName)
+        if ftIdx then
+            local current = storage:getFillLevel(ftIdx) or 0
+            local last = PRBFix.lastOutputLevels[fillTypeName] or 0
+
+            if current > last + 0.01 then
+                local added = current - last
+                PRBFix.farmMeat[farmId] = PRBFix.farmMeat[farmId] or {}
+                PRBFix.farmMeat[farmId][fillTypeName] = (PRBFix.farmMeat[farmId][fillTypeName] or 0) + added
+                print(string.format("[%s] Credited %.2f L %s to farm %d", self.modName, added, fillTypeName, farmId))
+            end
+
+            PRBFix.lastOutputLevels[fillTypeName] = current
+        end
+    end
+end
 
 function PRBFix:spawnReadyPallet(farmId, fillTypeName)
     -- This is just a thin wrapper that re-uses the spawn block you already have.
@@ -859,6 +887,121 @@ function PRBFix:spawnReadyPallet(farmId, fillTypeName)
     -- For now it will still fall through to your existing onSpawnPalletAction logic
     -- once the dialog closes and the action is re-triggered, or you can move the spawn block here.
 end
+
+function PRBFix:doSpawnPallet(fillTypeName, farmId)
+    local PALLET_SIZE = 1000
+
+    if g_server == nil then
+        print("["..self.modName.."] Spawn skipped (not server)")
+        return
+    end
+
+    local barn = self.butcherBarnPlaceable
+    if barn == nil or barn.i3dMappings == nil or barn.i3dMappings["spawnSpace1start"] == nil then
+        print("["..self.modName.."] No spawn node")
+        return
+    end
+
+    local spawnNode = barn.i3dMappings["spawnSpace1start"].nodeId
+    if spawnNode == nil or spawnNode == 0 then return end
+
+    local x, y, z = getWorldTranslation(spawnNode)
+    local rx, ry, rz = getWorldRotation(spawnNode)
+
+    local palletXml = {
+        CHICKENFILLET = "xml/pallets/chickenfilletPallet.xml",
+        HAM           = "xml/pallets/hamPallet.xml",
+        PORK          = "xml/pallets/porkPallet.xml",
+        BACON         = "xml/pallets/baconPallet.xml",
+        SAUSAGE       = "xml/pallets/sausagePallet.xml",
+        PEPPERONI     = "xml/pallets/pepperoniPallet.xml",
+        GROUNDBEEF    = "xml/pallets/groundbeefPallet.xml",
+        STEAK         = "xml/pallets/steakPallet.xml",
+        MUTTON        = "xml/pallets/muttonPallet.xml",
+        CHEVON        = "xml/pallets/chevonPallet.xml",
+    }
+
+    local relPath = palletXml[fillTypeName]
+    if relPath == nil then
+        print("["..self.modName.."] No XML for " .. fillTypeName)
+        return
+    end
+
+    local xmlFilename = (PRBFix.modDirectory or g_currentModDirectory or "") .. relPath
+    print(string.format("[%s] Spawning %s at %.1f %.1f %.1f", self.modName, fillTypeName, x, y, z))
+
+    local data = VehicleLoadingData.new()
+    data:setFilename(xmlFilename)
+    data:setPosition(x, y + 0.2, z)
+    data:setRotation(rx, ry, rz)
+    data:setPropertyState(VehiclePropertyState.OWNED)
+    data:setOwnerFarmId(farmId)
+
+    data:load(function(_, vehicles, vehicleLoadState, _)
+        if vehicleLoadState == VehicleLoadingState.OK and vehicles and vehicles[1] then
+            local vehicle = vehicles[1]
+            vehicle:emptyAllFillUnits(true)
+            local ftIdx = g_fillTypeManager:getFillTypeIndexByName(fillTypeName)
+            if ftIdx then
+                vehicle:addFillUnitFillLevel(farmId, 1, PALLET_SIZE, ftIdx, ToolType.UNDEFINED, nil)
+            end
+            print(string.format("[%s] Successfully spawned %s pallet for farm %d", self.modName, fillTypeName, farmId))
+
+            -- Deduct from production storage
+            local spec = barn.spec_extendedProductionPoint
+            if spec and spec.productionPoint and spec.productionPoint.storage then
+                local st = spec.productionPoint.storage
+                if ftIdx then
+                    local current = st:getFillLevel(ftIdx) or 0
+                    st:setFillLevel(math.max(0, current - PALLET_SIZE), ftIdx)
+                    print(string.format("[%s] Deducted %d L %s from production storage", self.modName, PALLET_SIZE, fillTypeName))
+                end
+
+                local emptyIdx = g_fillTypeManager:getFillTypeIndexByName("EMPTYPALLET")
+                if emptyIdx then
+                    local currentEmpty = st:getFillLevel(emptyIdx) or 0
+                    st:setFillLevel(math.max(0, currentEmpty - PALLET_SIZE), emptyIdx)
+                    print(string.format("[%s] Deducted %d L EMPTYPALLET from production storage", self.modName, PALLET_SIZE))
+                end
+            end
+
+            -- Deduct empty pallets from the farm ledger
+            if PRBFix.farmMeat and PRBFix.farmMeat[farmId] then
+                local emptyPallets = PRBFix.farmMeat[farmId]["EMPTYPALLET"] or 0
+                if emptyPallets >= PALLET_SIZE then
+                    PRBFix.farmMeat[farmId]["EMPTYPALLET"] = emptyPallets - PALLET_SIZE
+                    print(string.format("[%s] Deducted %d L EMPTYPALLET from farm %d ledger", self.modName, PALLET_SIZE, farmId))
+                end
+
+                -- Deduct the product from the farm ledger
+                local productAmount = PRBFix.farmMeat[farmId][fillTypeName] or 0
+                if productAmount >= PALLET_SIZE then
+                    PRBFix.farmMeat[farmId][fillTypeName] = productAmount - PALLET_SIZE
+                    print(string.format("[%s] Deducted %d L %s from farm %d ledger", self.modName, PALLET_SIZE, fillTypeName, farmId))
+                end
+            end
+
+            -- Also deduct from farmMeatPallets (what the overlay reads)
+            if PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId] then
+                local entry = PRBFix.farmMeatPallets[farmId][fillTypeName]
+                if type(entry) == "table" and entry.amount and entry.amount >= PALLET_SIZE then
+                    entry.amount = entry.amount - PALLET_SIZE
+                    if entry.amount < 0.01 then
+                        PRBFix.farmMeatPallets[farmId][fillTypeName] = nil
+                    end
+                    print(string.format("[%s] Deducted %d L %s from farmMeatPallets", self.modName, PALLET_SIZE, fillTypeName))
+                end
+            end
+
+            if self.syncFarmMeat then
+                self:syncFarmMeat()
+            end
+        else
+            print("["..self.modName.."] Vehicle load failed")
+        end
+    end)
+end
+
 
 ----------------------------------------------------------------
 -- TRIGGER CALLBACK

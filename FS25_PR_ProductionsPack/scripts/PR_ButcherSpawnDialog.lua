@@ -3,6 +3,10 @@ PRBSpawnDialog = {}
 local PRBSpawnDialog_mt = Class(PRBSpawnDialog, DialogElement)
 
 function PRBSpawnDialog.register()
+    if PRBSpawnDialog.INSTANCE ~= nil then
+        return
+    end
+
     local modDir = PRBFix.modDirectory or g_currentModDirectory
     if modDir == nil then
         print("[PR Butcher Spawn Dialog] modDir is nil")
@@ -10,8 +14,34 @@ function PRBSpawnDialog.register()
     end
 
     local xmlPath = modDir .. "gui/ButcherSpawnDialog.xml"
-    g_gui:loadGui(xmlPath, "PRBSpawnDialog", PRBSpawnDialog.new, true)
-    print("[PR Butcher Spawn Dialog] Registered")
+    if not fileExists(xmlPath) then
+        print("[PR Butcher Spawn Dialog] XML missing: " .. xmlPath)
+        return
+    end
+
+    print("[PR Butcher Spawn Dialog] Registering at: " .. xmlPath)
+
+	-- Create instance the same way the animal dialog does
+	local instance = ScreenElement.new(nil)
+	instance.onOpen = PRBSpawnDialog.onOpen
+	instance.onClose = PRBSpawnDialog.onClose
+	instance.onClickOk = PRBSpawnDialog.onClickOk
+	instance.onClickCancel = PRBSpawnDialog.onClickCancel
+	instance.setSpawnData = PRBSpawnDialog.setSpawnData
+	instance.updateDisplay = PRBSpawnDialog.updateDisplay
+	instance.keyEvent = PRBSpawnDialog.keyEvent
+
+    local ok, err = pcall(function()
+        g_gui:loadGui(xmlPath, "PRBSpawnDialog", instance)
+    end)
+
+    if not ok then
+        print("[PR Butcher Spawn Dialog] loadGui failed: " .. tostring(err))
+        return
+    end
+
+    PRBSpawnDialog.INSTANCE = instance
+    print("[PR Butcher Spawn Dialog] Registered successfully")
 end
 
 function PRBSpawnDialog.new(target, custom_mt)
@@ -46,17 +76,31 @@ function PRBSpawnDialog:updateDisplay()
 end
 
 function PRBSpawnDialog:onClickOk()
-    local item = self.availableList[self.selectedIndex]
-    if item then
-        print(string.format("[PR Butcher Spawn Dialog] Spawn requested: %s", item.fillType))
-        -- TODO: call the actual spawn function here
-        -- PRBFix:doSpawnPallet(item.fillType, self.farmId)
+    if not self.availableList or #self.availableList == 0 then
+        g_gui:closeDialogByName("PRBSpawnDialog")
+        return
     end
-    self:close()
+
+    local item = self.availableList[self.selectedIndex]
+    if item == nil then
+        g_gui:closeDialogByName("PRBSpawnDialog")
+        return
+    end
+
+    local farmId = self.farmId or (g_currentMission and g_currentMission:getFarmId()) or 1
+
+    print(string.format("[PR Butcher Spawn Dialog] Spawn requested: %s for farm %d", item.fillType, farmId))
+
+    if PRBFix and PRBFix.doSpawnPallet then
+        PRBFix:doSpawnPallet(item.fillType, farmId)
+    end
+
+    g_gui:closeDialogByName("PRBSpawnDialog")
 end
 
 function PRBSpawnDialog:onClickCancel()
-    self:close()
+    print("[PR Butcher Spawn Dialog] Cancel clicked")
+    g_gui:closeDialogByName("PRBSpawnDialog")
 end
 
 function PRBSpawnDialog.show(availableList, farmId)

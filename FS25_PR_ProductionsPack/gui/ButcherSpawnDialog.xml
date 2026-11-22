@@ -1,10 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<GUI onOpen="onOpen" onClose="onClose">
-    <GuiElement profile="dialogBackground">
-        <GuiElement profile="dialogTitle" id="titleText" text="Spawn Pallet"/>
-        <GuiElement profile="dialogText" id="productText" text=""/>
-        <GuiElement profile="dialogText" id="amountText" text=""/>
-        <GuiElement profile="dialogButton" id="okButton" text="Spawn" onClick="onClickOk"/>
-        <GuiElement profile="dialogButton" id="cancelButton" text="Cancel" onClick="onClickCancel"/>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<GUI onCreate="onCreate" onOpen="onOpen" onClose="onClose">
+
+    <GuiElement profile="newLayer" />
+    <Bitmap profile="dialogFullscreenBg" id="dialogBg" />
+
+    <GuiElement profile="prb_dialogBg" id="dialogElement">
+        <ThreePartBitmap profile="fs25_dialogBgMiddleSmall"/>
+        <ThreePartBitmap profile="fs25_dialogBgTopSmall"/>
+        <ThreePartBitmap profile="fs25_dialogBgBottom"/>
+
+        <GuiElement profile="fs25_dialogContentContainer" id="contentArea">
+
+            <Text id="titleText"
+                  profile="fs25_dialogTitle"
+                  text="SPAWN PALLET"
+                  position="0px -8px" />
+
+            <Text id="productText"
+                  profile="prb_dialogText"
+                  text="Product"
+                  position="0px -90px" />
+
+            <Text id="amountText"
+                  profile="prb_dialogText"
+                  text="Amount"
+                  position="0px -130px" />
+
+        </GuiElement>
+
+        <BoxLayout profile="fs25_dialogButtonBox">
+            <Button id="okButton"
+                    profile="buttonOK"
+                    text="Spawn"
+                    onClick="onClickOk" />
+            <Bitmap profile="fs25_dialogButtonBoxSeparator" />
+            <Button id="backButton"
+                    profile="buttonBack"
+                    text="Cancel"
+                    onClick="onClickCancel" />
+        </BoxLayout>
+
     </GuiElement>
 </GUI>
