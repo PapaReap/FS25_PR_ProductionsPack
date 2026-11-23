@@ -21,7 +21,6 @@ PRBFix.butcherBarnPlaceable = nil
 PRBFix.playerInTrigger = false
 
 PRBFix.farmMeat = PRBFix.farmMeat or {}
-PRBFix.syncedPlayers = PRBFix.syncedPlayers or {}
 
 addModEventListener(PRBFix)
 
@@ -183,36 +182,6 @@ function PRBFix:syncFarmMeat()
     end
 end
 
-
-
-PR_ButcherRequestSyncEvent = {}
-local PR_ButcherRequestSyncEvent_mt = Class(PR_ButcherRequestSyncEvent, Event)
-
-function PR_ButcherRequestSyncEvent.new()
-    local self = Event.new(PR_ButcherRequestSyncEvent_mt)
-    return self
-end
-
-function PR_ButcherRequestSyncEvent:readStream(streamId, connection)
-    self:run(connection)
-end
-
-function PR_ButcherRequestSyncEvent:writeStream(streamId, connection)
-end
-
-function PR_ButcherRequestSyncEvent:run(connection)
-    if g_server ~= nil then
-        -- Send the current ledger back to the player who asked
-        connection:sendEvent(PR_ButcherSyncEvent.new(PRBFix.farmMeat or {}))
-        print("[PR Butcher Fix] Sent ledger sync on client request")
-    end
-end
-
-
-
-
-
-
 -- Returns breed multiplier for an animal cluster
 function PRBFix:getBreedMultiplier(animalType, cluster)
     local default = 1.0
@@ -327,11 +296,6 @@ function PRBFix:loadMap()
         end
     end
 
-	-- Client asks server for the current ledger
-	if g_server == nil and g_client ~= nil then
-		g_client:getServerConnection():sendEvent(PR_ButcherRequestSyncEvent.new())
-	end
-
     self:loadMeatLedger()
     print(string.format("[%s] loadMap called (v%s)", self.modName, PRBFix.VERSION))
 end
@@ -441,6 +405,16 @@ function PRBFix:update(dt)
             end
         end
     end
+
+	-- Server pushes the ledger to everyone every 5 min
+	if g_server ~= nil then
+		if PRBFix.pushTimer == nil then PRBFix.pushTimer = 0 end
+		PRBFix.pushTimer = PRBFix.pushTimer + dt
+		if PRBFix.pushTimer > 300000 then
+			PRBFix.pushTimer = 0
+			g_server:broadcastEvent(PR_ButcherSyncEvent.new(PRBFix.farmMeat or {}))
+		end
+	end
 
     -- Retry placeable scan until barn is found
     if not self.placeablesScanned and g_currentMission and g_currentMission.placeableSystem then
