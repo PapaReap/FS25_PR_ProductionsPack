@@ -12,76 +12,72 @@
 
         <GuiElement profile="fs25_dialogContentContainer" id="contentArea">
 
-            <Text id="titleText" profile="fs25_dialogTitle" text="SPAWN PALLETS" position="0px -8px" />
+            <Text id="titleText" profile="fs25_dialogTitle" text="PICKUP PALLETS" position="0px -8px" />
+			<!-- hints -->
+			<Text id="hint1" profile="prb_helperText" text="Use ↑/↓ arrows to move between pallets." position="0px -55px"/>
+			<Text id="hint2" profile="prb_helperText" text="Use SPACEBAR to select pallets." position="0px -75px"/>
+			<Text id="hint3" profile="prb_helperText" text="Pallet usage = 1000 Liter per 1 pallet spawned." position="0px -95px"/>
+			<Text id="hint4" profile="prb_helperText" text="Partial pickup spawned still consumes 1000 Liters of pallet." position="0px -115px"/>
 
-            <Text id="headerCheck" profile="fs25_dialogTitle" text="" position="-200px -50px" textAlignment="center" />
-            <Text id="headerName"  profile="fs25_dialogTitle" text="Product" position="-80px -50px" textAlignment="left" />
-            <Text id="headerAmount" profile="fs25_dialogTitle" text="Amount" position="120px -50px" textAlignment="right" />
+			<!-- labels -->
+			<Text id="palletStorageLabel" profile="prb_dialogText" text="PALLET STORAGE" position="-205px -155px"/>
+			<Text id="palletStorageValue" profile="prb_dialogText" text="0 L" textColor="0.4 1 0.4 1" position="120px -155px"/>
 
-            <Text id="check1"  profile="fs25_dialogTitle" text="" position="-200px -90px"  textAlignment="center" />
-            <Text id="line1"   profile="fs25_dialogTitle" text="" position="-80px -90px"   textAlignment="left" />
-            <Text id="amt1"    profile="fs25_dialogTitle" text="" position="120px -90px"   textAlignment="right" />
+			<Text id="headerName"  profile="prb_dialogText" text="AVAILABLE FOR PICKUP" position="-205px -195px"/>
+			<Text id="headerAmount" profile="prb_dialogText" text="AMOUNT" position="120px -195px"/>
 
-            <Text id="check2"  profile="fs25_dialogTitle" text="" position="-200px -120px" textAlignment="center" />
-            <Text id="line2"   profile="fs25_dialogTitle" text="" position="-80px -120px"  textAlignment="left" />
-            <Text id="amt2"    profile="fs25_dialogTitle" text="" position="120px -120px"  textAlignment="right" />
+			<!-- product -->
+			<Text id="line1" 	profile="prb_dialogText" text="" position="-205px -225px" textAlignment="left" />
+			<Text id="check1"  	profile="prb_dialogText" text="" position="-265px -225px" textAlignment="center" />
+			<Text id="amt1"  	profile="prb_dialogText" text="" position="120px -225px"  textAlignment="left" />
 
-            <Text id="check3"  profile="fs25_dialogTitle" text="" position="-200px -150px" textAlignment="center" />
-            <Text id="line3"   profile="fs25_dialogTitle" text="" position="-80px -150px"  textAlignment="left" />
-            <Text id="amt3"    profile="fs25_dialogTitle" text="" position="120px -150px"  textAlignment="right" />
+            <Text id="line2"	profile="prb_dialogText" text="" position="-205px -250px" textAlignment="left" />
+			<Text id="check2"	profile="prb_dialogText" text="" position="-265px -250px" textAlignment="center" />
+            <Text id="amt2"		profile="prb_dialogText" text="" position="120px -250px"  textAlignment="left" />
 
-            <Text id="check4"  profile="fs25_dialogTitle" text="" position="-200px -180px" textAlignment="center" />
-            <Text id="line4"   profile="fs25_dialogTitle" text="" position="-80px -180px"  textAlignment="left" />
-            <Text id="amt4"    profile="fs25_dialogTitle" text="" position="120px -180px"  textAlignment="right" />
+            <Text id="line3"   profile="prb_dialogText" text="" position="-205px -275px" textAlignment="left" />
+			<Text id="check3"  profile="prb_dialogText" text="" position="-265px -275px" textAlignment="center" />
+            <Text id="amt3"    profile="prb_dialogText" text="" position="120px -275px"  textAlignment="left" />
 
-            <Text id="check5"  profile="fs25_dialogTitle" text="" position="-200px -210px" textAlignment="center" />
-            <Text id="line5"   profile="fs25_dialogTitle" text="" position="-80px -210px"  textAlignment="left" />
-            <Text id="amt5"    profile="fs25_dialogTitle" text="" position="120px -210px"  textAlignment="right" />
+            <Text id="line4"   profile="prb_dialogText" text="" position="-205px -300px" textAlignment="left" />
+			<Text id="check4"  profile="prb_dialogText" text="" position="-265px -300px" textAlignment="center" />
+            <Text id="amt4"    profile="prb_dialogText" text="" position="120px -300px"  textAlignment="left" />
 
-            <Text id="check6"  profile="fs25_dialogTitle" text="" position="-200px -240px" textAlignment="center" />
-            <Text id="line6"   profile="fs25_dialogTitle" text="" position="-80px -240px"  textAlignment="left" />
-            <Text id="amt6"    profile="fs25_dialogTitle" text="" position="120px -240px"  textAlignment="right" />
+            <Text id="line5"   profile="prb_dialogText" text="" position="-205px -325px" textAlignment="left" />
+			<Text id="check5"  profile="prb_dialogText" text="" position="-265px -325px" textAlignment="center" />
+            <Text id="amt5"    profile="prb_dialogText" text="" position="120px -325px"  textAlignment="left" />
 
-            <Text id="check7"  profile="fs25_dialogTitle" text="" position="-200px -270px" textAlignment="center" />
-            <Text id="line7"   profile="fs25_dialogTitle" text="" position="-80px -270px"  textAlignment="left" />
-            <Text id="amt7"    profile="fs25_dialogTitle" text="" position="120px -270px"  textAlignment="right" />
+            <Text id="line6"   profile="prb_dialogText" text="" position="-205px -350px" textAlignment="left" />
+			<Text id="check6"  profile="prb_dialogText" text="" position="-265px -350px" textAlignment="center" />
+            <Text id="amt6"    profile="prb_dialogText" text="" position="120px -350px"  textAlignment="left" />
 
-            <Text id="check8"  profile="fs25_dialogTitle" text="" position="-200px -300px" textAlignment="center" />
-            <Text id="line8"   profile="fs25_dialogTitle" text="" position="-80px -300px"  textAlignment="left" />
-            <Text id="amt8"    profile="fs25_dialogTitle" text="" position="120px -300px"  textAlignment="right" />
+            <Text id="line7"   profile="prb_dialogText" text="" position="-205px -375px" textAlignment="left" />
+			<Text id="check7"  profile="prb_dialogText" text="" position="-265px -375px" textAlignment="center" />
+            <Text id="amt7"    profile="prb_dialogText" text="" position="120px -375px"  textAlignment="left" />
 
-            <Text id="check9"  profile="fs25_dialogTitle" text="" position="-200px -330px" textAlignment="center" />
-            <Text id="line9"   profile="fs25_dialogTitle" text="" position="-80px -330px"  textAlignment="left" />
-            <Text id="amt9"    profile="fs25_dialogTitle" text="" position="120px -330px"  textAlignment="right" />
+            <Text id="line8"   profile="prb_dialogText" text="" position="-205px -400px" textAlignment="left" />
+			<Text id="check8"  profile="prb_dialogText" text="" position="-265px -400px" textAlignment="center" />
+            <Text id="amt8"    profile="prb_dialogText" text="" position="120px -400px"  textAlignment="left" />
 
-            <Text id="check10" profile="fs25_dialogTitle" text="" position="-200px -360px" textAlignment="center" />
-            <Text id="line10"  profile="fs25_dialogTitle" text="" position="-80px -360px"  textAlignment="left" />
-            <Text id="amt10"   profile="fs25_dialogTitle" text="" position="120px -360px"  textAlignment="right" />
+            <Text id="line9"   profile="prb_dialogText" text="" position="-205px -425px" textAlignment="left" />
+			<Text id="check9"  profile="prb_dialogText" text="" position="-265px -425px" textAlignment="center" />
+            <Text id="amt9"    profile="prb_dialogText" text="" position="120px -425px"  textAlignment="left" />
 
-            <Text id="check11" profile="fs25_dialogTitle" text="" position="-200px -390px" textAlignment="center" />
-            <Text id="line11"  profile="fs25_dialogTitle" text="" position="-80px -390px"  textAlignment="left" />
-            <Text id="amt11"   profile="fs25_dialogTitle" text="" position="120px -390px"  textAlignment="right" />
+            <Text id="line10"  profile="prb_dialogText" text="" position="-205px -450px" textAlignment="left" />
+			<Text id="check10" profile="prb_dialogText" text="" position="-265px -450px" textAlignment="center" />
+            <Text id="amt10"   profile="prb_dialogText" text="" position="120px -450px"  textAlignment="left" />
 
-            <Text id="check12" profile="fs25_dialogTitle" text="" position="-200px -420px" textAlignment="center" />
-            <Text id="line12"  profile="fs25_dialogTitle" text="" position="-80px -420px"  textAlignment="left" />
-            <Text id="amt12"   profile="fs25_dialogTitle" text="" position="120px -420px"  textAlignment="right" />
+            <Text id="line11"  profile="prb_dialogText" text="" position="-205px -475px" textAlignment="left" />
+			<Text id="check11" profile="prb_dialogText" text="" position="-265px -475px" textAlignment="center" />
+            <Text id="amt11"   profile="prb_dialogText" text="" position="120px -475px"  textAlignment="left" />
 
-            <Text id="check13" profile="fs25_dialogTitle" text="" position="-200px -450px" textAlignment="center" />
-            <Text id="line13"  profile="fs25_dialogTitle" text="" position="-80px -450px"  textAlignment="left" />
-            <Text id="amt13"   profile="fs25_dialogTitle" text="" position="120px -450px"  textAlignment="right" />
-
-            <Text id="check14" profile="fs25_dialogTitle" text="" position="-200px -480px" textAlignment="center" />
-            <Text id="line14"  profile="fs25_dialogTitle" text="" position="-80px -480px"  textAlignment="left" />
-            <Text id="amt14"   profile="fs25_dialogTitle" text="" position="120px -480px"  textAlignment="right" />
-
-            <Text id="check15" profile="fs25_dialogTitle" text="" position="-200px -510px" textAlignment="center" />
-            <Text id="line15"  profile="fs25_dialogTitle" text="" position="-80px -510px"  textAlignment="left" />
-            <Text id="amt15"   profile="fs25_dialogTitle" text="" position="120px -510px"  textAlignment="right" />
-
+            <Text id="line12"  profile="prb_dialogText" text="" position="-205px -500px" textAlignment="left" />
+			<Text id="check12" profile="prb_dialogText" text="" position="-265px -500px" textAlignment="center" />
+            <Text id="amt12"   profile="prb_dialogText" text="" position="120px -500px"  textAlignment="left" />
         </GuiElement>
 
         <BoxLayout profile="fs25_dialogButtonBox">
-            <Button id="okButton" profile="buttonOK" text="Spawn All" onClick="onClickOk" />
+            <Button id="okButton" profile="buttonOK" text="Pickup Selected" onClick="onClickOk" />
             <Bitmap profile="fs25_dialogButtonBoxSeparator" />
             <Button id="backButton" profile="buttonBack" text="Cancel" onClick="onClickCancel" />
         </BoxLayout>

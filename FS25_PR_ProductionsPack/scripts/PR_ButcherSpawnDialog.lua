@@ -61,7 +61,7 @@ function PRBSpawnDialog:onOpen()
 end
 
 function PRBSpawnDialog:updateDisplay()
-    local maxLines = 15
+    local maxLines = 12
     for i = 1, maxLines do
         local nameEl  = self:getDescendantById("line" .. i)
         local amtEl   = self:getDescendantById("amt" .. i)
@@ -77,9 +77,22 @@ function PRBSpawnDialog:updateDisplay()
         if checkEl then checkEl:setText("") end
     end
 
+    -- Show remaining empty pallets
+    local empty = 0
+    if self.farmId and PRBFix.farmMeat and PRBFix.farmMeat[self.farmId] then
+        empty = PRBFix.farmMeat[self.farmId]["EMPTYPALLET"] or 0
+    end
+    local storageEl = self:getDescendantById("palletStorageValue")
+    if storageEl then
+        storageEl:setText(string.format("%.0f L", empty))
+    end
+
     if #self.availableList == 0 then
-        local el = self:getDescendantById("line1")
-        if el then el:setText("No pallets ready") end
+        local nameEl = self:getDescendantById("line1")
+        if nameEl then
+            nameEl:setText("No products ready for pickup")
+            nameEl:setTextColor(1, 0.85, 0.3, 1)
+        end
         return
     end
 
@@ -92,11 +105,14 @@ function PRBSpawnDialog:updateDisplay()
         local isSelected = (i == self.selectedIndex)
         local r, g, b = 1, 1, 1
         if isSelected then
-            r, g, b = 0.3, 1, 0.3   -- bright green for the selected row
+            r, g, b = 0.3, 1, 0.3
         end
 
         if nameEl then 
-            nameEl:setText(item.fillType)
+            -- nameEl:setText(item.fillType)
+            -- nameEl:setTextColor(r, g, b, 1)
+            local displayName = item.fillType:sub(1,1):upper() .. item.fillType:sub(2):lower()
+            nameEl:setText(displayName)
             nameEl:setTextColor(r, g, b, 1)
         end
         if amtEl then 
@@ -105,11 +121,7 @@ function PRBSpawnDialog:updateDisplay()
         end
         if checkEl then
             checkEl:setText(item.selected and "[X]" or "[ ]")
-            if isSelected then
-                checkEl:setTextColor(0.3, 1, 0.3, 1)
-            else
-                checkEl:setTextColor(1, 1, 1, 1)
-            end
+            checkEl:setTextColor(r, g, b, 1)
         end
     end
 end

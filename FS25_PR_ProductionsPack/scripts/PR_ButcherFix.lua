@@ -614,13 +614,9 @@ function PRBFix:onSpawnPalletAction()
         end
     end
 
-    if #readyProducts == 0 then
-        print(string.format("[%s] Farm %d has no products ready for pickup", self.modName, farmId))
-        return
-    end
-
     table.sort(readyProducts, function(a, b) return a.fillType < b.fillType end)
 
+    -- Always open the dialog, even when the list is empty
     if PRBSpawnDialog and PRBSpawnDialog.show then
         PRBSpawnDialog.show(readyProducts, farmId)
     else
