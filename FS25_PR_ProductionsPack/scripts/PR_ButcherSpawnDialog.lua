@@ -134,11 +134,10 @@ function PRBSpawnDialog:onClickOk()
 
     local farmId = self.farmId or (g_currentMission and g_currentMission:getFarmId()) or 1
 
-    -- Only spawn the ones the player checked
     local selected = {}
     for _, item in ipairs(self.availableList) do
         if item.selected then
-            table.insert(selected, item)
+            table.insert(selected, item.fillType)
         end
     end
 
@@ -154,35 +153,15 @@ function PRBSpawnDialog:onClickOk()
         table.insert(toSpawn, selected[i])
     end
 
-    -- Respect empty pallet balance (1000 L per pallet)
-    local emptyPallets = (PRBFix.farmMeat and PRBFix.farmMeat[farmId] and PRBFix.farmMeat[farmId]["EMPTYPALLET"]) or 0
-    local finalList = {}
-    local remainingEmpty = emptyPallets
+    print(string.format("[PR Butcher Spawn Dialog] Requesting spawn of %d products for farm %d", #toSpawn, farmId))
 
-    for _, item in ipairs(toSpawn) do
-        if remainingEmpty < 1000 then
-            print(string.format("[PR Butcher Spawn Dialog] Out of empty pallets — stopped after %d pallets", #finalList))
-            break
-        end
-        table.insert(finalList, item)
-        remainingEmpty = remainingEmpty - 1000
-    end
-
-    if #finalList == 0 then
-        print("[PR Butcher Spawn Dialog] No empty pallets available")
-        g_gui:closeDialogByName("PRBSpawnDialog")
-        return
-    end
-
-    PRBFix._spawnBatch = finalList
-    PRBFix._spawnIndex = 0
-
-    print(string.format("[PR Butcher Spawn Dialog] Spawning %d products for farm %d", #finalList, farmId))
-
-    for _, item in ipairs(finalList) do
-        if PRBFix and PRBFix.doSpawnPallet then
-            PRBFix:doSpawnPallet(item.fillType, farmId)
-        end
+    -- Send request to the server
+    if g_server then
+        -- We are the server, do it directly
+        PRBFix:handleSpawnRequest(toSpawn, farmId)
+    else
+        -- Client: send event
+        g_client:getServerConnection():sendEvent(PR_SpawnPalletsEvent.new(toSpawn, farmId))
     end
 
     g_gui:closeDialogByName("PRBSpawnDialog")

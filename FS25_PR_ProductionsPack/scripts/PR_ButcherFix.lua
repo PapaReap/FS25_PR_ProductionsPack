@@ -771,6 +771,37 @@ function PRBFix:doSpawnPallet(fillTypeName, farmId)
 end
 
 ----------------------------------------------------------------
+-- SERVER HANDLE PALLET SPAWN
+-- Server-only. Caps at 10, respects empty pallet ledger, spawns whatever amount is ready
+----------------------------------------------------------------
+function PRBFix:handleSpawnRequest(fillTypes, farmId)
+    if not g_server then return end
+
+    local emptyPallets = (self.farmMeat and self.farmMeat[farmId] and self.farmMeat[farmId]["EMPTYPALLET"]) or 0
+    local spawned = 0
+
+    for _, fillType in ipairs(fillTypes) do
+        if emptyPallets < 1000 then
+            print(string.format("[%s] Out of empty pallets for farm %d", self.modName, farmId))
+            break
+        end
+
+        if self.doSpawnPallet then
+            self:doSpawnPallet(fillType, farmId)
+            emptyPallets = emptyPallets - 1000
+            spawned = spawned + 1
+        end
+    end
+
+    print(string.format("[%s] Spawned %d pallets for farm %d", self.modName, spawned, farmId))
+
+    -- Push the updated ledger to all clients
+    self:syncFarmMeat()
+end
+
+
+
+----------------------------------------------------------------
 -- CREDIT PRODUCTION OUTPUT
 -- Credits finished products that appear in storage to the current farm
 ----------------------------------------------------------------

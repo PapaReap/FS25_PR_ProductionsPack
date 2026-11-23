@@ -701,6 +701,7 @@ Wood Storage: Kastor [D-S-Agrarservice]
         <sourceFile filename="scripts/PlaceableExtendedProductionPoint.lua" />
         <sourceFile filename="scripts/PR_ButcherFix.lua"/>
         <sourceFile filename="scripts/events/PR_DeliverAnimalsEvent.lua" />
+        <sourceFile filename="scripts/events/PR_SpawnPalletsEvent.lua" />
     </extraSourceFiles>
 
     <guiProfiles filename="gui/guiProfiles.xml"/>
