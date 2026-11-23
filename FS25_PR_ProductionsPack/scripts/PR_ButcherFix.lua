@@ -21,6 +21,7 @@ PRBFix.butcherBarnPlaceable = nil
 PRBFix.playerInTrigger = false
 
 PRBFix.farmMeat = PRBFix.farmMeat or {}
+PRBFix.syncedPlayers = PRBFix.syncedPlayers or {}
 
 addModEventListener(PRBFix)
 
@@ -106,10 +107,10 @@ function PR_ButcherSyncEvent.new(farmMeat)
 end
 
 function PR_ButcherSyncEvent:writeStream(streamId, connection)
+    -- farmMeat (empty pallets + raw)
     local farmCount = 0
     for _ in pairs(self.farmMeat or {}) do farmCount = farmCount + 1 end
     streamWriteUInt8(streamId, farmCount)
-
     for farmId, meats in pairs(self.farmMeat or {}) do
         streamWriteUInt8(streamId, farmId)
         local meatCount = 0
@@ -120,12 +121,28 @@ function PR_ButcherSyncEvent:writeStream(streamId, connection)
             streamWriteFloat32(streamId, amount)
         end
     end
+
+    -- farmMeatPallets (processing + available)
+    local palletFarmCount = 0
+    for _ in pairs(PRBFix.farmMeatPallets or {}) do palletFarmCount = palletFarmCount + 1 end
+    streamWriteUInt8(streamId, palletFarmCount)
+    for farmId, pallets in pairs(PRBFix.farmMeatPallets or {}) do
+        streamWriteUInt8(streamId, farmId)
+        local count = 0
+        for _ in pairs(pallets) do count = count + 1 end
+        streamWriteUInt8(streamId, count)
+        for fillType, data in pairs(pallets) do
+            streamWriteString(streamId, fillType)
+            streamWriteFloat32(streamId, data.amount or 0)
+            streamWriteFloat32(streamId, data.readyAt or 0)
+        end
+    end
 end
+
 
 function PR_ButcherSyncEvent:readStream(streamId, connection)
     local farmCount = streamReadUInt8(streamId)
     local farmMeat = {}
-
     for i = 1, farmCount do
         local farmId = streamReadUInt8(streamId)
         farmMeat[farmId] = {}
@@ -136,9 +153,24 @@ function PR_ButcherSyncEvent:readStream(streamId, connection)
             farmMeat[farmId][fillType] = amount
         end
     end
-
     PRBFix.farmMeat = farmMeat
-    print("[PR Butcher Fix] Received farmMeat sync (" .. farmCount .. " farms)")
+
+    local palletFarmCount = streamReadUInt8(streamId)
+    local farmMeatPallets = {}
+    for i = 1, palletFarmCount do
+        local farmId = streamReadUInt8(streamId)
+        farmMeatPallets[farmId] = {}
+        local count = streamReadUInt8(streamId)
+        for j = 1, count do
+            local fillType = streamReadString(streamId)
+            local amount = streamReadFloat32(streamId)
+            local readyAt = streamReadFloat32(streamId)
+            farmMeatPallets[farmId][fillType] = {amount = amount, readyAt = readyAt}
+        end
+    end
+    PRBFix.farmMeatPallets = farmMeatPallets
+
+    print(string.format("[PR Butcher Fix] Received farmMeat sync (%d farms, %d pallet farms)", farmCount, palletFarmCount))
 end
 
 function PR_ButcherSyncEvent:run(connection)
@@ -150,6 +182,36 @@ function PRBFix:syncFarmMeat()
         g_server:broadcastEvent(PR_ButcherSyncEvent.new(PRBFix.farmMeat or {}))
     end
 end
+
+
+
+PR_ButcherRequestSyncEvent = {}
+local PR_ButcherRequestSyncEvent_mt = Class(PR_ButcherRequestSyncEvent, Event)
+
+function PR_ButcherRequestSyncEvent.new()
+    local self = Event.new(PR_ButcherRequestSyncEvent_mt)
+    return self
+end
+
+function PR_ButcherRequestSyncEvent:readStream(streamId, connection)
+    self:run(connection)
+end
+
+function PR_ButcherRequestSyncEvent:writeStream(streamId, connection)
+end
+
+function PR_ButcherRequestSyncEvent:run(connection)
+    if g_server ~= nil then
+        -- Send the current ledger back to the player who asked
+        connection:sendEvent(PR_ButcherSyncEvent.new(PRBFix.farmMeat or {}))
+        print("[PR Butcher Fix] Sent ledger sync on client request")
+    end
+end
+
+
+
+
+
 
 -- Returns breed multiplier for an animal cluster
 function PRBFix:getBreedMultiplier(animalType, cluster)
@@ -265,6 +327,11 @@ function PRBFix:loadMap()
         end
     end
 
+	-- Client asks server for the current ledger
+	if g_server == nil and g_client ~= nil then
+		g_client:getServerConnection():sendEvent(PR_ButcherRequestSyncEvent.new())
+	end
+
     self:loadMeatLedger()
     print(string.format("[%s] loadMap called (v%s)", self.modName, PRBFix.VERSION))
 end
@@ -314,7 +381,7 @@ end
 ----------------------------------------------------------------
 function PRBFix:update(dt)
     self:updateInputContext()
-    self:creditProductionOutput()
+    --self:creditProductionOutput()
     self:processIncomingToOutgoing()
 
     -- Force output mode to Storing every 30 seconds
