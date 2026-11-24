@@ -2083,3 +2083,39 @@ function PRBFix:drawFarmBalanceOverlay(frame)
     setTextColor(1, 1, 1, 1)
     setTextBold(false)
 end
+
+----------------------------------------------------------------
+-- LOAD BARN SETTINGS
+----------------------------------------------------------------
+function PRBFix:loadBarnSettings()
+    local modDir = PRBFix.modDirectory
+    if modDir == nil then return end
+
+    local path = modDir .. "xml/PR_ButcherSettings.xml"
+    if not fileExists(path) then
+        print("["..self.modName.."] No settings file found: " .. path)
+        return
+    end
+
+    local xmlFile = XMLFile.load("ButcherSettings", path)
+    if xmlFile == nil then return end
+
+    self.barnSettings = {}
+    self.storeOpenHour = xmlFile:getInt("butcherSettings.storeOpenHour", 8)
+    self.storeCloseHour = xmlFile:getInt("butcherSettings.storeCloseHour", 19)
+
+    local i = 0
+    while true do
+        local key = string.format("butcherSettings.product(%d)", i)
+        if not xmlFile:hasProperty(key) then break end
+        local name = xmlFile:getString(key .. "#name")
+        local hours = xmlFile:getFloat(key .. "#hours")
+        if name and hours then
+            self.barnSettings[name] = hours
+        end
+        i = i + 1
+    end
+
+    xmlFile:delete()
+    print(string.format("[%s] Loaded barn settings (open %d, close %d)", self.modName, self.storeOpenHour, self.storeCloseHour))
+end
