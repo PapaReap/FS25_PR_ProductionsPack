@@ -87,6 +87,80 @@ PRBFix.BREED_MULTIPLIER = {
 }
 
 ----------------------------------------------------------------
+-- Barn Settings (per-save)
+----------------------------------------------------------------
+function PRBFix:getSettingsPath()
+    if g_currentMission == nil or g_currentMission.missionInfo == nil then
+        return nil
+    end
+    local savePath = g_currentMission.missionInfo.savegameDirectory
+    if savePath == nil then
+        return nil
+    end
+    return savePath .. "/PR_ButcherBarnSettings.xml"
+end
+
+function PRBFix:loadBarnSettings()
+    self.barnSettings = self.barnSettings or {}
+    self.storeOpenHour = 8
+    self.storeCloseHour = 19
+
+    local path = self:getSettingsPath()
+    if path == nil then
+        print("[PR Butcher Fix] No savegame path yet")
+        return
+    end
+
+    if not fileExists(path) then
+        -- Create default file in the current save
+        local xml = '<?xml version="1.0" encoding="utf-8" standalone="no"?>\n<settings>\n'
+        xml = xml .. '    <product name="Bacon" hours="5"/>\n'
+        xml = xml .. '    <product name="Ham" hours="5"/>\n'
+        xml = xml .. '    <product name="Pork" hours="5"/>\n'
+        xml = xml .. '    <product name="Sausage" hours="5"/>\n'
+        xml = xml .. '    <product name="Pepperoni" hours="5"/>\n'
+        xml = xml .. '    <product name="Chicken Fillet" hours="5"/>\n'
+        xml = xml .. '    <product name="Chevon" hours="5"/>\n'
+        xml = xml .. '    <product name="Mutton" hours="5"/>\n'
+        xml = xml .. '    <product name="Ground Beef" hours="5"/>\n'
+        xml = xml .. '    <product name="Steak" hours="5"/>\n'
+        xml = xml .. '    <store openHour="8" closeHour="19"/>\n'
+        xml = xml .. '</settings>\n'
+        local f = io.open(path, "w")
+        if f then
+            f:write(xml)
+            f:close()
+            print("[PR Butcher Fix] Created default settings in save: " .. path)
+        end
+    end
+
+    local xmlFile = loadXMLFile("BarnSettings", path)
+    if xmlFile == nil or xmlFile == 0 then
+        print("[PR Butcher Fix] Could not load settings file")
+        return
+    end
+
+    local i = 0
+    while true do
+        local key = string.format("settings.product(%d)", i)
+        if not hasXMLProperty(xmlFile, key) then break end
+        local name = getXMLString(xmlFile, key .. "#name")
+        local hours = getXMLInt(xmlFile, key .. "#hours") or 5
+        if name then
+            self.barnSettings[name] = hours
+        end
+        i = i + 1
+    end
+
+    self.storeOpenHour = getXMLInt(xmlFile, "settings.store#openHour") or 8
+    self.storeCloseHour = getXMLInt(xmlFile, "settings.store#closeHour") or 19
+
+    delete(xmlFile)
+    print(string.format("[PR Butcher Fix] Loaded barn settings (%d products, store %d-%d)",
+        i, self.storeOpenHour, self.storeCloseHour))
+end
+
+----------------------------------------------------------------
 -- NETWORK SYNC EVENT
 -- Sends the farmMeat ledger from server to all clients
 ----------------------------------------------------------------
@@ -296,6 +370,7 @@ function PRBFix:loadMap()
         end
     end
 
+	self:loadBarnSettings()
     self:loadMeatLedger()
     print(string.format("[%s] loadMap called (v%s)", self.modName, PRBFix.VERSION))
 end
@@ -1323,44 +1398,101 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
         if farmId and farmId > 0 then
             PRBFix.farmMeat[farmId] = PRBFix.farmMeat[farmId] or {}
 
-            local WAIT_SECONDS = 3600
-            local readyAt = g_currentMission.environment.currentMonotonicDay * 86400 + g_currentMission.environment.dayTime / 1000 + WAIT_SECONDS
+            -- Use hours from settings file (default 5)
+            local function getHoursFor(productName)
+                if self.barnSettings and self.barnSettings[productName] then
+                    return self.barnSettings[productName]
+                end
+                return 5
+            end
+
+            local now = g_currentMission.environment.currentMonotonicDay * 86400 + g_currentMission.environment.dayTime / 1000
 
             PRBFix.farmMeatPallets = PRBFix.farmMeatPallets or {}
             PRBFix.farmMeatPallets[farmId] = PRBFix.farmMeatPallets[farmId] or {}
 
-            local function addFinished(fillType, amount)
-                if amount > 0.01 then
-                    local entry = PRBFix.farmMeatPallets[farmId][fillType] or {amount = 0, readyAt = readyAt}
-                    entry.amount = entry.amount + amount
-                    entry.readyAt = readyAt
-                    PRBFix.farmMeatPallets[farmId][fillType] = entry
-                    print(string.format("[%s] Credited %.1f L %s (ready in 1h) to farm %d", self.modName, amount, fillType, farmId))
-                end
-            end
+			local function addFinished(fillType, amount, productName)
+				if amount > 0.01 then
+					local hours = getHoursFor(productName or fillType)
+					local neededSeconds = hours * 3600
+
+					-- Walk forward from now, only counting time the store is open
+					local openH = self.storeOpenHour or 8
+					local closeH = self.storeCloseHour or 19
+					local openSec = openH * 3600
+					local closeSec = closeH * 3600
+					local dayLen = 86400
+
+					local t = now
+					local remaining = neededSeconds
+
+					while remaining > 0 do
+						local dayStart = math.floor(t / dayLen) * dayLen
+						local openAt = dayStart + openSec
+						local closeAt = dayStart + closeSec
+
+						if t < openAt then
+							t = openAt
+						end
+
+						if t < closeAt then
+							local available = closeAt - t
+							if available >= remaining then
+								t = t + remaining
+								remaining = 0
+							else
+								remaining = remaining - available
+								t = dayStart + dayLen
+							end
+						else
+							t = dayStart + dayLen
+						end
+					end
+
+					local newReadyAt = t
+
+					local entry = PRBFix.farmMeatPallets[farmId][fillType]
+					if entry == nil or type(entry) ~= "table" then
+						entry = {amount = 0, readyAt = newReadyAt}
+					end
+
+					local oldAmount = entry.amount or 0
+					local oldReadyAt = entry.readyAt or newReadyAt
+
+					local totalAmount = oldAmount + amount
+					local avgReadyAt = (oldAmount * oldReadyAt + amount * newReadyAt) / totalAmount
+
+					entry.amount = totalAmount
+					entry.readyAt = avgReadyAt
+					PRBFix.farmMeatPallets[farmId][fillType] = entry
+
+					print(string.format("[%s] Credited %.1f L %s (ready ~%.0f min) to farm %d",
+						self.modName, amount, fillType, (avgReadyAt - now) / 60, farmId))
+				end
+			end
 
             local meatName = self.ANIMAL_TO_MEAT_FILLTYPE[typeName] or typeName
             if meatName == "POULTRY" then
-                addFinished("CHICKENFILLET", liters * 35)
+                addFinished("CHICKENFILLET", liters * 35, "Chicken Fillet")
             elseif meatName == "COWMEAT" then
-                addFinished("GROUNDBEEF", liters * 220)
-                addFinished("STEAK", liters * 220)
-                addFinished("SAUSAGE", liters * 105)
-                addFinished("PEPPERONI", liters * 105)
+                addFinished("GROUNDBEEF", liters * 220, "Ground Beef")
+                addFinished("STEAK", liters * 220, "Steak")
+                addFinished("SAUSAGE", liters * 105, "Sausage")
+                addFinished("PEPPERONI", liters * 105, "Pepperoni")
             elseif meatName == "PIGMEAT" then
-                addFinished("HAM", liters * 105)
-                addFinished("PORK", liters * 75)
-                addFinished("BACON", liters * 45)
-                addFinished("SAUSAGE", liters * 30)
-                addFinished("PEPPERONI", liters * 30)
+                addFinished("HAM", liters * 105, "Ham")
+                addFinished("PORK", liters * 75, "Pork")
+                addFinished("BACON", liters * 45, "Bacon")
+                addFinished("SAUSAGE", liters * 30, "Sausage")
+                addFinished("PEPPERONI", liters * 30, "Pepperoni")
             elseif meatName == "SHEEPMEAT" then
-                addFinished("MUTTON", liters * 150)
-                addFinished("CHEVON", liters * 150)
+                addFinished("MUTTON", liters * 150, "Mutton")
+                addFinished("CHEVON", liters * 150, "Chevon")
             end
 
             PRBFix.pendingConversions = PRBFix.pendingConversions or {}
             local CONVERT_SECONDS = 300
-            local convertAt = g_currentMission.environment.currentMonotonicDay * 86400 + g_currentMission.environment.dayTime / 1000 + CONVERT_SECONDS
+            local convertAt = now + CONVERT_SECONDS
 
             local outputs = {}
             if meatName == "POULTRY" then
@@ -1487,6 +1619,9 @@ function PRBFix:saveMeatLedger()
 
     local saveDir = g_currentMission.missionInfo.savegameDirectory
     if saveDir == nil then return end
+
+    -- Make sure the settings file exists in this save
+    self:loadBarnSettings()
 
     local xmlPath = saveDir .. "/PR_ButcherBarn.xml"
     local xmlFile = XMLFile.create("PR_ButcherBarn", xmlPath, "butcherBarn")
@@ -1739,6 +1874,73 @@ function PRBFix:installFarmBalanceOverlay()
 end
 
 function PRBFix:drawFarmBalanceOverlay(frame)
+
+    if frame == nil or frame.getSelectedProduction == nil then return end
+
+    local production, productionPoint = frame:getSelectedProduction()
+    if productionPoint == nil then return end
+
+    local placeable = productionPoint.owningPlaceable
+    if placeable == nil or placeable.configFileName == nil then return end
+    if not placeable.configFileName:find("theButcherBarn") then return end
+	
+    -- Helper box: store hours + processing times
+    if self.barnSettings then
+        local hx = 0.24
+        local hy = 0.90
+        local hLine = 0.016
+        local hWidth = 0.13
+        local hLines = {}
+
+        local openH = self.storeOpenHour or 8
+        local closeH = self.storeCloseHour or 19
+        local openStr = string.format("%d am", openH)
+        local closeStr = (closeH > 12) and string.format("%d pm", closeH - 12) or string.format("%d", closeH)
+
+        -- Header lines (no columns)
+		-- table.insert(hLines, {text = "--------------------", isHeader = false})
+		table.insert(hLines, {text = "", isHeader = true})
+        table.insert(hLines, {text = string.format("Store Hours:  %s - %s", openStr, closeStr), isHeader = true})
+        table.insert(hLines, {text = "", isHeader = true})
+        table.insert(hLines, {text = "Processing Times", isHeader = true})
+		table.insert(hLines, {text = "--------------------", isHeader = true})
+
+        local order = {
+            "Chicken Fillet", "Bacon", "Ham", "Pork", "Sausage",
+            "Pepperoni", "Chevon", "Mutton", "Ground Beef", "Steak"
+        }
+        for _, name in ipairs(order) do
+            local hrs = self.barnSettings[name]
+            if hrs then
+                table.insert(hLines, {name = name, hours = hrs, isHeader = false})
+            end
+        end
+
+        local hHeight = (#hLines * hLine) + 0.03
+        drawFilledRect(hx - 0.008, hy - hHeight + 0.01, hWidth, hHeight, 0, 0, 0, 0.75)
+
+        setTextAlignment(RenderText.ALIGN_LEFT)
+        setTextBold(true)
+        setTextColor(1, 1, 1, 1)
+
+        local ty = hy
+        local hoursX = hx + 0.035   -- fixed column for the hours
+
+        for _, line in ipairs(hLines) do
+            if line.isHeader then
+                renderText(hx, ty, 0.013, line.text)
+            else
+                renderText(hx, ty, 0.013, line.name)
+                setTextAlignment(RenderText.ALIGN_RIGHT)
+                renderText(hoursX + 0.04, ty, 0.013, tostring(line.hours) .. " hrs")
+                setTextAlignment(RenderText.ALIGN_LEFT)
+            end
+            ty = ty - hLine
+        end
+        setTextBold(false)
+    end
+
+	-- Helper box: ReadyAt
     if frame == nil or frame.getSelectedProduction == nil then return end
 
     local production, productionPoint = frame:getSelectedProduction()
@@ -1841,7 +2043,7 @@ function PRBFix:drawFarmBalanceOverlay(frame)
     end
 
     local x = 0.24
-    local y = 0.72
+    local y = 0.60
     local lineHeight = 0.016
     local width = 0.13
     local height = (#lines * lineHeight) + 0.05
