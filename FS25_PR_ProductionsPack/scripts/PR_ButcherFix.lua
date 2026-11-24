@@ -663,44 +663,64 @@ function PRBFix:onSpawnTriggerCallback(triggerId, otherId, onEnter, onLeave)
         end
     end
 
-    if not isPlayer then return end
+    if isPlayer then
+        self.playerInSpawnTrigger = onEnter
 
-    self.playerInSpawnTrigger = onEnter
+        local farmId = 1
+        local farmName = "Unknown"
+        if g_currentMission and g_currentMission.getFarmId then
+            farmId = g_currentMission:getFarmId()
+        end
 
-    local farmId = g_currentMission and g_currentMission:getFarmId() or 1
-    local farmName = "Unknown"
-    if g_farmManager and g_farmManager.farms then
-        for _, farm in pairs(g_farmManager.farms) do
-            if farm and (farm.farmId == farmId or farm.id == farmId) and farm.name and farm.name ~= "" then
-                farmName = farm.name
-                break
+        if g_farmManager and g_farmManager.farms then
+            for _, farm in pairs(g_farmManager.farms) do
+                if farm and (farm.farmId == farmId or farm.id == farmId) then
+                    if farm.name and farm.name ~= "" then
+                        farmName = farm.name
+                    end
+                    break
+                end
             end
         end
-    end
 
-    if onEnter then
-        print(string.format("[%s] Player entered loading zone | Farm %d (%s)", self.modName, farmId, farmName))
+        if onEnter then
+            print(string.format("[%s] Player entered loading zone | Farm %d (%s)", 
+                self.modName, farmId, farmName))
 
-        if self.spawnActionEventId == nil then
-            local _, eventId = g_inputBinding:registerActionEvent(
-                InputAction.RLB_UNLOAD_TO_BUTCHER, self, PRBFix.onSpawnPalletAction,
-                false, true, false, true
-            )
-            if eventId then
-                g_inputBinding:setActionEventText(eventId, "Spawn Pallet")
-                g_inputBinding:setActionEventTextVisibility(eventId, true)
-                g_inputBinding:setActionEventActive(eventId, true)
-                self.spawnActionEventId = eventId
-                print("["..self.modName.."] Spawn action registered")
+            -- Check store hours
+            local isOpen = true
+            if g_currentMission and g_currentMission.environment then
+                local dayTime = g_currentMission.environment.dayTime / 1000  -- seconds into the day
+                local hour = math.floor(dayTime / 3600)
+                local openH = self.storeOpenHour or 8
+                local closeH = self.storeCloseHour or 19
+                isOpen = (hour >= openH and hour < closeH)
             end
-        end
-    else
-        print(string.format("[%s] Player left loading zone | Farm %d (%s)", self.modName, farmId, farmName))
 
-        if self.spawnActionEventId then
-            g_inputBinding:removeActionEvent(self.spawnActionEventId)
-            self.spawnActionEventId = nil
-            print("["..self.modName.."] Spawn action removed")
+            if isOpen then
+                -- Register the spawn action
+                if self.spawnActionEventId == nil then
+                    local _, eventId = g_inputBinding:registerActionEvent(InputAction.ACTIVATE_OBJECT, self, PRBFix.onSpawnPalletAction, false, true, false, true)
+                    self.spawnActionEventId = eventId
+                    g_inputBinding:setActionEventText(eventId, "Spawn Pallet")
+                    g_inputBinding:setActionEventTextVisibility(eventId, true)
+                end
+            else
+                -- Store closed
+                if g_currentMission and g_currentMission.showBlinkingWarning then
+                    g_currentMission:showBlinkingWarning("Store Closed", 2000)
+                end
+                print(string.format("[%s] Store is closed (hours %d-%d)", self.modName, self.storeOpenHour or 8, self.storeCloseHour or 19))
+            end
+        else
+            print(string.format("[%s] Player left loading zone | Farm %d (%s)", 
+                self.modName, farmId, farmName))
+
+            -- Unregister the action
+            if self.spawnActionEventId ~= nil then
+                g_inputBinding:removeActionEvent(self.spawnActionEventId)
+                self.spawnActionEventId = nil
+            end
         end
     end
 end
@@ -711,6 +731,20 @@ end
 ----------------------------------------------------------------
 function PRBFix:onSpawnPalletAction()
     if not self.playerInSpawnTrigger then return end
+
+    -- Block spawn when store is closed
+    if g_currentMission and g_currentMission.environment then
+        local dayTime = g_currentMission.environment.dayTime / 1000
+        local hour = math.floor(dayTime / 3600)
+        local openH = self.storeOpenHour or 8
+        local closeH = self.storeCloseHour or 19
+        if hour < openH or hour >= closeH then
+            if g_currentMission.showBlinkingWarning then
+                g_currentMission:showBlinkingWarning("Store Closed", 2000)
+            end
+            return
+        end
+    end
 
     local farmId = g_currentMission and g_currentMission:getFarmId() or 1
     local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId]) or {}
@@ -1008,6 +1042,24 @@ function PRBFix:onTriggerCallback(triggerId, otherId, onEnter, onLeave)
     local obj = g_currentMission.nodeToObject[otherId]
     if obj and obj.typeName == "livestockTrailer" then
         if onEnter then
+            -- Check store hours before allowing delivery
+            local isOpen = true
+            if g_currentMission and g_currentMission.environment then
+                local dayTime = g_currentMission.environment.dayTime / 1000
+                local hour = math.floor(dayTime / 3600)
+                local openH = self.storeOpenHour or 8
+                local closeH = self.storeCloseHour or 19
+                isOpen = (hour >= openH and hour < closeH)
+            end
+
+            if not isOpen then
+                if g_currentMission and g_currentMission.showBlinkingWarning then
+                    g_currentMission:showBlinkingWarning("Store Closed", 2000)
+                end
+                print(string.format("[%s] Store is closed — delivery blocked", self.modName))
+                return
+            end
+
             local num = obj:getNumOfAnimals()
             local t = obj:getCurrentAnimalType()
             local typeName = (t and t.name) or "COW"
@@ -1165,6 +1217,19 @@ end
 -- Opens the animal delivery dialog with fresh data
 ----------------------------------------------------------------
 function PRBFix:onDeliverKeyPressed(actionName, value, state, isAnalog)
+    if g_currentMission and g_currentMission.environment then
+        local dayTime = g_currentMission.environment.dayTime / 1000
+        local hour = math.floor(dayTime / 3600)
+        local openH = self.storeOpenHour or 8
+        local closeH = self.storeCloseHour or 19
+        if hour < openH or hour >= closeH then
+            if g_currentMission.showBlinkingWarning then
+                g_currentMission:showBlinkingWarning("Store Closed", 2000)
+            end
+            return
+        end
+    end
+
     if not next(self.trailersInTrigger) then return end
 
     print(string.format("[%s] 🔔 onDeliverKeyPressed fired", self.modName))
@@ -1416,13 +1481,13 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
 					local hours = getHoursFor(productName or fillType)
 					local neededSeconds = hours * 3600
 
-					-- Walk forward from now, only counting time the store is open
 					local openH = self.storeOpenHour or 8
 					local closeH = self.storeCloseHour or 19
 					local openSec = openH * 3600
 					local closeSec = closeH * 3600
 					local dayLen = 86400
 
+					-- Calculate ready time for the new batch (open-store hours only)
 					local t = now
 					local remaining = neededSeconds
 
@@ -1459,15 +1524,68 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
 					local oldAmount = entry.amount or 0
 					local oldReadyAt = entry.readyAt or newReadyAt
 
-					local totalAmount = oldAmount + amount
-					local avgReadyAt = (oldAmount * oldReadyAt + amount * newReadyAt) / totalAmount
+					-- Convert both ready times into remaining open-store seconds
+					local function remainingOpenSeconds(readyTime)
+						local tt = now
+						local left = 0
 
-					entry.amount = totalAmount
-					entry.readyAt = avgReadyAt
+						while tt < readyTime do
+							local dayStart = math.floor(tt / dayLen) * dayLen
+							local openAt = dayStart + openSec
+							local closeAt = dayStart + closeSec
+
+							if tt < openAt then
+								tt = openAt
+							end
+
+							if tt < closeAt and tt < readyTime then
+								local endTime = math.min(closeAt, readyTime)
+								left = left + (endTime - tt)
+								tt = endTime
+							else
+								tt = dayStart + dayLen
+							end
+						end
+						return left
+					end
+
+					local oldOpenLeft = remainingOpenSeconds(oldReadyAt)
+					local newOpenLeft = remainingOpenSeconds(newReadyAt)
+					local avgOpenLeft = (oldAmount * oldOpenLeft + amount * newOpenLeft) / (oldAmount + amount)
+
+					-- Walk forward from now by the average open-store seconds
+					t = now
+					remaining = avgOpenLeft
+
+					while remaining > 0 do
+						local dayStart = math.floor(t / dayLen) * dayLen
+						local openAt = dayStart + openSec
+						local closeAt = dayStart + closeSec
+
+						if t < openAt then
+							t = openAt
+						end
+
+						if t < closeAt then
+							local available = closeAt - t
+							if available >= remaining then
+								t = t + remaining
+								remaining = 0
+							else
+								remaining = remaining - available
+								t = dayStart + dayLen
+							end
+						else
+							t = dayStart + dayLen
+						end
+					end
+
+					entry.amount = oldAmount + amount
+					entry.readyAt = t
 					PRBFix.farmMeatPallets[farmId][fillType] = entry
 
 					print(string.format("[%s] Credited %.1f L %s (ready ~%.0f min) to farm %d",
-						self.modName, amount, fillType, (avgReadyAt - now) / 60, farmId))
+						self.modName, amount, fillType, (entry.readyAt - now) / 60, farmId))
 				end
 			end
 
@@ -2088,34 +2206,60 @@ end
 -- LOAD BARN SETTINGS
 ----------------------------------------------------------------
 function PRBFix:loadBarnSettings()
-    local modDir = PRBFix.modDirectory
-    if modDir == nil then return end
+    self.barnSettings = self.barnSettings or {}
+    self.storeOpenHour = 8
+    self.storeCloseHour = 19
 
-    local path = modDir .. "xml/PR_ButcherSettings.xml"
-    if not fileExists(path) then
-        print("["..self.modName.."] No settings file found: " .. path)
+    local path = self:getSettingsPath()
+    if path == nil then
+        print("[PR Butcher Fix] No savegame path yet")
         return
     end
 
-    local xmlFile = XMLFile.load("ButcherSettings", path)
-    if xmlFile == nil then return end
+    if not fileExists(path) then
+        local xml = '<?xml version="1.0" encoding="utf-8" standalone="no"?>\n<settings>\n'
+        xml = xml .. '    <product name="Bacon" hours="5"/>\n'
+        xml = xml .. '    <product name="Ham" hours="5"/>\n'
+        xml = xml .. '    <product name="Pork" hours="5"/>\n'
+        xml = xml .. '    <product name="Sausage" hours="5"/>\n'
+        xml = xml .. '    <product name="Pepperoni" hours="5"/>\n'
+        xml = xml .. '    <product name="Chicken Fillet" hours="5"/>\n'
+        xml = xml .. '    <product name="Chevon" hours="5"/>\n'
+        xml = xml .. '    <product name="Mutton" hours="5"/>\n'
+        xml = xml .. '    <product name="Ground Beef" hours="5"/>\n'
+        xml = xml .. '    <product name="Steak" hours="5"/>\n'
+        xml = xml .. '    <store openHour="8" closeHour="19"/>\n'
+        xml = xml .. '</settings>\n'
+        local f = io.open(path, "w")
+        if f then
+            f:write(xml)
+            f:close()
+            print("[PR Butcher Fix] Created default settings in save: " .. path)
+        end
+    end
 
-    self.barnSettings = {}
-    self.storeOpenHour = xmlFile:getInt("butcherSettings.storeOpenHour", 8)
-    self.storeCloseHour = xmlFile:getInt("butcherSettings.storeCloseHour", 19)
+    local xmlFile = loadXMLFile("BarnSettings", path)
+    if xmlFile == nil or xmlFile == 0 then
+        print("[PR Butcher Fix] Could not load settings file")
+        return
+    end
 
     local i = 0
     while true do
-        local key = string.format("butcherSettings.product(%d)", i)
-        if not xmlFile:hasProperty(key) then break end
-        local name = xmlFile:getString(key .. "#name")
-        local hours = xmlFile:getFloat(key .. "#hours")
-        if name and hours then
+        local key = string.format("settings.product(%d)", i)
+        if not hasXMLProperty(xmlFile, key) then break end
+        local name = getXMLString(xmlFile, key .. "#name")
+        local hours = getXMLInt(xmlFile, key .. "#hours") or 5
+        if name then
             self.barnSettings[name] = hours
         end
         i = i + 1
     end
 
-    xmlFile:delete()
-    print(string.format("[%s] Loaded barn settings (open %d, close %d)", self.modName, self.storeOpenHour, self.storeCloseHour))
+    self.storeOpenHour = getXMLInt(xmlFile, "settings.store#openHour") or 8
+    self.storeCloseHour = getXMLInt(xmlFile, "settings.store#closeHour") or 19
+
+    delete(xmlFile)
+    print(string.format("[PR Butcher Fix] Loaded barn settings (%d products, store %d-%d)",
+        i, self.storeOpenHour, self.storeCloseHour))
 end
