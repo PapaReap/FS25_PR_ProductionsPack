@@ -592,7 +592,7 @@ function PRBDialog:onClickOk()
     print(string.format("[%s] OK clicked → Deliver %d animals for farm %d",
         PRBFix.modNameDialog, amount, farmId))
 
-    local barn = PRBFix.butcherBarnPlaceable
+    local barn = (info and info.barn) or self.data.barn or PRBFix.butcherBarnPlaceable
     if barn == nil then
         print("[PRBDialog] ❌ butcherBarnPlaceable missing on client — cannot send event")
         return
@@ -604,7 +604,7 @@ function PRBDialog:onClickOk()
     else
         print("[PRBDialog] ❌ PR_DeliverAnimalsEvent missing, fallback to SP deliver")
         if PRBFix and PRBFix.deliverAnimals then
-            PRBFix:deliverAnimals(trailer, info, amount)
+            PRBFix:deliverAnimals(trailer, info, amount, farmId)
         end
     end
 
@@ -710,11 +710,12 @@ function PRBDialog:onClickSpawnOK()
 
     local item = self.spawnAvailableList[self.spawnSelectedIndex]
     local farmId = self.spawnFarmId
+    local barnKey = item.barnKey or self.spawnBarnKey or (PRBFix and PRBFix.getBarnKey and PRBFix:getBarnKey(PRBFix.dialogBarn or PRBFix.butcherBarnPlaceable))
 
-    print(string.format("[PR Butcher Dialog] Spawn OK → %s for farm %d", item.fillType, farmId))
+    print(string.format("[PR Butcher Dialog] Spawn OK → %s for farm %d at barn %s",
+        item.fillType, farmId, tostring(barnKey)))
 
-    -- Deduct and trigger the real spawn (re-uses the existing spawn block logic)
-    local pallets = PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId]
+    local pallets = PRBFix.farmMeatPallets and barnKey and PRBFix.farmMeatPallets[barnKey] and PRBFix.farmMeatPallets[barnKey][farmId]
     if pallets and pallets[item.fillType] then
         local entry = pallets[item.fillType]
         if entry.amount >= 1000 then
@@ -723,9 +724,8 @@ function PRBDialog:onClickSpawnOK()
                 pallets[item.fillType] = nil
             end
 
-            -- Call the existing spawn logic
             if PRBFix and PRBFix.spawnReadyPallet then
-                PRBFix:spawnReadyPallet(farmId, item.fillType)
+                PRBFix:spawnReadyPallet(farmId, item.fillType, barnKey)
             end
 
             if PRBFix.syncFarmMeat then

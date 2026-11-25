@@ -116,8 +116,11 @@ function PR_DeliverAnimalsEvent:run(connection)
             end
         end
     else
-        -- Server: process the actual delivery
+        -- Server: process the actual delivery against the specific barn sent in the event
         if g_server ~= nil and PRBFix ~= nil and self.trailer ~= nil then
+            local targetBarn = self.barn or PRBFix.butcherBarnPlaceable
+            local targetBarnKey = PRBFix.getBarnKey and PRBFix:getBarnKey(targetBarn) or nil
+
             local animalType = self.trailer:getCurrentAnimalType()
             local typeName = (animalType and animalType.name) or "CHICKEN"
 
@@ -125,12 +128,14 @@ function PR_DeliverAnimalsEvent:run(connection)
             local data = {
                 type = typeName,
                 validClusters = validClusters,
-                validCount = validCount
+                validCount = validCount,
+                barn = targetBarn,
+                barnKey = targetBarnKey
             }
 
-            print(string.format("[PR Butcher Fix] Server processing request: type=%s valid=%d amount=%d", typeName, validCount, self.amount))
-            -- PRBFix:deliverAnimals(self.trailer, data, self.amount)
-			PRBFix:deliverAnimals(self.trailer, data, self.amount, self.farmId)
+            print(string.format("[PR Butcher Fix] Server processing request: type=%s valid=%d amount=%d barn=%s",
+                typeName, validCount, self.amount, tostring(targetBarnKey)))
+            PRBFix:deliverAnimals(self.trailer, data, self.amount, self.farmId)
         else
             print("[PR Butcher Fix] Event.run request skipped (no server, no PRBFix, or no trailer)")
         end

@@ -66,21 +66,21 @@ function PRBSpawnDialog:updateDisplay()
         local nameEl  = self:getDescendantById("line" .. i)
         local amtEl   = self:getDescendantById("amt" .. i)
         local checkEl = self:getDescendantById("check" .. i)
-        if nameEl then 
+        if nameEl then
             nameEl:setText("")
             nameEl:setTextColor(1, 1, 1, 1)
         end
-        if amtEl then 
+        if amtEl then
             amtEl:setText("")
             amtEl:setTextColor(1, 1, 1, 1)
         end
         if checkEl then checkEl:setText("") end
     end
 
-    -- Show remaining empty pallets
+    local barnKey = self.barnKey or (PRBFix and PRBFix.getBarnKey and PRBFix:getBarnKey(PRBFix.activeSpawnBarn or PRBFix.butcherBarnPlaceable))
     local empty = 0
-    if self.farmId and PRBFix.farmMeat and PRBFix.farmMeat[self.farmId] then
-        empty = PRBFix.farmMeat[self.farmId]["EMPTYPALLET"] or 0
+    if self.farmId and barnKey and PRBFix.farmMeat and PRBFix.farmMeat[barnKey] and PRBFix.farmMeat[barnKey][self.farmId] then
+        empty = PRBFix.farmMeat[barnKey][self.farmId]["EMPTYPALLET"] or 0
     end
     local storageEl = self:getDescendantById("palletStorageValue")
     if storageEl then
@@ -108,14 +108,12 @@ function PRBSpawnDialog:updateDisplay()
             r, g, b = 0.3, 1, 0.3
         end
 
-        if nameEl then 
-            -- nameEl:setText(item.fillType)
-            -- nameEl:setTextColor(r, g, b, 1)
+        if nameEl then
             local displayName = item.fillType:sub(1,1):upper() .. item.fillType:sub(2):lower()
             nameEl:setText(displayName)
             nameEl:setTextColor(r, g, b, 1)
         end
-        if amtEl then 
+        if amtEl then
             amtEl:setText(string.format("%.0f L", item.amount or 0))
             amtEl:setTextColor(r, g, b, 1)
         end
@@ -133,6 +131,7 @@ function PRBSpawnDialog:onClickOk()
     end
 
     local farmId = self.farmId or (g_currentMission and g_currentMission:getFarmId()) or 1
+    local barnKey = self.barnKey or (PRBFix and PRBFix.getBarnKey and PRBFix:getBarnKey(PRBFix.activeSpawnBarn or PRBFix.butcherBarnPlaceable))
 
     local selected = {}
     for _, item in ipairs(self.availableList) do
@@ -147,21 +146,18 @@ function PRBSpawnDialog:onClickOk()
         return
     end
 
-    -- Cap at 10
     local toSpawn = {}
     for i = 1, math.min(10, #selected) do
         table.insert(toSpawn, selected[i])
     end
 
-    print(string.format("[PR Butcher Spawn Dialog] Requesting spawn of %d products for farm %d", #toSpawn, farmId))
+    print(string.format("[PR Butcher Spawn Dialog] Requesting spawn of %d products for farm %d at barn %s",
+        #toSpawn, farmId, tostring(barnKey)))
 
-    -- Send request to the server
     if g_server then
-        -- We are the server, do it directly
-        PRBFix:handleSpawnRequest(toSpawn, farmId)
+        PRBFix:handleSpawnRequest(toSpawn, farmId, barnKey)
     else
-        -- Client: send event
-        g_client:getServerConnection():sendEvent(PR_SpawnPalletsEvent.new(toSpawn, farmId))
+        g_client:getServerConnection():sendEvent(PR_SpawnPalletsEvent.new(toSpawn, farmId, barnKey))
     end
 
     g_gui:closeDialogByName("PRBSpawnDialog")
@@ -172,7 +168,7 @@ function PRBSpawnDialog:onClickCancel()
     g_gui:closeDialogByName("PRBSpawnDialog")
 end
 
-function PRBSpawnDialog.show(availableList, farmId)
+function PRBSpawnDialog.show(availableList, farmId, barnKey)
     if PRBSpawnDialog.INSTANCE == nil then
         print("[PR Butcher Spawn Dialog] INSTANCE is nil")
         return
@@ -181,6 +177,7 @@ function PRBSpawnDialog.show(availableList, farmId)
     local dialog = PRBSpawnDialog.INSTANCE
     dialog.availableList = availableList or {}
     dialog.farmId = farmId or 1
+    dialog.barnKey = barnKey
     dialog.selectedIndex = 1
 
     g_gui:showDialog("PRBSpawnDialog")

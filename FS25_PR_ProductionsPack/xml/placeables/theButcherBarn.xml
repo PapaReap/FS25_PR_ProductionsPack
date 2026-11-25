@@ -366,5 +366,8 @@
         <i3dMapping id="loadingZoneTrigger" node="0>16" />
 		<i3dMapping id="loadingZoneTriggerMarker" node="0>16|0" />
 		
+		<i3dMapping id="lights" node="0>17" />
+		
+		
     </i3dMappings>
 </placeable>

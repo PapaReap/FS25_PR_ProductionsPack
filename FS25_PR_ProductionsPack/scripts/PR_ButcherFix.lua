@@ -100,6 +100,11 @@ function PRBFix:getSettingsPath()
     return savePath .. "/PR_ButcherBarnSettings.xml"
 end
 
+----------------------------------------------------------------
+-- LOAD BARN SETTINGS
+-- Loads or creates PR_ButcherBarnSettings.xml in the savegame
+-- to populate product processing hours and store open/close hours
+----------------------------------------------------------------
 function PRBFix:loadBarnSettings()
     self.barnSettings = self.barnSettings or {}
     self.storeOpenHour = 8
@@ -112,7 +117,6 @@ function PRBFix:loadBarnSettings()
     end
 
     if not fileExists(path) then
-        -- Create default file in the current save
         local xml = '<?xml version="1.0" encoding="utf-8" standalone="no"?>\n<settings>\n'
         xml = xml .. '    <product name="Bacon" hours="5"/>\n'
         xml = xml .. '    <product name="Ham" hours="5"/>\n'
@@ -179,75 +183,147 @@ function PR_ButcherSyncEvent.new(farmMeat)
     return self
 end
 
+----------------------------------------------------------------
+-- WRITE STREAM
+-- Serializes per-barn ledger data and store hours to clients
+----------------------------------------------------------------
 function PR_ButcherSyncEvent:writeStream(streamId, connection)
-    -- farmMeat (empty pallets + raw)
-    local farmCount = 0
-    for _ in pairs(self.farmMeat or {}) do farmCount = farmCount + 1 end
-    streamWriteUInt8(streamId, farmCount)
-    for farmId, meats in pairs(self.farmMeat or {}) do
-        streamWriteUInt8(streamId, farmId)
-        local meatCount = 0
-        for _ in pairs(meats) do meatCount = meatCount + 1 end
-        streamWriteUInt8(streamId, meatCount)
-        for fillType, amount in pairs(meats) do
-            streamWriteString(streamId, fillType)
-            streamWriteFloat32(streamId, amount)
+    local farmMeatRoot = PRBFix.farmMeat or {}
+    local barnCount = 0
+    for _ in pairs(farmMeatRoot) do barnCount = barnCount + 1 end
+    streamWriteUInt8(streamId, barnCount)
+
+    for barnKey, farms in pairs(farmMeatRoot) do
+        streamWriteString(streamId, tostring(barnKey))
+        local farmCount = 0
+        for _ in pairs(farms or {}) do farmCount = farmCount + 1 end
+        streamWriteUInt8(streamId, farmCount)
+
+        for farmId, meats in pairs(farms or {}) do
+            streamWriteUInt8(streamId, farmId)
+            local meatCount = 0
+            for _ in pairs(meats or {}) do meatCount = meatCount + 1 end
+            streamWriteUInt8(streamId, meatCount)
+            for fillType, amount in pairs(meats or {}) do
+                streamWriteString(streamId, tostring(fillType))
+                streamWriteFloat32(streamId, tonumber(amount) or 0)
+            end
         end
     end
 
-    -- farmMeatPallets (processing + available)
-    local palletFarmCount = 0
-    for _ in pairs(PRBFix.farmMeatPallets or {}) do palletFarmCount = palletFarmCount + 1 end
-    streamWriteUInt8(streamId, palletFarmCount)
-    for farmId, pallets in pairs(PRBFix.farmMeatPallets or {}) do
-        streamWriteUInt8(streamId, farmId)
-        local count = 0
-        for _ in pairs(pallets) do count = count + 1 end
-        streamWriteUInt8(streamId, count)
-        for fillType, data in pairs(pallets) do
-            streamWriteString(streamId, fillType)
-            streamWriteFloat32(streamId, data.amount or 0)
-            streamWriteFloat32(streamId, data.readyAt or 0)
+    local palletsRoot = PRBFix.farmMeatPallets or {}
+    local palletBarnCount = 0
+    for _ in pairs(palletsRoot) do palletBarnCount = palletBarnCount + 1 end
+    streamWriteUInt8(streamId, palletBarnCount)
+
+    for barnKey, farms in pairs(palletsRoot) do
+        streamWriteString(streamId, tostring(barnKey))
+        local palletFarmCount = 0
+        for _ in pairs(farms or {}) do palletFarmCount = palletFarmCount + 1 end
+        streamWriteUInt8(streamId, palletFarmCount)
+
+        for farmId, pallets in pairs(farms or {}) do
+            streamWriteUInt8(streamId, farmId)
+            local count = 0
+            for _ in pairs(pallets or {}) do count = count + 1 end
+            streamWriteUInt8(streamId, count)
+            for fillType, data in pairs(pallets or {}) do
+                streamWriteString(streamId, tostring(fillType))
+                streamWriteFloat32(streamId, (type(data) == "table" and data.amount) or 0)
+                streamWriteFloat32(streamId, (type(data) == "table" and data.readyAt) or 0)
+            end
         end
+    end
+
+    streamWriteUInt8(streamId, math.clamp(PRBFix.storeOpenHour or 8, 0, 24))
+    streamWriteUInt8(streamId, math.clamp(PRBFix.storeCloseHour or 19, 0, 24))
+
+    local settingsTable = PRBFix.barnSettings or {}
+    local settingCount = 0
+    for _ in pairs(settingsTable) do settingCount = settingCount + 1 end
+    streamWriteUInt8(streamId, math.min(settingCount, 255))
+    local written = 0
+    for prodName, hrs in pairs(settingsTable) do
+        if written >= 255 then break end
+        streamWriteString(streamId, tostring(prodName))
+        streamWriteUInt8(streamId, math.clamp(tonumber(hrs) or 5, 1, 250))
+        written = written + 1
     end
 end
 
 
+----------------------------------------------------------------
+-- READ STREAM
+-- Receives per-barn ledger data and store hours on clients
+----------------------------------------------------------------
 function PR_ButcherSyncEvent:readStream(streamId, connection)
-    local farmCount = streamReadUInt8(streamId)
+    local barnCount = streamReadUInt8(streamId)
     local farmMeat = {}
-    for i = 1, farmCount do
-        local farmId = streamReadUInt8(streamId)
-        farmMeat[farmId] = {}
-        local meatCount = streamReadUInt8(streamId)
-        for j = 1, meatCount do
-            local fillType = streamReadString(streamId)
-            local amount = streamReadFloat32(streamId)
-            farmMeat[farmId][fillType] = amount
+    for b = 1, barnCount do
+        local barnKey = streamReadString(streamId)
+        farmMeat[barnKey] = {}
+        local farmCount = streamReadUInt8(streamId)
+        for i = 1, farmCount do
+            local farmId = streamReadUInt8(streamId)
+            farmMeat[barnKey][farmId] = {}
+            local meatCount = streamReadUInt8(streamId)
+            for j = 1, meatCount do
+                local fillType = streamReadString(streamId)
+                local amount = streamReadFloat32(streamId)
+                farmMeat[barnKey][farmId][fillType] = amount
+            end
         end
     end
     PRBFix.farmMeat = farmMeat
 
-    local palletFarmCount = streamReadUInt8(streamId)
+    local palletBarnCount = streamReadUInt8(streamId)
     local farmMeatPallets = {}
-    for i = 1, palletFarmCount do
-        local farmId = streamReadUInt8(streamId)
-        farmMeatPallets[farmId] = {}
-        local count = streamReadUInt8(streamId)
-        for j = 1, count do
-            local fillType = streamReadString(streamId)
-            local amount = streamReadFloat32(streamId)
-            local readyAt = streamReadFloat32(streamId)
-            farmMeatPallets[farmId][fillType] = {amount = amount, readyAt = readyAt}
+    for b = 1, palletBarnCount do
+        local barnKey = streamReadString(streamId)
+        farmMeatPallets[barnKey] = {}
+        local palletFarmCount = streamReadUInt8(streamId)
+        for i = 1, palletFarmCount do
+            local farmId = streamReadUInt8(streamId)
+            farmMeatPallets[barnKey][farmId] = {}
+            local count = streamReadUInt8(streamId)
+            for j = 1, count do
+                local fillType = streamReadString(streamId)
+                local amount = streamReadFloat32(streamId)
+                local readyAt = streamReadFloat32(streamId)
+                farmMeatPallets[barnKey][farmId][fillType] = {amount = amount, readyAt = readyAt, barnId = barnKey}
+            end
         end
     end
     PRBFix.farmMeatPallets = farmMeatPallets
 
-    print(string.format("[PR Butcher Fix] Received farmMeat sync (%d farms, %d pallet farms)", farmCount, palletFarmCount))
+    PRBFix.storeOpenHour = streamReadUInt8(streamId)
+    PRBFix.storeCloseHour = streamReadUInt8(streamId)
+
+    local settingCount = streamReadUInt8(streamId)
+    local syncedSettings = {}
+    for i = 1, settingCount do
+        local prodName = streamReadString(streamId)
+        local hrs = streamReadUInt8(streamId)
+        if prodName and prodName ~= "" then
+            syncedSettings[prodName] = hrs
+        end
+    end
+    if settingCount > 0 then
+        PRBFix.barnSettings = syncedSettings
+    end
+
+    if PRBFix.updateBarnInteriorLights ~= nil then
+        PRBFix:updateBarnInteriorLights(true)
+    end
+
+    print(string.format("[PR Butcher Fix] Received farmMeat sync (%d barns, %d pallet barns, hours %d-%d, %d product settings)",
+        barnCount, palletBarnCount, PRBFix.storeOpenHour or 8, PRBFix.storeCloseHour or 19, settingCount))
 end
+
 
 function PR_ButcherSyncEvent:run(connection)
 end
+
 
 -- Broadcasts current farmMeat table to all clients
 function PRBFix:syncFarmMeat()
@@ -273,25 +349,30 @@ end
 -- Gets the display name of the unload key
 function PRBFix:getUnloadKeyName()
     local action = InputAction and InputAction.RLB_UNLOAD_TO_BUTCHER
-    if not action or not g_inputBinding then return "U" end
+    if not action or not g_inputBinding then return "K" end
 
-    if g_inputBinding.getBinding then
-        local binding = g_inputBinding:getBinding(action)
-        if binding and binding.input then
-            return binding.input:gsub("KEY_", ""):upper()
-        end
-    end
-
-    local bindings = g_inputBinding.bindings
-    if type(bindings) == "table" then
-        for _, b in pairs(bindings) do
-            if b and (b.action == action or b.actionName == action) and b.input then
-                return b.input:gsub("KEY_", ""):upper()
+    if g_inputBinding.getActionBindings ~= nil then
+        local bindings = g_inputBinding:getActionBindings(action)
+        if type(bindings) == "table" and bindings[1] ~= nil then
+            local b = bindings[1]
+            local key = (b.axisNames and b.axisNames[1]) or b.inputString or b.input
+            if key ~= nil and key ~= "" then
+                return tostring(key):gsub("KEY_", ""):upper()
             end
         end
     end
 
-    return "U"
+    local actionObj = (g_inputBinding.nameActions and g_inputBinding.nameActions["RLB_UNLOAD_TO_BUTCHER"])
+        or (g_inputBinding.actions and g_inputBinding.actions[action])
+    if actionObj ~= nil and type(actionObj.bindings) == "table" and actionObj.bindings[1] ~= nil then
+        local b = actionObj.bindings[1]
+        local key = (b.axisNames and b.axisNames[1]) or b.inputString or b.input
+        if key ~= nil and key ~= "" then
+            return tostring(key):gsub("KEY_", ""):upper()
+        end
+    end
+
+    return "K"
 end
 
 ----------------------------------------------------------------
@@ -370,7 +451,7 @@ function PRBFix:loadMap()
         end
     end
 
-	self:loadBarnSettings()
+    self:loadBarnSettings()
     self:loadMeatLedger()
     print(string.format("[%s] loadMap called (v%s)", self.modName, PRBFix.VERSION))
 end
@@ -382,48 +463,138 @@ end
 PRBFix.currentVehicle = nil
 PRBFix.actionEventId = nil
 
-function PRBFix:updateInputContext()
-    if not PRBFix.playerInTrigger then return end
-
+----------------------------------------------------------------
+-- GET ACTIVE TRIGGER TRAILER
+-- Finds the livestock trailer inside the trigger that belongs to
+-- the local player's active or controlled vehicle root
+----------------------------------------------------------------
+function PRBFix:getActiveTriggerTrailer()
     local mission = g_currentMission
-    if not mission or not mission.playerSystem or not mission.playerSystem.players then return end
+    if not mission or not next(self.trailersInTrigger) then return nil, nil end
 
-    local player = mission.playerSystem.players[1]
-    local vehicle = player and player.getCurrentVehicle and player:getCurrentVehicle() or nil
+    local veh = mission.controlledVehicle
+    if veh == nil and g_localPlayer ~= nil then
+        veh = (g_localPlayer.getCurrentVehicle and g_localPlayer:getCurrentVehicle()) or g_localPlayer.currentVehicle
+    end
+    if veh == nil and mission.playerSystem and mission.playerSystem.players then
+        local player = mission.playerSystem.players[1]
+        veh = player and player.getCurrentVehicle and player:getCurrentVehicle() or nil
+    end
+    if veh == nil then return nil, nil end
 
-    if vehicle == self.currentVehicle then return end
+    local playerRoot = veh.rootVehicle or veh
+    for trailer, data in pairs(self.trailersInTrigger) do
+        local trailerRoot = trailer.rootVehicle or trailer
+        if trailerRoot == playerRoot then
+            return trailer, data
+        end
+    end
+    return nil, nil
+end
 
-    if self.actionEventId then
-        g_inputBinding:removeActionEvent(self.actionEventId)
-        self.actionEventId = nil
+----------------------------------------------------------------
+-- UPDATE INPUT CONTEXT
+-- Binds or removes the animal unload action event based on
+-- whether the local player is in the trigger with a trailer
+----------------------------------------------------------------
+function PRBFix:updateInputContext()
+    local trailer, data = self:getActiveTriggerTrailer()
+    local shouldBind = (trailer ~= nil)
+
+    if not shouldBind then
+        if self.butcherActionEventId ~= nil then
+            g_inputBinding:removeActionEvent(self.butcherActionEventId)
+            self.butcherActionEventId = nil
+        end
+        self.currentVehicle = nil
+        return
     end
 
-    self.currentVehicle = vehicle
-    if not vehicle then return end
+    local veh = g_currentMission and g_currentMission.controlledVehicle or nil
+    if veh == nil and g_localPlayer ~= nil then
+        veh = (g_localPlayer.getCurrentVehicle and g_localPlayer:getCurrentVehicle()) or g_localPlayer.currentVehicle
+    end
 
-    if InputAction and InputAction.RLB_UNLOAD_TO_BUTCHER then
-        local _, eventId = g_inputBinding:registerActionEvent(
-            InputAction.RLB_UNLOAD_TO_BUTCHER, self, self.onDeliverKeyPressed,
-            false, true, false, true
-        )
-        if eventId then
-            g_inputBinding:setActionEventText(eventId, g_i18n:getText("input_RLB_UNLOAD_TO_BUTCHER"))
-            g_inputBinding:setActionEventTextVisibility(eventId, true)
-            self.actionEventId = eventId
+    if self.butcherActionEventId == nil or veh ~= self.currentVehicle then
+        if self.butcherActionEventId ~= nil then
+            g_inputBinding:removeActionEvent(self.butcherActionEventId)
+            self.butcherActionEventId = nil
+        end
+        self.currentVehicle = veh
+
+        if InputAction and InputAction.RLB_UNLOAD_TO_BUTCHER then
+            local _, eventId = g_inputBinding:registerActionEvent(
+                InputAction.RLB_UNLOAD_TO_BUTCHER, self, self.onDeliverKeyPressed,
+                false, true, false, true
+            )
+            self.butcherActionEventId = eventId
+            if eventId then
+                local keyName = self:getUnloadKeyName()
+                g_inputBinding:setActionEventText(eventId, "Unload Animals To Butcher (Press " .. keyName .. ")")
+                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_VERY_HIGH)
+                g_inputBinding:setActionEventTextVisibility(eventId, true)
+            end
         end
     end
 end
 
 ----------------------------------------------------------------
+-- IS BARN OPEN FOR OPERATIONS
+-- Returns true when current time is inside storeOpenHour..storeCloseHour
+----------------------------------------------------------------
+function PRBFix:isBarnOpenForOperations()
+    return self:isBarnDoorsOpenAllowed()
+end
+
+----------------------------------------------------------------
+-- UPDATE SCHEDULED BARN TASKS
+-- Runs 60s checks; skips delivery/spawn checks while barn is closed
+----------------------------------------------------------------
+function PRBFix:updateScheduledBarnTasks(dt)
+    if self.butcherBarnPlaceable ~= nil and (self.isButcherBarnValid == nil or not self:isButcherBarnValid()) then
+        if self.resetButcherBarn ~= nil then
+            self:resetButcherBarn()
+        else
+            self.butcherBarnPlaceable = nil
+            self.placeablesScanned = false
+        end
+    end
+
+    self.scheduleCheckTimer = (self.scheduleCheckTimer or 0) + (dt or 0)
+    if self.scheduleCheckTimer < 60000 then
+        return
+    end
+    self.scheduleCheckTimer = 0
+
+    if self.butcherBarnPlaceable == nil then
+        return
+    end
+
+    if g_currentMission ~= nil and g_currentMission:getIsClient() then
+        self:updateBarnInteriorLights(false)
+    end
+
+    if g_server ~= nil then
+        self:updateBarnDoorSchedule()
+    end
+
+    -- Skip delivery/spawn checks while closed
+    if not self:isBarnOpenForOperations() then
+        return
+    end
+
+    self:processIncomingToOutgoing()
+end
+
+----------------------------------------------------------------
 -- UPDATE LOOP
--- Runs every frame. Handles input, output lock, and placeable scan
+-- Runs every frame. Handles input, scheduled tasks, timers, and scan
 ----------------------------------------------------------------
 function PRBFix:update(dt)
     self:updateInputContext()
     --self:creditProductionOutput()
-    self:processIncomingToOutgoing()
+    self:updateScheduledBarnTasks(dt)
 
-    -- Force output mode to Storing every 30 seconds
     if not self.outputLockTimer then self.outputLockTimer = 0 end
     self.outputLockTimer = self.outputLockTimer + dt
     if self.outputLockTimer > 30000 then
@@ -461,7 +632,6 @@ function PRBFix:update(dt)
         end
     end
 
-    -- Extra print text while in animal trigger
     if next(self.trailersInTrigger) then
         local mission = g_currentMission
         local player = mission and mission.playerSystem.players and mission.playerSystem.players[1]
@@ -481,17 +651,15 @@ function PRBFix:update(dt)
         end
     end
 
-	-- Server pushes the ledger to everyone every 5 min
-	if g_server ~= nil then
-		if PRBFix.pushTimer == nil then PRBFix.pushTimer = 0 end
-		PRBFix.pushTimer = PRBFix.pushTimer + dt
-		if PRBFix.pushTimer > 300000 then
-			PRBFix.pushTimer = 0
-			g_server:broadcastEvent(PR_ButcherSyncEvent.new(PRBFix.farmMeat or {}))
-		end
-	end
+    if g_server ~= nil then
+        if PRBFix.pushTimer == nil then PRBFix.pushTimer = 0 end
+        PRBFix.pushTimer = PRBFix.pushTimer + dt
+        if PRBFix.pushTimer > 300000 then
+            PRBFix.pushTimer = 0
+            self:syncFarmMeat()
+        end
+    end
 
-    -- Retry placeable scan until barn is found
     if not self.placeablesScanned and g_currentMission and g_currentMission.placeableSystem then
         local now = g_time or 0
         if self.nextPlaceableScanTime == nil then
@@ -504,60 +672,144 @@ function PRBFix:update(dt)
     end
 end
 
+
 ----------------------------------------------------------------
 -- SCAN BUTCHER PLACEABLES
--- Finds the barn, hooks triggers, sets owner, locks output mode
+-- Finds butcher barn(s), hooks triggers per barn, preserves/sets
+-- owner, locks output mode, and registers lifecycle hooks
 ----------------------------------------------------------------
 function PRBFix:scanButcherPlaceables()
+    if not self.placeableDeleteHooked and Placeable ~= nil and Placeable.delete ~= nil then
+        self.placeableDeleteHooked = true
+        Placeable.delete = Utils.prependedFunction(Placeable.delete, function(placeable)
+            if PRBFix ~= nil and placeable ~= nil and placeable.configFileName and placeable.configFileName:match("theButcherBarn.xml") then
+                if PRBFix.hookedBarns then
+                    PRBFix.hookedBarns[placeable] = nil
+                end
+                if PRBFix.resetButcherBarn ~= nil then
+                    PRBFix:resetButcherBarn(placeable)
+                end
+            end
+        end)
+    end
+
+    if not self.placeableCreateHooked and Placeable ~= nil and Placeable.finalizePlacement ~= nil then
+        self.placeableCreateHooked = true
+        Placeable.finalizePlacement = Utils.appendedFunction(Placeable.finalizePlacement, function(placeable)
+            if PRBFix ~= nil and placeable ~= nil and placeable.configFileName and placeable.configFileName:match("theButcherBarn.xml") then
+                if PRBFix.hookedBarns == nil or not PRBFix.hookedBarns[placeable] then
+                    PRBFix.placeablesScanned = false
+                    if PRBFix.scanButcherPlaceables ~= nil then
+                        PRBFix:scanButcherPlaceables()
+                    end
+                end
+            end
+        end)
+    end
+
+    if self.butcherBarnPlaceable ~= nil and (self.isButcherBarnValid == nil or not self:isButcherBarnValid()) then
+        if self.resetButcherBarn ~= nil then
+            self:resetButcherBarn(self.butcherBarnPlaceable)
+        else
+            self.butcherBarnPlaceable = nil
+            self.placeablesScanned = false
+            self.visibilityOverrideInstalled = false
+        end
+    end
+
+    self.hookedBarns = self.hookedBarns or {}
+    self.barnTriggers = self.barnTriggers or {}
+    self.triggerToBarn = self.triggerToBarn or {}
+    self.barnKeyToPlaceable = {}
+    self.barnIds = {}
+    self.barnMeta = self.barnMeta or {}
+
     local found = false
-    local placeables = g_currentMission.placeableSystem.placeables
+    local placeables = g_currentMission and g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables
 
-    for _, p in pairs(placeables) do
-        if p.configFileName and p.configFileName:match("theButcherBarn.xml") then
-            found = true
-            print("["..self.modName.."] Found butcher barn: "..p.configFileName)
-            self.butcherBarnPlaceable = p
+    if placeables then
+        for _, p in pairs(placeables) do
+            if p.configFileName and p.configFileName:match("theButcherBarn.xml") then
+                found = true
 
-            local spec = p.spec_extendedProductionPoint
-            if spec and spec.productionPoint then
-                local pp = spec.productionPoint
-                if pp.palletSpawner then
-                    self.manualPalletSpawner = pp.palletSpawner
-                    pp.waitingForPalletToSpawn = true
-                    print("["..self.modName.."] Auto pallet spawner paused (manual reference kept)")
+                local barnKey, posStr, ownerId = self:getBarnIdentity(p)
+                local posKey = self:getBarnKey(p)
+                if p.ownerFarmId == nil or p.ownerFarmId == 0 then
+                    if p.setOwnerFarmId then
+                        p:setOwnerFarmId(1)
+                    else
+                        p.ownerFarmId = 1
+                    end
+                    ownerId = 1
+                    print(string.format("[%s] Butcher barn (%s) had no owner; defaulted to farm 1", self.modName, barnKey))
+                else
+                    print(string.format("[%s] Butcher barn (%s) kept owner farm %d", self.modName, barnKey, ownerId))
                 end
-            end
 
-            if p.i3dMappings and p.i3dMappings["animalTrigger"] then
-                local n = p.i3dMappings["animalTrigger"].nodeId
-                if n and n ~= 0 then
-                    print("["..self.modName.."] Disabling original animalTrigger "..n)
-                    removeTrigger(n)
-                    addTrigger(n, "onTriggerCallback", self)
-                    print("["..self.modName.."] onTriggerCallback attached new animalTrigger!")
+                self.barnIds[barnKey] = p
+                self.barnKeyToPlaceable[posKey] = p
+                self.barnMeta[barnKey] = {
+                    id = barnKey,
+                    posKey = posKey,
+                    ownerFarmId = ownerId,
+                    position = posStr
+                }
+
+                if self.butcherBarnPlaceable == nil or (self.isButcherBarnValid and not self:isButcherBarnValid()) then
+                    self.butcherBarnPlaceable = p
                 end
-            end
 
-            if p.setOwnerFarmId then
-                p:setOwnerFarmId(1)
-                print("["..self.modName.."] Butcher barn owner set to farm 1")
-            end
+                if not self.hookedBarns[p] then
+                    self.hookedBarns[p] = true
+                    self.barnTriggers[p] = {}
+                    print(string.format("[%s] Found butcher barn: %s (id=%s, owner=%d, pos=%s)",
+                        self.modName, p.configFileName, barnKey, ownerId, posStr))
 
-            if p.i3dMappings and p.i3dMappings["palletTrigger"] then
-                local n = p.i3dMappings["palletTrigger"].nodeId
-                if n and n ~= 0 then
-                    print("["..self.modName.."] Replacing original palletTrigger "..n)
-                    removeTrigger(n)
-                    addTrigger(n, "onPalletTriggerCallback", self)
-                    print("["..self.modName.."] onPalletTriggerCallback attached")
-                end
-            end
+                    local spec = p.spec_extendedProductionPoint
+                    if spec and spec.productionPoint then
+                        local pp = spec.productionPoint
+                        if pp.palletSpawner then
+                            self.manualPalletSpawner = pp.palletSpawner
+                            pp.waitingForPalletToSpawn = true
+                            print("["..self.modName.."] Auto pallet spawner paused (manual reference kept)")
+                        end
+                    end
 
-            if p.i3dMappings and p.i3dMappings["loadingZoneTrigger"] then
-                local n = p.i3dMappings["loadingZoneTrigger"].nodeId
-                if n and n ~= 0 then
-                    addTrigger(n, "onSpawnTriggerCallback", self)
-                    print("["..self.modName.."] Loading Zone trigger attached")
+                    if p.i3dMappings and p.i3dMappings["animalTrigger"] then
+                        local n = p.i3dMappings["animalTrigger"].nodeId
+                        if n and n ~= 0 then
+                            print("["..self.modName.."] Disabling original animalTrigger "..n)
+                            removeTrigger(n)
+                            addTrigger(n, "onTriggerCallback", self)
+                            table.insert(self.barnTriggers[p], n)
+                            self.triggerToBarn[n] = p
+                            print("["..self.modName.."] onTriggerCallback attached new animalTrigger!")
+                        end
+                    end
+
+                    if p.i3dMappings and p.i3dMappings["palletTrigger"] then
+                        local n = p.i3dMappings["palletTrigger"].nodeId
+                        if n and n ~= 0 then
+                            print("["..self.modName.."] Replacing original palletTrigger "..n)
+                            removeTrigger(n)
+                            addTrigger(n, "onPalletTriggerCallback", self)
+                            table.insert(self.barnTriggers[p], n)
+                            self.triggerToBarn[n] = p
+                            print("["..self.modName.."] onPalletTriggerCallback attached")
+                        end
+                    end
+
+                    if p.i3dMappings and p.i3dMappings["loadingZoneTrigger"] then
+                        local n = p.i3dMappings["loadingZoneTrigger"].nodeId
+                        if n and n ~= 0 then
+                            addTrigger(n, "onSpawnTriggerCallback", self)
+                            table.insert(self.barnTriggers[p], n)
+                            self.triggerToBarn[n] = p
+                            print("["..self.modName.."] Loading Zone trigger attached")
+                        end
+                    end
+
+                    self:installVisibilityOverrideForBarn(p)
                 end
             end
         end
@@ -565,29 +817,9 @@ function PRBFix:scanButcherPlaceables()
 
     if found then
         self.placeablesScanned = true
-        print("["..self.modName.."] Placeable scan successful. Barn cached.")
-        self:installVisibilityOverride()
-
-        local barn = self.butcherBarnPlaceable
-        if barn and barn.spec_extendedProductionPoint then
-            local pp = barn.spec_extendedProductionPoint.productionPoint
-            if pp then
-                local function moveToStorage(srcTable)
-                    if srcTable then
-                        for ftIdx, palletData in pairs(srcTable) do
-                            if type(palletData) == "table" then
-                                pp.outputFillTypeIdsToPallets[ftIdx] = palletData
-                            end
-                        end
-                    end
-                end
-                moveToStorage(pp.outputFillTypeIdsDirectSell)
-                moveToStorage(pp.outputFillTypeIdsAutoDeliver)
-                pp.outputFillTypeIdsDirectSell = {}
-                pp.outputFillTypeIdsAutoDeliver = {}
-                pp.isOutputModeChangeAllowed = false
-            end
-        end
+        self:updateBarnInteriorLights(true)
+        self:installBarnDoorLockHook()
+        self:updateBarnDoorSchedule()
     else
         self.placeablesScanned = false
     end
@@ -595,7 +827,7 @@ end
 
 ----------------------------------------------------------------
 -- PALLET TRIGGER CALLBACK
--- Credits empty pallets to the delivering farm and adds them to storage
+-- Credits empty pallets to the delivering farm for that barn
 ----------------------------------------------------------------
 function PRBFix:onPalletTriggerCallback(triggerId, otherId, onEnter, onLeave)
     if not onEnter then return end
@@ -617,18 +849,22 @@ function PRBFix:onPalletTriggerCallback(triggerId, otherId, onEnter, onLeave)
     local farmId = obj.ownerFarmId or obj.farmId
     if g_server == nil or farmId == nil or farmId <= 0 then return end
 
+    local barn = (self.triggerToBarn and self.triggerToBarn[triggerId]) or self.butcherBarnPlaceable
+    local barnKey = self:getBarnKey(barn)
+
     obj.prButcherCredited = true
 
-    PRBFix.farmMeat[farmId] = PRBFix.farmMeat[farmId] or {}
-    PRBFix.farmMeat[farmId]["EMPTYPALLET"] = (PRBFix.farmMeat[farmId]["EMPTYPALLET"] or 0) + amount
+    PRBFix.farmMeat[barnKey] = PRBFix.farmMeat[barnKey] or {}
+    PRBFix.farmMeat[barnKey][farmId] = PRBFix.farmMeat[barnKey][farmId] or {}
+    PRBFix.farmMeat[barnKey][farmId]["EMPTYPALLET"] = (PRBFix.farmMeat[barnKey][farmId]["EMPTYPALLET"] or 0) + amount
 
-    print(string.format("[%s] Pallet trigger credited %.2f L EMPTYPALLET to farm %d", self.modName, amount, farmId))
+    print(string.format("[%s] Pallet trigger credited %.2f L EMPTYPALLET to farm %d at barn %s",
+        self.modName, amount, farmId, barnKey))
 
     if g_server ~= nil then
         PRBFix:syncFarmMeat()
     end
 
-    local barn = self.butcherBarnPlaceable
     if barn and barn.spec_extendedProductionPoint and barn.spec_extendedProductionPoint.productionPoint then
         local storage = barn.spec_extendedProductionPoint.productionPoint.storage
         if storage and storage.setFillLevel then
@@ -643,54 +879,71 @@ function PRBFix:onPalletTriggerCallback(triggerId, otherId, onEnter, onLeave)
     end
 end
 
+
 ----------------------------------------------------------------
 -- SPAWN / LOADING ZONE TRIGGER
--- Registers the spawn action key when player enters the front zone
+-- Tracks which barn's loading zone the local player entered
 ----------------------------------------------------------------
 function PRBFix:onSpawnTriggerCallback(triggerId, otherId, onEnter, onLeave)
+    if otherId == nil then return end
+
     local isPlayer = false
 
-    if g_localPlayer and g_localPlayer.rootNode == otherId then
+    if g_localPlayer and (g_localPlayer.rootNode == otherId or g_localPlayer.capsuleRootNode == otherId) then
         isPlayer = true
     end
 
-    if not isPlayer and g_currentMission and g_currentMission.playerSystem then
+    if not isPlayer and g_currentMission and g_currentMission.playerSystem and g_currentMission.playerSystem.players then
         for _, player in pairs(g_currentMission.playerSystem.players) do
-            if player and player.rootNode == otherId then
+            if player and (player.rootNode == otherId or player.capsuleRootNode == otherId) then
                 isPlayer = true
                 break
             end
         end
     end
 
-    if isPlayer then
-        self.playerInSpawnTrigger = onEnter
+    if not isPlayer then return end
 
-        local farmId = 1
-        local farmName = "Unknown"
-        if g_currentMission and g_currentMission.getFarmId then
-            farmId = g_currentMission:getFarmId()
+    local isClient = (g_currentMission ~= nil and g_currentMission:getIsClient())
+    local barn = (self.triggerToBarn and self.triggerToBarn[triggerId]) or self.butcherBarnPlaceable
+    local barnKey = self:getBarnKey(barn)
+
+    if isClient then
+        self.playerInSpawnTrigger = (onEnter == true)
+        if onEnter then
+            self.activeSpawnBarn = barn
+            self.activeSpawnBarnKey = barnKey
+        elseif onLeave and self.activeSpawnBarn == barn then
+            self.activeSpawnBarn = nil
+            self.activeSpawnBarnKey = nil
         end
+    end
 
-        if g_farmManager and g_farmManager.farms then
-            for _, farm in pairs(g_farmManager.farms) do
-                if farm and (farm.farmId == farmId or farm.id == farmId) then
-                    if farm.name and farm.name ~= "" then
-                        farmName = farm.name
-                    end
-                    break
+    local farmId = 1
+    local farmName = "Unknown"
+    if g_currentMission and g_currentMission.getFarmId then
+        farmId = g_currentMission:getFarmId() or 1
+    end
+
+    if g_farmManager and g_farmManager.farms then
+        for _, farm in pairs(g_farmManager.farms) do
+            if farm and (farm.farmId == farmId or farm.id == farmId) then
+                if farm.name and farm.name ~= "" then
+                    farmName = farm.name
                 end
+                break
             end
         end
+    end
 
-        if onEnter then
-            print(string.format("[%s] Player entered loading zone | Farm %d (%s)", 
-                self.modName, farmId, farmName))
+    if onEnter then
+        print(string.format("[%s] Player entered loading zone (%s) | Farm %d (%s)",
+            self.modName, barnKey, farmId, farmName))
 
-            -- Check store hours
+        if isClient then
             local isOpen = true
             if g_currentMission and g_currentMission.environment then
-                local dayTime = g_currentMission.environment.dayTime / 1000  -- seconds into the day
+                local dayTime = (g_currentMission.environment.dayTime or 0) / 1000
                 local hour = math.floor(dayTime / 3600)
                 local openH = self.storeOpenHour or 8
                 local closeH = self.storeCloseHour or 19
@@ -698,41 +951,43 @@ function PRBFix:onSpawnTriggerCallback(triggerId, otherId, onEnter, onLeave)
             end
 
             if isOpen then
-                -- Register the spawn action
-                if self.spawnActionEventId == nil then
-                    local _, eventId = g_inputBinding:registerActionEvent(InputAction.ACTIVATE_OBJECT, self, PRBFix.onSpawnPalletAction, false, true, false, true)
+                if self.spawnActionEventId == nil and g_inputBinding then
+                    local _, eventId = g_inputBinding:registerActionEvent(
+                        InputAction.ACTIVATE_OBJECT, self, PRBFix.onSpawnPalletAction, false, true, false, true
+                    )
                     self.spawnActionEventId = eventId
-                    g_inputBinding:setActionEventText(eventId, "Spawn Pallet")
-                    g_inputBinding:setActionEventTextVisibility(eventId, true)
+                    if self.spawnActionEventId then
+                        g_inputBinding:setActionEventText(self.spawnActionEventId, "Spawn Pallet")
+                        g_inputBinding:setActionEventTextVisibility(self.spawnActionEventId, true)
+                    end
                 end
             else
-                -- Store closed
                 if g_currentMission and g_currentMission.showBlinkingWarning then
-                    g_currentMission:showBlinkingWarning("Store Closed", 2000)
+                    g_currentMission:showBlinkingWarning("Store Closed", 4000)
                 end
-                print(string.format("[%s] Store is closed (hours %d-%d)", self.modName, self.storeOpenHour or 8, self.storeCloseHour or 19))
+                print(string.format("[%s] Store is closed (hours %d-%d)",
+                    self.modName, self.storeOpenHour or 8, self.storeCloseHour or 19))
             end
-        else
-            print(string.format("[%s] Player left loading zone | Farm %d (%s)", 
-                self.modName, farmId, farmName))
+        end
+    elseif onLeave then
+        print(string.format("[%s] Player left loading zone (%s) | Farm %d (%s)",
+            self.modName, barnKey, farmId, farmName))
 
-            -- Unregister the action
-            if self.spawnActionEventId ~= nil then
-                g_inputBinding:removeActionEvent(self.spawnActionEventId)
-                self.spawnActionEventId = nil
-            end
+        if isClient and self.spawnActionEventId ~= nil and g_inputBinding then
+            g_inputBinding:removeActionEvent(self.spawnActionEventId)
+            self.spawnActionEventId = nil
         end
     end
 end
 
+
 ----------------------------------------------------------------
 -- SPAWN ACTION
--- Opens the spawn dialog with only products that are ready for pickup
+-- Opens the spawn dialog using only the active barn's ready products
 ----------------------------------------------------------------
 function PRBFix:onSpawnPalletAction()
     if not self.playerInSpawnTrigger then return end
 
-    -- Block spawn when store is closed
     if g_currentMission and g_currentMission.environment then
         local dayTime = g_currentMission.environment.dayTime / 1000
         local hour = math.floor(dayTime / 3600)
@@ -740,14 +995,16 @@ function PRBFix:onSpawnPalletAction()
         local closeH = self.storeCloseHour or 19
         if hour < openH or hour >= closeH then
             if g_currentMission.showBlinkingWarning then
-                g_currentMission:showBlinkingWarning("Store Closed", 2000)
+                g_currentMission:showBlinkingWarning("Store Closed", 4000)
             end
             return
         end
     end
 
+    local barn = self.activeSpawnBarn or self.butcherBarnPlaceable
+    local barnKey = self.activeSpawnBarnKey or self:getBarnKey(barn)
     local farmId = g_currentMission and g_currentMission:getFarmId() or 1
-    local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId]) or {}
+    local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[barnKey] and PRBFix.farmMeatPallets[barnKey][farmId]) or {}
 
     local now = 0
     if g_currentMission and g_currentMission.environment then
@@ -759,16 +1016,19 @@ function PRBFix:onSpawnPalletAction()
         if type(entry) == "table" and entry.amount and entry.amount > 0.01 and entry.readyAt and now >= entry.readyAt then
             table.insert(readyProducts, {
                 fillType = fillType,
-                amount = entry.amount
+                amount = entry.amount,
+                barnKey = barnKey
             })
         end
     end
 
     table.sort(readyProducts, function(a, b) return a.fillType < b.fillType end)
 
-    -- Always open the dialog, even when the list is empty
+    self.dialogBarn = barn
+    self.dialogBarnKey = barnKey
+
     if PRBSpawnDialog and PRBSpawnDialog.show then
-        PRBSpawnDialog.show(readyProducts, farmId)
+        PRBSpawnDialog.show(readyProducts, farmId, barnKey)
     else
         print("["..self.modName.."] Spawn dialog not available")
     end
@@ -776,29 +1036,28 @@ end
 
 ----------------------------------------------------------------
 -- DO SPAWN PALLET
--- Server-only. Caps at 10, respects empty pallet ledger, spawns whatever amount is ready
+-- Server-only. Spawns ready pallets from the target barn's ledger
 ----------------------------------------------------------------
-function PRBFix:doSpawnPallet(fillTypeName, farmId)
+function PRBFix:doSpawnPallet(fillTypeName, farmId, barnKey)
     if g_server == nil then
         print("["..self.modName.."] Spawn skipped (not server)")
         return
     end
 
-    local barn = self.butcherBarnPlaceable
+    local resolvedKey = barnKey or self.dialogBarnKey or self:getBarnKey(self.butcherBarnPlaceable)
+    local barn = self:getBarnByKey(resolvedKey)
     if barn == nil or barn.i3dMappings == nil then
         print("["..self.modName.."] No barn or mappings")
         return
     end
 
     local startNode = barn.i3dMappings["spawnSpace1start"] and barn.i3dMappings["spawnSpace1start"].nodeId
-    local endNode   = barn.i3dMappings["spawnSpace1end"]   and barn.i3dMappings["spawnSpace1end"].nodeId
-
     if startNode == nil or startNode == 0 then
         print("["..self.modName.."] No spawn start node")
         return
     end
 
-    local pallets = PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId]
+    local pallets = PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[resolvedKey] and PRBFix.farmMeatPallets[resolvedKey][farmId]
     if pallets == nil or pallets[fillTypeName] == nil then
         print("["..self.modName.."] No ledger entry for " .. fillTypeName)
         return
@@ -811,14 +1070,12 @@ function PRBFix:doSpawnPallet(fillTypeName, farmId)
         return
     end
 
-    -- Check empty pallet balance
-    local emptyPallets = (PRBFix.farmMeat and PRBFix.farmMeat[farmId] and PRBFix.farmMeat[farmId]["EMPTYPALLET"]) or 0
+    local emptyPallets = (PRBFix.farmMeat and PRBFix.farmMeat[resolvedKey] and PRBFix.farmMeat[resolvedKey][farmId] and PRBFix.farmMeat[resolvedKey][farmId]["EMPTYPALLET"]) or 0
     if emptyPallets < 0.01 then
         print(string.format("[%s] Farm %d is out of empty pallets", self.modName, farmId))
         return
     end
 
-    -- Cap this spawn to available empty pallets
     if spawnAmount > emptyPallets then
         spawnAmount = emptyPallets
         print(string.format("[%s] Limited %s spawn to %.1f L (out of empty pallets)", self.modName, fillTypeName, spawnAmount))
@@ -827,13 +1084,11 @@ function PRBFix:doSpawnPallet(fillTypeName, farmId)
     local x, y, z = getWorldTranslation(startNode)
     local rx, ry, rz = getWorldRotation(startNode)
 
-    -- Tighter side-by-side spacing (fixed offset along local X)
     if PRBFix._spawnBatch and #PRBFix._spawnBatch > 1 then
         local index = PRBFix._spawnIndex or 0
         PRBFix._spawnIndex = index + 1
 
         local gap = 1.6
-        -- Simple offset using the node's rotation (safer than getWorldDirection)
         local offsetX = gap * index
         local cosRy = math.cos(ry)
         local sinRy = math.sin(ry)
@@ -898,16 +1153,17 @@ function PRBFix:doSpawnPallet(fillTypeName, farmId)
                 end
             end
 
-            if PRBFix.farmMeat and PRBFix.farmMeat[farmId] then
-                local empty = PRBFix.farmMeat[farmId]["EMPTYPALLET"] or 0
+            if PRBFix.farmMeat and PRBFix.farmMeat[resolvedKey] and PRBFix.farmMeat[resolvedKey][farmId] then
+                local empty = PRBFix.farmMeat[resolvedKey][farmId]["EMPTYPALLET"] or 0
                 local emptyCost = 1000
-                PRBFix.farmMeat[farmId]["EMPTYPALLET"] = math.max(0, empty - emptyCost)
-                print(string.format("[%s] Deducted %d L EMPTYPALLET from farm %d ledger", self.modName, emptyCost, farmId))
+                PRBFix.farmMeat[resolvedKey][farmId]["EMPTYPALLET"] = math.max(0, empty - emptyCost)
+                print(string.format("[%s] Deducted %d L EMPTYPALLET from farm %d ledger (%s)",
+                    self.modName, emptyCost, farmId, resolvedKey))
             end
 
             entry.amount = entry.amount - spawnAmount
             if entry.amount < 0.01 then
-                PRBFix.farmMeatPallets[farmId][fillTypeName] = nil
+                PRBFix.farmMeatPallets[resolvedKey][farmId][fillTypeName] = nil
             end
             print(string.format("[%s] Deducted %.1f L %s from farmMeatPallets", self.modName, spawnAmount, fillTypeName))
 
@@ -922,38 +1178,34 @@ end
 
 ----------------------------------------------------------------
 -- SERVER HANDLE PALLET SPAWN
--- Server-only. Caps at 10, respects empty pallet ledger, spawns whatever amount is ready
+-- Server-only. Caps at 10 and spawns from the target barn's ledger
 ----------------------------------------------------------------
-function PRBFix:handleSpawnRequest(fillTypes, farmId)
+function PRBFix:handleSpawnRequest(fillTypes, farmId, barnKey)
     if not g_server then return end
 
-    local emptyPallets = (self.farmMeat and self.farmMeat[farmId] and self.farmMeat[farmId]["EMPTYPALLET"]) or 0
+    local resolvedKey = barnKey or self.dialogBarnKey or self:getBarnKey(self.butcherBarnPlaceable)
+    local emptyPallets = (self.farmMeat and self.farmMeat[resolvedKey] and self.farmMeat[resolvedKey][farmId] and self.farmMeat[resolvedKey][farmId]["EMPTYPALLET"]) or 0
     local spawned = 0
 
     for _, fillType in ipairs(fillTypes) do
         if emptyPallets < 1000 then
-            print(string.format("[%s] Out of empty pallets for farm %d", self.modName, farmId))
+            print(string.format("[%s] Out of empty pallets for farm %d at barn %s", self.modName, farmId, resolvedKey))
             break
         end
 
         if self.doSpawnPallet then
-            self:doSpawnPallet(fillType, farmId)
+            self:doSpawnPallet(fillType, farmId, resolvedKey)
             emptyPallets = emptyPallets - 1000
             spawned = spawned + 1
         end
     end
 
-    print(string.format("[%s] Spawned %d pallets for farm %d", self.modName, spawned, farmId))
-
-    -- Push the updated ledger to all clients
+    print(string.format("[%s] Spawned %d pallets for farm %d at barn %s", self.modName, spawned, farmId, resolvedKey))
     self:syncFarmMeat()
 end
 
-
-
 ----------------------------------------------------------------
 -- CREDIT PRODUCTION OUTPUT
--- Credits finished products that appear in storage to the current farm
 ----------------------------------------------------------------
 function PRBFix:creditProductionOutput()
     local barn = self.butcherBarnPlaceable
@@ -992,7 +1244,6 @@ end
 
 ----------------------------------------------------------------
 -- PROCESS INCOMING TO OUTGOING
--- Converts raw meat to finished products after the wait time
 ----------------------------------------------------------------
 function PRBFix:processIncomingToOutgoing()
     if g_server == nil then return end
@@ -1036,13 +1287,15 @@ end
 
 ----------------------------------------------------------------
 -- ANIMAL TRIGGER CALLBACK
--- Detects livestock trailers and registers the unload action
+-- Tracks trailers per barn trigger and updates player/vehicle state
 ----------------------------------------------------------------
 function PRBFix:onTriggerCallback(triggerId, otherId, onEnter, onLeave)
+    local barn = (self.triggerToBarn and self.triggerToBarn[triggerId]) or self.butcherBarnPlaceable
+    local barnKey = self:getBarnKey(barn)
+
     local obj = g_currentMission.nodeToObject[otherId]
     if obj and obj.typeName == "livestockTrailer" then
         if onEnter then
-            -- Check store hours before allowing delivery
             local isOpen = true
             if g_currentMission and g_currentMission.environment then
                 local dayTime = g_currentMission.environment.dayTime / 1000
@@ -1054,7 +1307,7 @@ function PRBFix:onTriggerCallback(triggerId, otherId, onEnter, onLeave)
 
             if not isOpen then
                 if g_currentMission and g_currentMission.showBlinkingWarning then
-                    g_currentMission:showBlinkingWarning("Store Closed", 2000)
+                    g_currentMission:showBlinkingWarning("Store Closed", 4000)
                 end
                 print(string.format("[%s] Store is closed — delivery blocked", self.modName))
                 return
@@ -1064,8 +1317,8 @@ function PRBFix:onTriggerCallback(triggerId, otherId, onEnter, onLeave)
             local t = obj:getCurrentAnimalType()
             local typeName = (t and t.name) or "COW"
 
-            print(string.format("[%s] Animal trailer entered trigger! XML=%s | Total=%d | Type=%s",
-                self.modName, tostring(obj.configFileName), num, typeName))
+            print(string.format("[%s] Animal trailer entered trigger (%s)! XML=%s | Total=%d | Type=%s",
+                self.modName, barnKey, tostring(obj.configFileName), num, typeName))
 
             local cs = obj.spec_livestockTrailer and obj.spec_livestockTrailer.clusterSystem
             if cs and cs.animals then
@@ -1083,36 +1336,15 @@ function PRBFix:onTriggerCallback(triggerId, otherId, onEnter, onLeave)
                 print(string.format("[%s] ---- END CLUSTER REPORT ----", self.modName))
             end
 
-            local cap = self:checkBarnCapacity(typeName)
+            local cap = self:checkBarnCapacity(typeName, barn)
             if cap then
                 print(string.format("[%s] Barn ready for %d (%s)", self.modName, cap.avail, cap.fillType))
             end
 
-            self.trailersInTrigger[obj] = {type = typeName, num = num}
-
-            if self.butcherActionEventId == nil then
-                local _, id = g_inputBinding:registerActionEvent(
-                    InputAction.RLB_UNLOAD_TO_BUTCHER, self, self.onDeliverKeyPressed,
-                    false, true, false, true
-                )
-                self.butcherActionEventId = id
-                if id then
-                    local keyName = self:getUnloadKeyName()
-                    g_inputBinding:setActionEventText(id, "Unload Animals To Butcher (Press " .. keyName .. ")")
-                    g_inputBinding:setActionEventTextVisibility(id, true)
-                    print("["..self.modName.."] Registered R for butcher trigger")
-                end
-            end
+            self.trailersInTrigger[obj] = {type = typeName, num = num, barn = barn, barnKey = barnKey}
         elseif onLeave then
             print("["..self.modName.."] Trailer left trigger")
             self.trailersInTrigger[obj] = nil
-            if next(self.trailersInTrigger) == nil then
-                if self.butcherActionEventId ~= nil then
-                    g_inputBinding:removeActionEvent(self.butcherActionEventId)
-                    print("["..self.modName.."] Unregistered R for butcher trigger")
-                    self.butcherActionEventId = nil
-                end
-            end
         end
     end
 
@@ -1128,7 +1360,6 @@ end
 
 ----------------------------------------------------------------
 -- CHECK BARN CAPACITY
--- Returns available space for a given animal type
 ----------------------------------------------------------------
 function PRBFix:checkBarnCapacity(animalType)
     local barn = self.butcherBarnPlaceable
@@ -1173,7 +1404,6 @@ end
 
 ----------------------------------------------------------------
 -- COUNT VALID ANIMALS
--- Filters clusters by age rules and returns count + valid indices
 ----------------------------------------------------------------
 function PRBFix:countValidAnimals(trailer, animalType)
     local rule = PRBFix.AGE_RULES[animalType]
@@ -1214,7 +1444,6 @@ end
 
 ----------------------------------------------------------------
 -- ON DELIVER KEY PRESSED
--- Opens the animal delivery dialog with fresh data
 ----------------------------------------------------------------
 function PRBFix:onDeliverKeyPressed(actionName, value, state, isAnalog)
     if g_currentMission and g_currentMission.environment then
@@ -1224,7 +1453,7 @@ function PRBFix:onDeliverKeyPressed(actionName, value, state, isAnalog)
         local closeH = self.storeCloseHour or 19
         if hour < openH or hour >= closeH then
             if g_currentMission.showBlinkingWarning then
-                g_currentMission:showBlinkingWarning("Store Closed", 2000)
+                g_currentMission:showBlinkingWarning("Store Closed", 4000)
             end
             return
         end
@@ -1334,7 +1563,6 @@ end
 
 ----------------------------------------------------------------
 -- DELIVER ANIMALS FROM DIALOG
--- Called by the dialog OK button. Sends event or runs locally
 ----------------------------------------------------------------
 function PRBFix:deliverAnimalsFromDialog(trailer, data, amount, farmId)
     print(string.format("[%s] deliverAnimalsFromDialog called, amount=%d, farmId=%s",
@@ -1361,7 +1589,7 @@ end
 
 ----------------------------------------------------------------
 -- DELIVER ANIMALS
--- Core delivery logic. Credits meat, removes animals, updates storage
+-- Credits delivered animals to the target barn and farm ledger
 ----------------------------------------------------------------
 function PRBFix:deliverAnimals(trailer, data, amount, farmId)
     if trailer == nil or data == nil then return end
@@ -1370,15 +1598,14 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
     local validClusters = data.validClusters or {}
 
     amount = math.floor(tonumber(amount) or 0)
-    if amount <= 0 then return end
-    if #validClusters == 0 then return end
-    if amount > #validClusters then amount = #validClusters end
+    if amount <= 0 or #validClusters == 0 then return end
 
-    local cap = self:checkBarnCapacity(typeName)
-    if cap == nil then return end
-
-    local barn = self.butcherBarnPlaceable
+    local barn = data.barn or self.butcherBarnPlaceable
     if barn == nil then return end
+    local barnKey = data.barnKey or self:getBarnKey(barn)
+
+    local cap = self:checkBarnCapacity(typeName, barn)
+    if cap == nil then return end
 
     local spec = barn.spec_extendedProductionPoint
     if spec == nil or spec.productionPoint == nil or spec.productionPoint.storage == nil then return end
@@ -1403,28 +1630,39 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
         end
     end
 
-    local weights = {}
-    local prefix = {0.0}
-
-    for i, idx in ipairs(validClusters) do
+    local animalUnits = {}
+    for _, idx in ipairs(validClusters) do
         local cluster = cs.animals[idx]
-        local w = 0.0
         if cluster ~= nil then
+            local cNum = math.max(0, math.floor(tonumber(cluster.numAnimals or 0) or 0))
             local rawW = tonumber(cluster.weight or 0) or 0.0
             local q = 1.0
             if cluster.genetics ~= nil and cluster.genetics.quality ~= nil then
                 q = tonumber(cluster.genetics.quality) or 1.0
             end
             local breedMul = PRBFix:getBreedMultiplier(typeName, cluster)
-            w = rawW * q * breedMul
+            local adjW = rawW * q * breedMul
+
+            for _ = 1, cNum do
+                table.insert(animalUnits, {
+                    cluster = cluster,
+                    weight = adjW
+                })
+            end
         end
-        weights[i] = w
-        prefix[i + 1] = prefix[i] + w
+    end
+
+    if #animalUnits == 0 then return end
+    if amount > #animalUnits then amount = #animalUnits end
+
+    local prefix = {0.0}
+    for i, unit in ipairs(animalUnits) do
+        prefix[i + 1] = prefix[i] + (unit.weight or 0.0)
     end
 
     local function totalWeightFor(n)
         if n <= 0 then return 0.0 end
-        if n > #weights then n = #weights end
+        if n > #animalUnits then n = #animalUnits end
         return prefix[n + 1] - prefix[1]
     end
 
@@ -1447,7 +1685,6 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
 
     if used <= 0 then return end
 
-    local totalWeight = totalWeightFor(used)
     local liters = litersFor(used)
 
     local oldFill = cap.old
@@ -1461,9 +1698,9 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
 
     if g_server ~= nil and liters > 0 then
         if farmId and farmId > 0 then
-            PRBFix.farmMeat[farmId] = PRBFix.farmMeat[farmId] or {}
+            PRBFix.farmMeat[barnKey] = PRBFix.farmMeat[barnKey] or {}
+            PRBFix.farmMeat[barnKey][farmId] = PRBFix.farmMeat[barnKey][farmId] or {}
 
-            -- Use hours from settings file (default 5)
             local function getHoursFor(productName)
                 if self.barnSettings and self.barnSettings[productName] then
                     return self.barnSettings[productName]
@@ -1474,120 +1711,119 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
             local now = g_currentMission.environment.currentMonotonicDay * 86400 + g_currentMission.environment.dayTime / 1000
 
             PRBFix.farmMeatPallets = PRBFix.farmMeatPallets or {}
-            PRBFix.farmMeatPallets[farmId] = PRBFix.farmMeatPallets[farmId] or {}
+            PRBFix.farmMeatPallets[barnKey] = PRBFix.farmMeatPallets[barnKey] or {}
+            PRBFix.farmMeatPallets[barnKey][farmId] = PRBFix.farmMeatPallets[barnKey][farmId] or {}
 
-			local function addFinished(fillType, amount, productName)
-				if amount > 0.01 then
-					local hours = getHoursFor(productName or fillType)
-					local neededSeconds = hours * 3600
+            local function addFinished(fillType, amount, productName)
+                if amount > 0.01 then
+                    local hours = getHoursFor(productName or fillType)
+                    local neededSeconds = hours * 3600
 
-					local openH = self.storeOpenHour or 8
-					local closeH = self.storeCloseHour or 19
-					local openSec = openH * 3600
-					local closeSec = closeH * 3600
-					local dayLen = 86400
+                    local openH = self.storeOpenHour or 8
+                    local closeH = self.storeCloseHour or 19
+                    local openSec = openH * 3600
+                    local closeSec = closeH * 3600
+                    local dayLen = 86400
 
-					-- Calculate ready time for the new batch (open-store hours only)
-					local t = now
-					local remaining = neededSeconds
+                    local t = now
+                    local remaining = neededSeconds
 
-					while remaining > 0 do
-						local dayStart = math.floor(t / dayLen) * dayLen
-						local openAt = dayStart + openSec
-						local closeAt = dayStart + closeSec
+                    while remaining > 0 do
+                        local dayStart = math.floor(t / dayLen) * dayLen
+                        local openAt = dayStart + openSec
+                        local closeAt = dayStart + closeSec
 
-						if t < openAt then
-							t = openAt
-						end
+                        if t < openAt then
+                            t = openAt
+                        end
 
-						if t < closeAt then
-							local available = closeAt - t
-							if available >= remaining then
-								t = t + remaining
-								remaining = 0
-							else
-								remaining = remaining - available
-								t = dayStart + dayLen
-							end
-						else
-							t = dayStart + dayLen
-						end
-					end
+                        if t < closeAt then
+                            local available = closeAt - t
+                            if available >= remaining then
+                                t = t + remaining
+                                remaining = 0
+                            else
+                                remaining = remaining - available
+                                t = dayStart + dayLen
+                            end
+                        else
+                            t = dayStart + dayLen
+                        end
+                    end
 
-					local newReadyAt = t
+                    local newReadyAt = t
 
-					local entry = PRBFix.farmMeatPallets[farmId][fillType]
-					if entry == nil or type(entry) ~= "table" then
-						entry = {amount = 0, readyAt = newReadyAt}
-					end
+                    local entry = PRBFix.farmMeatPallets[barnKey][farmId][fillType]
+                    if entry == nil or type(entry) ~= "table" then
+                        entry = {amount = 0, readyAt = newReadyAt, barnId = barnKey}
+                    end
 
-					local oldAmount = entry.amount or 0
-					local oldReadyAt = entry.readyAt or newReadyAt
+                    local oldAmount = entry.amount or 0
+                    local oldReadyAt = entry.readyAt or newReadyAt
 
-					-- Convert both ready times into remaining open-store seconds
-					local function remainingOpenSeconds(readyTime)
-						local tt = now
-						local left = 0
+                    local function remainingOpenSeconds(readyTime)
+                        local tt = now
+                        local left = 0
 
-						while tt < readyTime do
-							local dayStart = math.floor(tt / dayLen) * dayLen
-							local openAt = dayStart + openSec
-							local closeAt = dayStart + closeSec
+                        while tt < readyTime do
+                            local dayStart = math.floor(tt / dayLen) * dayLen
+                            local openAt = dayStart + openSec
+                            local closeAt = dayStart + closeSec
 
-							if tt < openAt then
-								tt = openAt
-							end
+                            if tt < openAt then
+                                tt = openAt
+                            end
 
-							if tt < closeAt and tt < readyTime then
-								local endTime = math.min(closeAt, readyTime)
-								left = left + (endTime - tt)
-								tt = endTime
-							else
-								tt = dayStart + dayLen
-							end
-						end
-						return left
-					end
+                            if tt < closeAt and tt < readyTime then
+                                local endTime = math.min(closeAt, readyTime)
+                                left = left + (endTime - tt)
+                                tt = endTime
+                            else
+                                tt = dayStart + dayLen
+                            end
+                        end
+                        return left
+                    end
 
-					local oldOpenLeft = remainingOpenSeconds(oldReadyAt)
-					local newOpenLeft = remainingOpenSeconds(newReadyAt)
-					local avgOpenLeft = (oldAmount * oldOpenLeft + amount * newOpenLeft) / (oldAmount + amount)
+                    local oldOpenLeft = remainingOpenSeconds(oldReadyAt)
+                    local newOpenLeft = remainingOpenSeconds(newReadyAt)
+                    local avgOpenLeft = (oldAmount * oldOpenLeft + amount * newOpenLeft) / (oldAmount + amount)
 
-					-- Walk forward from now by the average open-store seconds
-					t = now
-					remaining = avgOpenLeft
+                    t = now
+                    remaining = avgOpenLeft
 
-					while remaining > 0 do
-						local dayStart = math.floor(t / dayLen) * dayLen
-						local openAt = dayStart + openSec
-						local closeAt = dayStart + closeSec
+                    while remaining > 0 do
+                        local dayStart = math.floor(t / dayLen) * dayLen
+                        local openAt = dayStart + openSec
+                        local closeAt = dayStart + closeSec
 
-						if t < openAt then
-							t = openAt
-						end
+                        if t < openAt then
+                            t = openAt
+                        end
 
-						if t < closeAt then
-							local available = closeAt - t
-							if available >= remaining then
-								t = t + remaining
-								remaining = 0
-							else
-								remaining = remaining - available
-								t = dayStart + dayLen
-							end
-						else
-							t = dayStart + dayLen
-						end
-					end
+                        if t < closeAt then
+                            local available = closeAt - t
+                            if available >= remaining then
+                                t = t + remaining
+                                remaining = 0
+                            else
+                                remaining = remaining - available
+                                t = dayStart + dayLen
+                            end
+                        else
+                            t = dayStart + dayLen
+                        end
+                    end
 
-					entry.amount = oldAmount + amount
-					entry.readyAt = t
-					PRBFix.farmMeatPallets[farmId][fillType] = entry
+                    entry.amount = oldAmount + amount
+                    entry.readyAt = t
+                    entry.barnId = barnKey
+                    PRBFix.farmMeatPallets[barnKey][farmId][fillType] = entry
 
-					print(string.format("[%s] Credited %.1f L %s (ready ~%.0f min) to farm %d",
-						self.modName, amount, fillType, (entry.readyAt - now) / 60, farmId))
-				end
-			end
+                    print(string.format("[%s] Credited %.1f L %s (ready ~%.0f min) to farm %d at barn %s",
+                        self.modName, amount, fillType, (entry.readyAt - now) / 60, farmId, barnKey))
+                end
+            end
 
             local meatName = self.ANIMAL_TO_MEAT_FILLTYPE[typeName] or typeName
             if meatName == "POULTRY" then
@@ -1635,7 +1871,8 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
                 rawFillType = cap.fillType,
                 rawAmount = liters,
                 outputs = outputs,
-                convertAt = convertAt
+                convertAt = convertAt,
+                barnKey = barnKey
             })
 
             print(string.format("[%s] Queued 5-min conversion for %.1f L %s", self.modName, liters, meatName))
@@ -1650,15 +1887,15 @@ function PRBFix:deliverAnimals(trailer, data, amount, farmId)
         if pp.raiseActive ~= nil then pp:raiseActive() end
     end
 
-    PR_DeliverAnimalsEvent.send(self.barn, trailer, used, true, newFill, typeName)
+    PR_DeliverAnimalsEvent.send(barn, trailer, used, true, newFill, typeName)
 
     print(string.format("[%s] ➕ Added %.2f L %s from %d animals", self.modName, liters, typeName, used))
 
     local clustersToRemove = {}
     for i = 1, used do
-        local idx = validClusters[i]
-        if idx ~= nil and cs.animals[idx] ~= nil then
-            table.insert(clustersToRemove, cs.animals[idx])
+        local unit = animalUnits[i]
+        if unit and unit.cluster ~= nil then
+            table.insert(clustersToRemove, unit.cluster)
         end
     end
 
@@ -1688,7 +1925,6 @@ end
 
 ----------------------------------------------------------------
 -- APPLY DELIVERY RESULT (CLIENT)
--- Mirrors server animal removal on the client
 ----------------------------------------------------------------
 function PRBFix:applyDeliveryResult(trailer, animalType, count)
     if trailer == nil then return end
@@ -1728,8 +1964,11 @@ function PRBFix:applyDeliveryResult(trailer, animalType, count)
     print(string.format("[%s] ✅ Client applied delivery result: removed %d animals from trailer", self.modName, removed))
 end
 
+
 ----------------------------------------------------------------
--- SAVE / LOAD LEDGER
+-- SAVE MEAT LEDGER
+-- Writes PR_ButcherBarn.xml grouped by active <barn> tags;
+-- omits ledger rows when no butcher barn exists on the map
 ----------------------------------------------------------------
 function PRBFix:saveMeatLedger()
     if g_server == nil then return end
@@ -1738,67 +1977,127 @@ function PRBFix:saveMeatLedger()
     local saveDir = g_currentMission.missionInfo.savegameDirectory
     if saveDir == nil then return end
 
-    -- Make sure the settings file exists in this save
     self:loadBarnSettings()
+    self:scanButcherPlaceables()
+
+    local activeBarns = {}
+    local placeables = g_currentMission and g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables
+    if placeables then
+        for _, p in pairs(placeables) do
+            if p.configFileName and p.configFileName:match("theButcherBarn.xml") then
+                local barnKey, posStr, ownerId = self:getBarnIdentity(p)
+                table.insert(activeBarns, {
+                    barnKey = barnKey,
+                    posKey = self:getBarnKey(p),
+                    posStr = posStr,
+                    ownerId = ownerId
+                })
+            end
+        end
+    end
 
     local xmlPath = saveDir .. "/PR_ButcherBarn.xml"
     local xmlFile = XMLFile.create("PR_ButcherBarn", xmlPath, "butcherBarn")
     if xmlFile == nil then return end
 
-    local farmIndex = 0
-    for farmId, meats in pairs(PRBFix.farmMeat or {}) do
-        local farmKey = string.format("butcherBarn.farm(%d)", farmIndex)
-        xmlFile:setInt(farmKey .. "#id", farmId)
+    local now = 0
+    if g_currentMission and g_currentMission.environment then
+        now = g_currentMission.environment.currentMonotonicDay * 86400 + g_currentMission.environment.dayTime / 1000
+    end
 
-        local farmName = "Farm " .. tostring(farmId)
-        if g_farmManager and g_farmManager.farms then
-            for _, farm in pairs(g_farmManager.farms) do
-                if farm and (farm.farmId == farmId or farm.id == farmId) then
-                    if farm.name and farm.name ~= "" then farmName = farm.name end
-                    break
+    local writtenBarns = 0
+    local writtenFarms = 0
+
+    if #activeBarns > 0 then
+        for barnIdx, barnInfo in ipairs(activeBarns) do
+            local barnPath = string.format("butcherBarn.barn(%d)", barnIdx - 1)
+            xmlFile:setString(barnPath .. "#id", barnInfo.barnKey)
+            xmlFile:setInt(barnPath .. "#ownerFarmId", barnInfo.ownerId)
+            xmlFile:setString(barnPath .. "#position", barnInfo.posStr)
+            writtenBarns = writtenBarns + 1
+
+            local barnMeatByFarm = (PRBFix.farmMeat and PRBFix.farmMeat[barnInfo.posKey]) or {}
+            local barnPalletsByFarm = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[barnInfo.posKey]) or {}
+
+            local farmIds = {}
+            for farmId in pairs(barnMeatByFarm) do farmIds[farmId] = true end
+            for farmId in pairs(barnPalletsByFarm) do farmIds[farmId] = true end
+
+            local farmIndex = 0
+            for farmId in pairs(farmIds) do
+                local meats = barnMeatByFarm[farmId] or {}
+                local pallets = barnPalletsByFarm[farmId] or {}
+                local empty = meats["EMPTYPALLET"] or 0
+
+                local hasAnyPallet = false
+                for _, entry in pairs(pallets) do
+                    if type(entry) == "table" and entry.amount and entry.amount > 0.01 then
+                        hasAnyPallet = true
+                        break
+                    end
+                end
+
+                if empty > 0.01 or hasAnyPallet then
+                    local farmKey = string.format("%s.farm(%d)", barnPath, farmIndex)
+                    xmlFile:setInt(farmKey .. "#id", farmId)
+
+                    local farmName = "Farm " .. tostring(farmId)
+                    if g_farmManager and g_farmManager.farms then
+                        for _, farm in pairs(g_farmManager.farms) do
+                            if farm and (farm.farmId == farmId or farm.id == farmId) then
+                                if farm.name and farm.name ~= "" then farmName = farm.name end
+                                break
+                            end
+                        end
+                    end
+                    xmlFile:setString(farmKey .. ".name", farmName)
+
+                    if empty > 0.01 then
+                        xmlFile:setFloat(farmKey .. ".emptyPallet", empty)
+                    end
+
+                    local procIndex = 0
+                    local availIndex = 0
+                    for fillType, entry in pairs(pallets) do
+                        if type(entry) == "table" and entry.amount and entry.amount > 0.01 then
+                            if entry.readyAt and now >= entry.readyAt then
+                                local key = string.format("%s.available(%d)", farmKey, availIndex)
+                                xmlFile:setString(key .. "#type", fillType)
+                                xmlFile:setFloat(key .. "#amount", entry.amount)
+                                xmlFile:setFloat(key .. "#readyAt", entry.readyAt or 0)
+                                availIndex = availIndex + 1
+                            else
+                                local key = string.format("%s.processing(%d)", farmKey, procIndex)
+                                xmlFile:setString(key .. "#type", fillType)
+                                xmlFile:setFloat(key .. "#amount", entry.amount)
+                                xmlFile:setFloat(key .. "#readyAt", entry.readyAt or 0)
+                                procIndex = procIndex + 1
+                            end
+                        end
+                    end
+
+                    farmIndex = farmIndex + 1
+                    writtenFarms = writtenFarms + 1
                 end
             end
         end
-        xmlFile:setString(farmKey .. ".name", farmName)
-
-        local empty = meats["EMPTYPALLET"] or 0
-        if empty > 0.01 then
-            xmlFile:setFloat(farmKey .. ".emptyPallet", empty)
-        end
-
-        local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[farmId]) or {}
-        local procIndex = 0
-        local availIndex = 0
-        local now = 0
-        if g_currentMission and g_currentMission.environment then
-            now = g_currentMission.environment.currentMonotonicDay * 86400 + g_currentMission.environment.dayTime / 1000
-        end
-
-        for fillType, entry in pairs(pallets) do
-            if type(entry) == "table" and entry.amount and entry.amount > 0.01 then
-                if entry.readyAt and now >= entry.readyAt then
-                    local key = string.format("%s.available(%d)", farmKey, availIndex)
-                    xmlFile:setString(key .. "#type", fillType)
-                    xmlFile:setFloat(key .. "#amount", entry.amount)
-                    xmlFile:setFloat(key .. "#readyAt", entry.readyAt or 0)
-                    availIndex = availIndex + 1
-                else
-                    local key = string.format("%s.processing(%d)", farmKey, procIndex)
-                    xmlFile:setString(key .. "#type", fillType)
-                    xmlFile:setFloat(key .. "#amount", entry.amount)
-                    xmlFile:setFloat(key .. "#readyAt", entry.readyAt or 0)
-                    procIndex = procIndex + 1
-                end
-            end
-        end
-        farmIndex = farmIndex + 1
+    else
+        PRBFix.farmMeat = {}
+        PRBFix.farmMeatPallets = {}
     end
 
     xmlFile:save()
     xmlFile:delete()
-    print(string.format("[%s] Saved butcher barn ledger (%d farms) to %s", self.modName, farmIndex, xmlPath))
+    print(string.format("[%s] Saved butcher barn ledger (%d barns, %d farm entries) to %s",
+        self.modName, writtenBarns, writtenFarms, xmlPath))
 end
 
+
+----------------------------------------------------------------
+-- LOAD MEAT LEDGER
+-- Reads saved farm pallet and empty-pallet balances from
+-- PR_ButcherBarn.xml into per-barn [barnKey][farmId] tables
+----------------------------------------------------------------
 function PRBFix:loadMeatLedger()
     if g_server == nil then return end
     if g_currentMission == nil or g_currentMission.missionInfo == nil then return end
@@ -1817,61 +2116,101 @@ function PRBFix:loadMeatLedger()
 
     PRBFix.farmMeat = {}
     PRBFix.farmMeatPallets = {}
+    self.barnMeta = self.barnMeta or {}
 
-    local farmIndex = 0
-    while true do
-        local farmKey = string.format("butcherBarn.farm(%d)", farmIndex)
-        if not xmlFile:hasProperty(farmKey) then break end
+    local function readFarmEntriesFromPath(basePath, barnKey)
+        PRBFix.farmMeat[barnKey] = PRBFix.farmMeat[barnKey] or {}
+        PRBFix.farmMeatPallets[barnKey] = PRBFix.farmMeatPallets[barnKey] or {}
 
-        local farmId = xmlFile:getInt(farmKey .. "#id")
-        if farmId ~= nil then
-            PRBFix.farmMeat[farmId] = {}
-            PRBFix.farmMeatPallets[farmId] = {}
+        local farmIndex = 0
+        while true do
+            local farmKey = string.format("%s.farm(%d)", basePath, farmIndex)
+            if not xmlFile:hasProperty(farmKey) then break end
 
-            local empty = xmlFile:getFloat(farmKey .. ".emptyPallet") or 0
-            if empty > 0.01 then
-                PRBFix.farmMeat[farmId]["EMPTYPALLET"] = empty
-            end
+            local farmId = xmlFile:getInt(farmKey .. "#id")
+            if farmId ~= nil then
+                PRBFix.farmMeat[barnKey][farmId] = PRBFix.farmMeat[barnKey][farmId] or {}
+                PRBFix.farmMeatPallets[barnKey][farmId] = PRBFix.farmMeatPallets[barnKey][farmId] or {}
 
-            local procIndex = 0
-            while true do
-                local key = string.format("%s.processing(%d)", farmKey, procIndex)
-                if not xmlFile:hasProperty(key) then break end
-                local fillType = xmlFile:getString(key .. "#type")
-                local amount = xmlFile:getFloat(key .. "#amount") or 0
-                local readyAt = xmlFile:getFloat(key .. "#readyAt") or 0
-                if fillType ~= nil then
-                    PRBFix.farmMeatPallets[farmId][fillType] = {amount = amount, readyAt = readyAt}
+                local empty = xmlFile:getFloat(farmKey .. ".emptyPallet") or 0
+                if empty > 0.01 then
+                    PRBFix.farmMeat[barnKey][farmId]["EMPTYPALLET"] = (PRBFix.farmMeat[barnKey][farmId]["EMPTYPALLET"] or 0) + empty
                 end
-                procIndex = procIndex + 1
-            end
 
-            local availIndex = 0
-            while true do
-                local key = string.format("%s.available(%d)", farmKey, availIndex)
-                if not xmlFile:hasProperty(key) then break end
-                local fillType = xmlFile:getString(key .. "#type")
-                local amount = xmlFile:getFloat(key .. "#amount") or 0
-                local readyAt = xmlFile:getFloat(key .. "#readyAt") or 0
-                if fillType ~= nil then
-                    local existing = PRBFix.farmMeatPallets[farmId][fillType]
-                    if existing then
-                        existing.amount = existing.amount + amount
-                        existing.readyAt = math.min(existing.readyAt or readyAt, readyAt)
-                    else
-                        PRBFix.farmMeatPallets[farmId][fillType] = {amount = amount, readyAt = readyAt}
+                local procIndex = 0
+                while true do
+                    local key = string.format("%s.processing(%d)", farmKey, procIndex)
+                    if not xmlFile:hasProperty(key) then break end
+                    local fillType = xmlFile:getString(key .. "#type")
+                    local amount = xmlFile:getFloat(key .. "#amount") or 0
+                    local readyAt = xmlFile:getFloat(key .. "#readyAt") or 0
+                    if fillType ~= nil then
+                        local existing = PRBFix.farmMeatPallets[barnKey][farmId][fillType]
+                        if existing then
+                            existing.amount = existing.amount + amount
+                            existing.readyAt = math.min(existing.readyAt or readyAt, readyAt)
+                        else
+                            PRBFix.farmMeatPallets[barnKey][farmId][fillType] = {amount = amount, readyAt = readyAt, barnId = barnKey}
+                        end
                     end
+                    procIndex = procIndex + 1
                 end
-                availIndex = availIndex + 1
+
+                local availIndex = 0
+                while true do
+                    local key = string.format("%s.available(%d)", farmKey, availIndex)
+                    if not xmlFile:hasProperty(key) then break end
+                    local fillType = xmlFile:getString(key .. "#type")
+                    local amount = xmlFile:getFloat(key .. "#amount") or 0
+                    local readyAt = xmlFile:getFloat(key .. "#readyAt") or 0
+                    if fillType ~= nil then
+                        local existing = PRBFix.farmMeatPallets[barnKey][farmId][fillType]
+                        if existing then
+                            existing.amount = existing.amount + amount
+                            existing.readyAt = math.min(existing.readyAt or readyAt, readyAt)
+                        else
+                            PRBFix.farmMeatPallets[barnKey][farmId][fillType] = {amount = amount, readyAt = readyAt, barnId = barnKey}
+                        end
+                    end
+                    availIndex = availIndex + 1
+                end
             end
+            farmIndex = farmIndex + 1
         end
-        farmIndex = farmIndex + 1
+        return farmIndex
+    end
+
+    local totalFarms = 0
+    local barnIndex = 0
+    while true do
+        local barnPath = string.format("butcherBarn.barn(%d)", barnIndex)
+        if not xmlFile:hasProperty(barnPath) then break end
+
+        local barnId = xmlFile:getString(barnPath .. "#id") or ("barn_" .. tostring(barnIndex + 1))
+        local ownerFarmId = xmlFile:getInt(barnPath .. "#ownerFarmId") or 1
+        local posStr = xmlFile:getString(barnPath .. "#position") or "0.00 0.00 0.00"
+        local posKey = "pos_" .. posStr:gsub("%s+", "_")
+
+        self.barnMeta[barnId] = {
+            id = barnId,
+            posKey = posKey,
+            ownerFarmId = ownerFarmId,
+            position = posStr
+        }
+
+        totalFarms = totalFarms + readFarmEntriesFromPath(barnPath, posKey)
+        barnIndex = barnIndex + 1
+    end
+
+    if barnIndex == 0 then
+        totalFarms = totalFarms + readFarmEntriesFromPath("butcherBarn", "pos_0.00_0.00_0.00")
     end
 
     xmlFile:delete()
     self:syncFarmMeat()
-    print(string.format("[%s] Loaded butcher barn ledger (%d farms)", self.modName, farmIndex))
+    print(string.format("[%s] Loaded butcher barn ledger (%d barns, %d farm entries)", self.modName, barnIndex, totalFarms))
 end
+
 
 FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, function()
     if PRBFix ~= nil and PRBFix.saveMeatLedger ~= nil then
@@ -1879,98 +2218,19 @@ FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, 
     end
 end)
 
+
 ----------------------------------------------------------------
 -- VISIBILITY OVERRIDE
--- Makes the barn appear for all farms and locks output mode
 ----------------------------------------------------------------
 function PRBFix:installVisibilityOverride()
     print("[PR Butcher Fix] installVisibilityOverride called")
-    if self.visibilityOverrideInstalled then return end
     if self.butcherBarnPlaceable == nil then return end
-
-    local barn = self.butcherBarnPlaceable
-    local spec = barn.spec_extendedProductionPoint
-    local pp = spec and spec.productionPoint
-    if pp == nil then
-        print("[PR Butcher Fix] productionPoint is nil")
-        return
-    end
-
-    pp.hiddenOnUI = false
-    pp.isOwned = true
-
-    local ownerId = barn.ownerFarmId or pp.ownerFarmId or 1
-    if ownerId == 0 then ownerId = 1 end
-    pp.ownerFarmId = ownerId
-
-    if barn.setOwnerFarmId then
-        barn:setOwnerFarmId(ownerId)
-        print(string.format("[PR Butcher Fix] Butcher barn real owner = farm %d", ownerId))
-    end
-
-    if ProductionPoint and ProductionPoint.OUTPUT_MODE_STORE then
-        pp.outputMode = ProductionPoint.OUTPUT_MODE_STORE
-        if pp.setOutputMode then
-            pp:setOutputMode(ProductionPoint.OUTPUT_MODE_STORE)
-        end
-        print("[PR Butcher Fix] Output mode locked to Storing")
-    end
-
-    if pp.setOutputMode then
-        local originalSetOutputMode = pp.setOutputMode
-        pp.setOutputMode = function(self, mode)
-            originalSetOutputMode(self, ProductionPoint.OUTPUT_MODE_STORE)
-        end
-    end
-
-    pp.isOutputModeChangeAllowed = false
-    if pp.setIsOutputModeChangeAllowed then
-        pp:setIsOutputModeChangeAllowed(false)
-    end
-
-    local mgr = g_currentMission.productionChainManager
-    if mgr == nil then
-        print("[PR Butcher Fix] productionChainManager is nil")
-        return
-    end
-
-    local ok, err = pcall(function()
-        mgr:addProductionPoint(pp)
-    end)
-    print(string.format("[PR Butcher Fix] addProductionPoint ok=%s err=%s", tostring(ok), tostring(err)))
-
-    if mgr.farmIds and mgr.addProductionPointToFarm then
-        for farmId = 1, 4 do
-            if farmId ~= ownerId and g_farmManager:getFarmById(farmId) then
-                if mgr.farmIds[farmId] == nil then
-                    mgr.farmIds[farmId] = {}
-                end
-                local farmTable = mgr.farmIds[farmId]
-                local ok2, err2 = pcall(function()
-                    mgr:addProductionPointToFarm(pp, farmTable)
-                end)
-                if ok2 then
-                    print(string.format("[PR Butcher Fix] addProductionPointToFarm(farm %d) SUCCESS", farmId))
-                else
-                    print(string.format("[PR Butcher Fix] addProductionPointToFarm(farm %d) FAILED: %s", farmId, tostring(err2)))
-                end
-            else
-                if farmId == ownerId then
-                    print(string.format("[PR Butcher Fix] Skipping owner farm %d (already owns it)", ownerId))
-                end
-            end
-        end
-    end
-
-    self.visibilityOverrideInstalled = true
-    self:installFarmBalanceOverlay()
-    self:syncFarmMeat()
+    self:installVisibilityOverrideForBarn(self.butcherBarnPlaceable)
     print("[PR Butcher Fix] Done")
 end
 
 ----------------------------------------------------------------
 -- FARM BALANCE OVERLAY
--- Draws the current farm's inventory on the production menu
 ----------------------------------------------------------------
 function PRBFix:installFarmBalanceOverlay()
     if PRBFix.overlayInstalled then return end
@@ -1991,8 +2251,12 @@ function PRBFix:installFarmBalanceOverlay()
     print("[PR Butcher Fix] Farm balance overlay installed")
 end
 
+----------------------------------------------------------------
+-- DRAW FARM BALANCE OVERLAY
+-- Renders store hours, processing times, and the selected barn's
+-- processing queue, empty pallets, and ready pickups in the menu
+----------------------------------------------------------------
 function PRBFix:drawFarmBalanceOverlay(frame)
-
     if frame == nil or frame.getSelectedProduction == nil then return end
 
     local production, productionPoint = frame:getSelectedProduction()
@@ -2001,72 +2265,59 @@ function PRBFix:drawFarmBalanceOverlay(frame)
     local placeable = productionPoint.owningPlaceable
     if placeable == nil or placeable.configFileName == nil then return end
     if not placeable.configFileName:find("theButcherBarn") then return end
-	
+
+    local barnKey = self:getBarnKey(placeable)
+
     -- Helper box: store hours + processing times
-    if self.barnSettings then
-        local hx = 0.24
-        local hy = 0.90
-        local hLine = 0.016
-        local hWidth = 0.13
-        local hLines = {}
+    local hx = 0.24
+    local hy = 0.90
+    local hLine = 0.016
+    local hWidth = 0.13
+    local hLines = {}
 
-        local openH = self.storeOpenHour or 8
-        local closeH = self.storeCloseHour or 19
-        local openStr = string.format("%d am", openH)
-        local closeStr = (closeH > 12) and string.format("%d pm", closeH - 12) or string.format("%d", closeH)
+    local openH = self.storeOpenHour or 8
+    local closeH = self.storeCloseHour or 19
+    local openStr = string.format("%d am", openH)
+    local closeStr = (closeH > 12) and string.format("%d pm", closeH - 12) or string.format("%d", closeH)
 
-        -- Header lines (no columns)
-		-- table.insert(hLines, {text = "--------------------", isHeader = false})
-		table.insert(hLines, {text = "", isHeader = true})
-        table.insert(hLines, {text = string.format("Store Hours:  %s - %s", openStr, closeStr), isHeader = true})
-        table.insert(hLines, {text = "", isHeader = true})
-        table.insert(hLines, {text = "Processing Times", isHeader = true})
-		table.insert(hLines, {text = "--------------------", isHeader = true})
+    table.insert(hLines, {text = "", isHeader = true})
+    table.insert(hLines, {text = string.format("Store Hours:  %s - %s", openStr, closeStr), isHeader = true})
+    table.insert(hLines, {text = "", isHeader = true})
+    table.insert(hLines, {text = "Processing Times", isHeader = true})
+    table.insert(hLines, {text = "--------------------", isHeader = true})
 
-        local order = {
-            "Chicken Fillet", "Bacon", "Ham", "Pork", "Sausage",
-            "Pepperoni", "Chevon", "Mutton", "Ground Beef", "Steak"
-        }
-        for _, name in ipairs(order) do
-            local hrs = self.barnSettings[name]
-            if hrs then
-                table.insert(hLines, {name = name, hours = hrs, isHeader = false})
-            end
-        end
-
-        local hHeight = (#hLines * hLine) + 0.03
-        drawFilledRect(hx - 0.008, hy - hHeight + 0.01, hWidth, hHeight, 0, 0, 0, 0.75)
-
-        setTextAlignment(RenderText.ALIGN_LEFT)
-        setTextBold(true)
-        setTextColor(1, 1, 1, 1)
-
-        local ty = hy
-        local hoursX = hx + 0.035   -- fixed column for the hours
-
-        for _, line in ipairs(hLines) do
-            if line.isHeader then
-                renderText(hx, ty, 0.013, line.text)
-            else
-                renderText(hx, ty, 0.013, line.name)
-                setTextAlignment(RenderText.ALIGN_RIGHT)
-                renderText(hoursX + 0.04, ty, 0.013, tostring(line.hours) .. " hrs")
-                setTextAlignment(RenderText.ALIGN_LEFT)
-            end
-            ty = ty - hLine
-        end
-        setTextBold(false)
+    local order = {
+        "Chicken Fillet", "Bacon", "Ham", "Pork", "Sausage",
+        "Pepperoni", "Chevon", "Mutton", "Ground Beef", "Steak"
+    }
+    local settings = self.barnSettings or {}
+    for _, name in ipairs(order) do
+        local hrs = settings[name] or 5
+        table.insert(hLines, {name = name, hours = hrs, isHeader = false})
     end
 
-	-- Helper box: ReadyAt
-    if frame == nil or frame.getSelectedProduction == nil then return end
+    local hHeight = (#hLines * hLine) + 0.03
+    drawFilledRect(hx - 0.008, hy - hHeight + 0.01, hWidth, hHeight, 0, 0, 0, 0.75)
 
-    local production, productionPoint = frame:getSelectedProduction()
-    if productionPoint == nil then return end
+    setTextAlignment(RenderText.ALIGN_LEFT)
+    setTextBold(true)
+    setTextColor(1, 1, 1, 1)
 
-    local placeable = productionPoint.owningPlaceable
-    if placeable == nil or placeable.configFileName == nil then return end
-    if not placeable.configFileName:find("theButcherBarn") then return end
+    local ty = hy
+    local hoursX = hx + 0.035
+
+    for _, line in ipairs(hLines) do
+        if line.isHeader then
+            renderText(hx, ty, 0.013, line.text)
+        else
+            renderText(hx, ty, 0.013, line.name)
+            setTextAlignment(RenderText.ALIGN_RIGHT)
+            renderText(hoursX + 0.04, ty, 0.013, tostring(line.hours) .. " hrs")
+            setTextAlignment(RenderText.ALIGN_LEFT)
+        end
+        ty = ty - hLine
+    end
+    setTextBold(false)
 
     local currentFarmId = g_currentMission:getFarmId()
     if currentFarmId == nil or currentFarmId <= 0 then return end
@@ -2080,7 +2331,7 @@ function PRBFix:drawFarmBalanceOverlay(frame)
     table.insert(lines, {text = "--------------------", isHeader = false})
     table.insert(lines, {text = "Processing", isHeader = true})
 
-    local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[currentFarmId]) or {}
+    local pallets = (PRBFix.farmMeatPallets and PRBFix.farmMeatPallets[barnKey] and PRBFix.farmMeatPallets[barnKey][currentFarmId]) or {}
     local groups = {
         { title = "  Chicken Meat", items = {"CHICKENFILLET"} },
         { title = "  Cow Meat",     items = {"GROUNDBEEF", "STEAK"} },
@@ -2142,8 +2393,8 @@ function PRBFix:drawFarmBalanceOverlay(frame)
 
     table.insert(lines, {text = "--------------------", isHeader = false})
     table.insert(lines, {text = "Empty Pallets", isHeader = false})
-    local meats = PRBFix.farmMeat[currentFarmId] or {}
-    local emptyPallets = meats["EMPTYPALLET"] or 0
+    local barnMeats = (PRBFix.farmMeat and PRBFix.farmMeat[barnKey] and PRBFix.farmMeat[barnKey][currentFarmId]) or {}
+    local emptyPallets = barnMeats["EMPTYPALLET"] or 0
     if emptyPallets > 0.01 then
         table.insert(lines, {text = string.format("  %.0f L", emptyPallets), isHeader = false})
     else
@@ -2203,63 +2454,557 @@ function PRBFix:drawFarmBalanceOverlay(frame)
 end
 
 ----------------------------------------------------------------
--- LOAD BARN SETTINGS
+-- IS BARN LIGHTS WINDOW OPEN
 ----------------------------------------------------------------
-function PRBFix:loadBarnSettings()
-    self.barnSettings = self.barnSettings or {}
-    self.storeOpenHour = 8
-    self.storeCloseHour = 19
-
-    local path = self:getSettingsPath()
-    if path == nil then
-        print("[PR Butcher Fix] No savegame path yet")
-        return
+function PRBFix:isBarnLightsWindowOpen()
+    if g_currentMission == nil or g_currentMission.environment == nil then
+        return true
     end
 
-    if not fileExists(path) then
-        local xml = '<?xml version="1.0" encoding="utf-8" standalone="no"?>\n<settings>\n'
-        xml = xml .. '    <product name="Bacon" hours="5"/>\n'
-        xml = xml .. '    <product name="Ham" hours="5"/>\n'
-        xml = xml .. '    <product name="Pork" hours="5"/>\n'
-        xml = xml .. '    <product name="Sausage" hours="5"/>\n'
-        xml = xml .. '    <product name="Pepperoni" hours="5"/>\n'
-        xml = xml .. '    <product name="Chicken Fillet" hours="5"/>\n'
-        xml = xml .. '    <product name="Chevon" hours="5"/>\n'
-        xml = xml .. '    <product name="Mutton" hours="5"/>\n'
-        xml = xml .. '    <product name="Ground Beef" hours="5"/>\n'
-        xml = xml .. '    <product name="Steak" hours="5"/>\n'
-        xml = xml .. '    <store openHour="8" closeHour="19"/>\n'
-        xml = xml .. '</settings>\n'
-        local f = io.open(path, "w")
-        if f then
-            f:write(xml)
-            f:close()
-            print("[PR Butcher Fix] Created default settings in save: " .. path)
+    local dayLen = 86400
+    local nowSec = ((g_currentMission.environment.dayTime or 0) / 1000) % dayLen
+
+    local openH = self.storeOpenHour or 8
+    local closeH = self.storeCloseHour or 19
+
+    local onSec = ((openH * 3600) - 1800) % dayLen
+    local offSec = ((closeH * 3600) + 1800) % dayLen
+
+    if onSec == offSec then
+        return true
+    elseif onSec < offSec then
+        return nowSec >= onSec and nowSec < offSec
+    else
+        return nowSec >= onSec or nowSec < offSec
+    end
+end
+
+----------------------------------------------------------------
+-- SET FIXTURE LIGHTS ENABLED
+----------------------------------------------------------------
+local function setFixtureLightsEnabled(node, enabled)
+    if node == nil or node == 0 then return end
+
+    if getNumOfChildren then
+        local count = getNumOfChildren(node)
+        for i = 0, count - 1 do
+            local child = getChildAt(node, i)
+            if child ~= nil and child ~= 0 then
+                setFixtureLightsEnabled(child, enabled)
+            end
         end
     end
 
-    local xmlFile = loadXMLFile("BarnSettings", path)
-    if xmlFile == nil or xmlFile == 0 then
-        print("[PR Butcher Fix] Could not load settings file")
+    if enabled then
+        if setWeatherRequiredMask ~= nil then
+            pcall(setWeatherRequiredMask, node, 0)
+        end
+        setVisibility(node, true)
+    else
+        if setWeatherRequiredMask ~= nil then
+            pcall(setWeatherRequiredMask, node, 0x40)
+        end
+        setVisibility(node, false)
+    end
+end
+
+----------------------------------------------------------------
+-- UPDATE BARN INTERIOR LIGHTS
+----------------------------------------------------------------
+function PRBFix:updateBarnInteriorLights(force)
+    if not self:isButcherBarnValid() then
+        if self.butcherBarnPlaceable ~= nil then
+            self:resetButcherBarn()
+        end
         return
     end
 
-    local i = 0
-    while true do
-        local key = string.format("settings.product(%d)", i)
-        if not hasXMLProperty(xmlFile, key) then break end
-        local name = getXMLString(xmlFile, key .. "#name")
-        local hours = getXMLInt(xmlFile, key .. "#hours") or 5
-        if name then
-            self.barnSettings[name] = hours
-        end
-        i = i + 1
+    local barn = self.butcherBarnPlaceable
+    if barn == nil or barn.i3dMappings == nil then return end
+
+    local lightsMapping = barn.i3dMappings["lights"]
+    local lightsNode = lightsMapping and lightsMapping.nodeId
+    if lightsNode == nil or lightsNode == 0 then return end
+    if entityExists ~= nil and not entityExists(lightsNode) then
+        self:resetButcherBarn()
+        return
     end
 
-    self.storeOpenHour = getXMLInt(xmlFile, "settings.store#openHour") or 8
-    self.storeCloseHour = getXMLInt(xmlFile, "settings.store#closeHour") or 19
+    local shouldBeOn = self:isBarnLightsWindowOpen()
+    if not force and self.lastBarnLightsState == shouldBeOn then
+        return
+    end
+    self.lastBarnLightsState = shouldBeOn
 
-    delete(xmlFile)
-    print(string.format("[PR Butcher Fix] Loaded barn settings (%d products, store %d-%d)",
-        i, self.storeOpenHour, self.storeCloseHour))
+    local numChildren = (getNumOfChildren and getNumOfChildren(lightsNode)) or 0
+    if numChildren <= 0 then return end
+
+    for i = 0, numChildren - 1 do
+        local child = getChildAt(lightsNode, i)
+        if child ~= nil and child ~= 0 and (entityExists == nil or entityExists(child)) then
+            local nodeName = (getName and getName(child)) or ""
+            if not string.find(nodeName, "streetLightPoleLarge", 1, true) then
+                local childCount = (getNumOfChildren and getNumOfChildren(child)) or 0
+                if childCount >= 4 then
+                    local blubLit = getChildAt(child, 3)
+                    setFixtureLightsEnabled(blubLit, shouldBeOn)
+                else
+                    setFixtureLightsEnabled(child, shouldBeOn)
+                end
+            end
+        end
+    end
+end
+
+----------------------------------------------------------------
+-- IS BARN DOORS OPEN ALLOWED
+----------------------------------------------------------------
+function PRBFix:isBarnDoorsOpenAllowed()
+    if g_currentMission == nil or g_currentMission.environment == nil then
+        return true
+    end
+
+    local dayTimeSec = ((g_currentMission.environment.dayTime or 0) / 1000) % 86400
+    local hour = math.floor(dayTimeSec / 3600)
+    local openH = self.storeOpenHour or 8
+    local closeH = self.storeCloseHour or 19
+
+    if openH == closeH then
+        return true
+    elseif openH < closeH then
+        return hour >= openH and hour < closeH
+    else
+        return hour >= openH or hour < closeH
+    end
+end
+
+----------------------------------------------------------------
+-- HELPER: CLEAR ANIMATED OBJECT ACTION PROMPT
+----------------------------------------------------------------
+local function clearBarnDoorPrompt(animObj)
+    if animObj == nil then return end
+    if g_currentMission ~= nil and g_currentMission.activatableObjectsSystem ~= nil then
+        pcall(function()
+            g_currentMission.activatableObjectsSystem:removeActivatable(animObj)
+        end)
+    end
+    if animObj.removeActionEvents ~= nil then
+        pcall(function()
+            animObj:removeActionEvents()
+        end)
+    end
+end
+
+----------------------------------------------------------------
+-- CLOSE AND LOCK BARN DOORS
+----------------------------------------------------------------
+function PRBFix:closeAllBarnDoors()
+    if g_server == nil then return end
+
+    local barn = self.butcherBarnPlaceable
+    local spec = barn and barn.spec_animatedObjects
+    if spec == nil or spec.animatedObjects == nil then return end
+
+    for _, animObj in ipairs(spec.animatedObjects) do
+        if animObj ~= nil then
+            clearBarnDoorPrompt(animObj)
+
+            if animObj.setDirection ~= nil then
+                animObj:setDirection(-1)
+            end
+            if animObj.setAnimTime ~= nil then
+                animObj:setAnimTime(0, false)
+            end
+            animObj.animTime = 0
+
+            if animObj.raiseDirtyFlags ~= nil and animObj.dirtyFlag ~= nil then
+                animObj:raiseDirtyFlags(animObj.dirtyFlag)
+            end
+        end
+    end
+
+    if barn.raiseDirtyFlags ~= nil and barn.placeableDirtyFlag ~= nil then
+        barn:raiseDirtyFlags(barn.placeableDirtyFlag)
+    end
+end
+
+----------------------------------------------------------------
+-- INSTALL BARN DOOR LOCK HOOK
+----------------------------------------------------------------
+function PRBFix:installBarnDoorLockHook()
+    if self.doorLockHookInstalled or AnimatedObject == nil then return end
+    self.doorLockHookInstalled = true
+
+    local function isBarnAnimatedObject(target)
+        local barn = PRBFix.butcherBarnPlaceable
+        local spec = barn and barn.spec_animatedObjects
+        if spec and spec.animatedObjects then
+            for _, item in ipairs(spec.animatedObjects) do
+                if item == target then
+                    return true
+                end
+            end
+        end
+        return false
+    end
+
+    local origTriggerCallback = AnimatedObject.triggerCallback
+    if origTriggerCallback ~= nil then
+        AnimatedObject.triggerCallback = function(animObj, triggerId, otherId, onEnter, onLeave, raycastHit)
+            if isBarnAnimatedObject(animObj) and not PRBFix:isBarnDoorsOpenAllowed() then
+                clearBarnDoorPrompt(animObj)
+                if onEnter and g_currentMission and g_currentMission.showBlinkingWarning then
+                    g_currentMission:showBlinkingWarning("Store Closed", 4000)
+                end
+                return
+            end
+
+            return origTriggerCallback(animObj, triggerId, otherId, onEnter, onLeave, raycastHit)
+        end
+    end
+
+    local origRegisterActionEvents = AnimatedObject.registerActionEvents
+    if origRegisterActionEvents ~= nil then
+        AnimatedObject.registerActionEvents = function(animObj, ...)
+            if isBarnAnimatedObject(animObj) and not PRBFix:isBarnDoorsOpenAllowed() then
+                clearBarnDoorPrompt(animObj)
+                return
+            end
+
+            return origRegisterActionEvents(animObj, ...)
+        end
+    end
+
+    local origSetDirection = AnimatedObject.setDirection
+    if origSetDirection ~= nil then
+        AnimatedObject.setDirection = function(animObj, direction, ...)
+            if isBarnAnimatedObject(animObj) and (direction or 0) > 0 and not PRBFix:isBarnDoorsOpenAllowed() then
+                clearBarnDoorPrompt(animObj)
+                return
+            end
+
+            return origSetDirection(animObj, direction, ...)
+        end
+    end
+end
+
+----------------------------------------------------------------
+-- UPDATE BARN DOOR SCHEDULE
+----------------------------------------------------------------
+function PRBFix:updateBarnDoorSchedule()
+    if g_server == nil or self.butcherBarnPlaceable == nil then return end
+
+    local isOpenAllowed = self:isBarnDoorsOpenAllowed()
+    if self.lastBarnDoorsOpenAllowed == nil then
+        print(string.format("[%s] updateBarnDoorSchedule init: isOpenAllowed=%s (hours %d-%d)",
+            self.modName, tostring(isOpenAllowed), self.storeOpenHour or 8, self.storeCloseHour or 19))
+        self.lastBarnDoorsOpenAllowed = isOpenAllowed
+        if not isOpenAllowed then
+            self:closeAllBarnDoors()
+        end
+        return
+    end
+
+    if self.lastBarnDoorsOpenAllowed ~= isOpenAllowed then
+        print(string.format("[%s] updateBarnDoorSchedule state change: %s -> %s",
+            self.modName, tostring(self.lastBarnDoorsOpenAllowed), tostring(isOpenAllowed)))
+    end
+
+    if self.lastBarnDoorsOpenAllowed and not isOpenAllowed then
+        self:closeAllBarnDoors()
+    end
+
+    self.lastBarnDoorsOpenAllowed = isOpenAllowed
+end
+
+
+function PRBFix:isButcherBarnValid()
+    local barn = self.butcherBarnPlaceable
+    if barn == nil then return false end
+    if barn.isDeleted or barn.removed then return false end
+    if g_currentMission == nil or g_currentMission.placeableSystem == nil then return false end
+
+    local placeables = g_currentMission.placeableSystem.placeables
+    if placeables == nil then return false end
+
+    for _, p in pairs(placeables) do
+        if p == barn then
+            return true
+        end
+    end
+
+    return false
+end
+
+----------------------------------------------------------------
+-- RESET BUTCHER BARN STATE
+-- Removes custom triggers for the target barn (or all if nil)
+-- and resets barn/session flags safely for multi-barn setups
+----------------------------------------------------------------
+function PRBFix:resetButcherBarn(targetBarn)
+    self.barnTriggers = self.barnTriggers or {}
+
+    local function removeBarnTriggers(barnObj)
+        local nodes = barnObj and self.barnTriggers[barnObj]
+        if nodes then
+            for _, nodeId in ipairs(nodes) do
+                if nodeId and nodeId ~= 0 and removeTrigger then
+                    pcall(removeTrigger, nodeId)
+                end
+            end
+            self.barnTriggers[barnObj] = nil
+        end
+    end
+
+    local removedAny = false
+
+    if targetBarn ~= nil then
+        if self.barnTriggers[targetBarn] then
+            removeBarnTriggers(targetBarn)
+            removedAny = true
+        end
+        if self.hookedBarns then
+            self.hookedBarns[targetBarn] = nil
+        end
+        if self.barnIds then
+            for k, v in pairs(self.barnIds) do
+                if v == targetBarn then
+                    self.barnIds[k] = nil
+                end
+            end
+        end
+        if self.butcherBarnPlaceable == targetBarn then
+            self.butcherBarnPlaceable = nil
+            removedAny = true
+        end
+    else
+        for barnObj in pairs(self.barnTriggers) do
+            removeBarnTriggers(barnObj)
+            removedAny = true
+        end
+        if self.registeredTriggerNodes then
+            for _, nodeId in ipairs(self.registeredTriggerNodes) do
+                if nodeId and nodeId ~= 0 and removeTrigger then
+                    pcall(removeTrigger, nodeId)
+                end
+            end
+            self.registeredTriggerNodes = nil
+        end
+        self.hookedBarns = {}
+        self.barnIds = {}
+        if self.butcherBarnPlaceable ~= nil then
+            self.butcherBarnPlaceable = nil
+            removedAny = true
+        end
+    end
+
+    -- Pick another valid barn if one still exists in placeableSystem
+    if self.butcherBarnPlaceable == nil and g_currentMission and g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables then
+        for _, p in pairs(g_currentMission.placeableSystem.placeables) do
+            if p.configFileName and p.configFileName:match("theButcherBarn.xml") and (self.isButcherBarnValid == nil or self:isButcherBarnValid()) then
+                self.butcherBarnPlaceable = p
+                break
+            end
+        end
+    end
+
+    if self.butcherBarnPlaceable == nil then
+        if self.spawnActionEventId ~= nil and g_inputBinding then
+            pcall(function() g_inputBinding:removeActionEvent(self.spawnActionEventId) end)
+            self.spawnActionEventId = nil
+        end
+
+        if self.butcherActionEventId ~= nil and g_inputBinding then
+            pcall(function() g_inputBinding:removeActionEvent(self.butcherActionEventId) end)
+            self.butcherActionEventId = nil
+        end
+
+        self.placeablesScanned = false
+        self.visibilityOverrideInstalled = false
+        self.trailersInTrigger = {}
+        self.playerInSpawnTrigger = false
+        self.playerInTrigger = false
+        self.currentVehicle = nil
+        self.lastBarnLightsState = nil
+        self.lastBarnDoorsOpenAllowed = nil
+    end
+
+    if removedAny then
+        print("[" .. self.modName .. "] Reset butcher barn state and removed custom triggers")
+    end
+end
+
+
+----------------------------------------------------------------
+-- VISIBILITY OVERRIDE (PER BARN + LEGACY WRAPPER)
+----------------------------------------------------------------
+function PRBFix:installVisibilityOverrideForBarn(barn)
+    if barn == nil then return end
+
+    barn.prRegisteredProductions = barn.prRegisteredProductions or {}
+    local spec = barn.spec_extendedProductionPoint
+    local pp = spec and spec.productionPoint
+    if pp == nil then
+        print("[PR Butcher Fix] productionPoint is nil")
+        return
+    end
+
+    pp.hiddenOnUI = false
+    pp.isOwned = true
+
+    local ownerId = barn.ownerFarmId or pp.ownerFarmId or 1
+    if ownerId == 0 then ownerId = 1 end
+    pp.ownerFarmId = ownerId
+
+    if barn.setOwnerFarmId then
+        barn:setOwnerFarmId(ownerId)
+        print(string.format("[PR Butcher Fix] Butcher barn real owner = farm %d", ownerId))
+    end
+
+    if ProductionPoint and ProductionPoint.OUTPUT_MODE_STORE then
+        pp.outputMode = ProductionPoint.OUTPUT_MODE_STORE
+        if pp.setOutputMode then
+            pp:setOutputMode(ProductionPoint.OUTPUT_MODE_STORE)
+        end
+    end
+
+    if pp.setOutputMode and not pp.prOutputModeHooked then
+        pp.prOutputModeHooked = true
+        local originalSetOutputMode = pp.setOutputMode
+        pp.setOutputMode = function(self, mode)
+            originalSetOutputMode(self, ProductionPoint.OUTPUT_MODE_STORE)
+        end
+    end
+
+    pp.isOutputModeChangeAllowed = false
+    if pp.setIsOutputModeChangeAllowed then
+        pp:setIsOutputModeChangeAllowed(false)
+    end
+
+    local mgr = g_currentMission and g_currentMission.productionChainManager
+    if mgr == nil then
+        print("[PR Butcher Fix] productionChainManager is nil")
+        return
+    end
+
+    if not barn.prRegisteredProductions[pp] then
+        barn.prRegisteredProductions[pp] = true
+        local alreadyInMgr = false
+        if mgr.productionPoints then
+            for _, existingPp in pairs(mgr.productionPoints) do
+                if existingPp == pp then
+                    alreadyInMgr = true
+                    break
+                end
+            end
+        end
+
+        if not alreadyInMgr then
+            local ok, err = pcall(function()
+                mgr:addProductionPoint(pp)
+            end)
+            print(string.format("[PR Butcher Fix] addProductionPoint ok=%s err=%s", tostring(ok), tostring(err)))
+        end
+
+        if mgr.farmIds and mgr.addProductionPointToFarm then
+            for farmId = 1, 4 do
+                if farmId ~= ownerId and g_farmManager:getFarmById(farmId) then
+                    if mgr.farmIds[farmId] == nil then
+                        mgr.farmIds[farmId] = {}
+                    end
+                    local farmTable = mgr.farmIds[farmId]
+                    local ok2, err2 = pcall(function()
+                        mgr:addProductionPointToFarm(pp, farmTable)
+                    end)
+                    if ok2 then
+                        print(string.format("[PR Butcher Fix] addProductionPointToFarm(farm %d) SUCCESS", farmId))
+                    else
+                        print(string.format("[PR Butcher Fix] addProductionPointToFarm(farm %d) FAILED: %s", farmId, tostring(err2)))
+                    end
+                end
+            end
+        end
+    end
+
+    self.visibilityOverrideInstalled = true
+    self:installFarmBalanceOverlay()
+    self:syncFarmMeat()
+end
+
+
+----------------------------------------------------------------
+-- GET BARN IDENTITY
+-- Returns stable barn key (uniqueId or position fallback),
+-- formatted world position string, and ownerFarmId
+----------------------------------------------------------------
+function PRBFix:getBarnIdentity(placeable)
+    if placeable == nil then
+        return "unknown_barn", "0.00 0.00 0.00", 1
+    end
+
+    local posStr = "0.00 0.00 0.00"
+    if placeable.rootNode and placeable.rootNode ~= 0 and getWorldTranslation then
+        local ok, x, y, z = pcall(getWorldTranslation, placeable.rootNode)
+        if ok and x ~= nil and y ~= nil and z ~= nil then
+            posStr = string.format("%.2f %.2f %.2f", x, y, z)
+        end
+    end
+
+    local rawUniqueId = placeable.uniqueId
+    if (rawUniqueId == nil or rawUniqueId == "") and placeable.getUniqueId then
+        local okUid, uid = pcall(function() return placeable:getUniqueId() end)
+        if okUid and uid ~= nil and uid ~= "" then
+            rawUniqueId = uid
+        end
+    end
+
+    local barnKey
+    if rawUniqueId ~= nil and tostring(rawUniqueId) ~= "" then
+        barnKey = tostring(rawUniqueId)
+    else
+        barnKey = "pos_" .. posStr:gsub("%s+", "_")
+    end
+
+    local ownerId = placeable.ownerFarmId
+    if ownerId == nil or ownerId == 0 then
+        ownerId = 1
+    end
+
+    return barnKey, posStr, ownerId
+end
+
+
+----------------------------------------------------------------
+-- GET BARN KEY
+-- Returns a position-based key (e.g. pos_121.92_79.76_178.08)
+-- that matches across server, client, triggers, overlay, and XML
+----------------------------------------------------------------
+function PRBFix:getBarnKey(placeable)
+    if placeable == nil then
+        return "pos_0.00_0.00_0.00"
+    end
+    local _, posStr = self:getBarnIdentity(placeable)
+    return "pos_" .. tostring(posStr):gsub("%s+", "_")
+end
+
+----------------------------------------------------------------
+-- GET BARN BY KEY
+-- Returns the butcher barn placeable matching barnKey
+----------------------------------------------------------------
+function PRBFix:getBarnByKey(barnKey)
+    if barnKey == nil then return self.butcherBarnPlaceable end
+    if self.barnKeyToPlaceable and self.barnKeyToPlaceable[barnKey] then
+        return self.barnKeyToPlaceable[barnKey]
+    end
+    local placeables = g_currentMission and g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables
+    if placeables then
+        for _, p in pairs(placeables) do
+            if p.configFileName and p.configFileName:match("theButcherBarn.xml") then
+                if self:getBarnKey(p) == barnKey then
+                    return p
+                end
+            end
+        end
+    end
+    return self.butcherBarnPlaceable
 end

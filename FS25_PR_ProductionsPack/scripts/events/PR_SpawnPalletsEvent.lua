@@ -9,10 +9,11 @@ function PR_SpawnPalletsEvent.emptyNew()
     return Event.new(PR_SpawnPalletsEvent_mt)
 end
 
-function PR_SpawnPalletsEvent.new(fillTypes, farmId)
+function PR_SpawnPalletsEvent.new(fillTypes, farmId, barnKey)
     local self = PR_SpawnPalletsEvent.emptyNew()
     self.fillTypes = fillTypes
     self.farmId = farmId
+    self.barnKey = barnKey or ""
     return self
 end
 
@@ -22,6 +23,7 @@ function PR_SpawnPalletsEvent:writeStream(streamId, connection)
         streamWriteString(streamId, ft)
     end
     streamWriteUInt8(streamId, self.farmId)
+    streamWriteString(streamId, self.barnKey or "")
 end
 
 function PR_SpawnPalletsEvent:readStream(streamId, connection)
@@ -31,11 +33,12 @@ function PR_SpawnPalletsEvent:readStream(streamId, connection)
         self.fillTypes[i] = streamReadString(streamId)
     end
     self.farmId = streamReadUInt8(streamId)
+    self.barnKey = streamReadString(streamId)
     self:run(connection)
 end
 
 function PR_SpawnPalletsEvent:run(connection)
     if g_server and PRBFix and PRBFix.handleSpawnRequest then
-        PRBFix:handleSpawnRequest(self.fillTypes, self.farmId)
+        PRBFix:handleSpawnRequest(self.fillTypes, self.farmId, self.barnKey)
     end
 end
